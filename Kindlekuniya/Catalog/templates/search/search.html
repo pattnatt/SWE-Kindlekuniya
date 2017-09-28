@@ -1,9 +1,11 @@
+{% extends 'catalog_base.html' %}
+{% load crispy_forms_tags %}
 
+{% block content %}
 <h2>Search</h2>
-
     <form method="get" action=".">
         <table>
-            {{ form.as_table }}
+            {{ form|crispy }}
             <tr>
                 <td>&nbsp;</td>
                 <td>
@@ -17,7 +19,7 @@
 
             {% for result in page.object_list %}
                 <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
+                    <a href="{% url 'Catalog:detail' result.object.id %}">{{ result.object.name }}</a>
                 </p>
             {% empty %}
                 <p>No results found.</p>
@@ -34,3 +36,4 @@
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
     </form>
+{% endblock %}
