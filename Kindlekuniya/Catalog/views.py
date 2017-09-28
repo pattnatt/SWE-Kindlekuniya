@@ -10,8 +10,13 @@ def index(request):
 def detail(request, product_id):
     product = Product.objects.get(id = int(product_id))
     context = {
-        'product' : product
+        'product' : product,
     }
     return render(request, 'detail.html', context)
 
-#def show_product_by_catagory(request, catagory_id):
+def catagory(request, catagory_id):
+    products = Product.objects.filter(catagory__id = catagory_id)
+    context = {
+        'products' : products,
+    }
+    return render(request, 'catagory.html', context)
