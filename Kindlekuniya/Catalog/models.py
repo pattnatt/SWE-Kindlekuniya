@@ -1,4 +1,8 @@
 from django.db import models
+import os
+
+def get_product_image_path(instance, filename):
+    return os.path.join('product_image', str(instance.id), filename)
 
 class Product(models.Model):
     COVER_TYPE = (
@@ -27,7 +31,7 @@ class Product(models.Model):
     size_width = models.FloatField()
     size_thickness = models.FloatField()
     description = models.TextField(blank = True)
-    pictureUrl = models.CharField(max_length = 500)
+    pictureUrl = models.ImageField(upload_to = get_product_image_path, blank = True, null = True)
 
     def __str__(self):
         return self.name
