@@ -144,4 +144,5 @@ if DEBUG :
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static"),
     ]
+    MEDIA_URL = '/static/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
