@@ -4,6 +4,13 @@ import os
 def get_product_image_path(instance, filename):
     return os.path.join('product_image', str(instance.id), filename)
 
+class Catagory(models.Model):
+    name = models.CharField(max_length = 100)
+    description = models.TextField(blank = True)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     COVER_TYPE = (
         ('PD', 'Paperback'),
@@ -21,6 +28,7 @@ class Product(models.Model):
     isbn = models.DecimalField(max_digits = 13, decimal_places = 0, unique = True)
     name = models.CharField(max_length = 250)
     author = models.CharField(max_length = 250)
+    catagory = models.ManyToManyField(Catagory)
     publisher = models.CharField(max_length = 250)
     price = models.FloatField()
     weight = models.FloatField()
@@ -36,18 +44,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Catagory(models.Model):
-    name = models.CharField(max_length = 100)
-    description = models.TextField(blank = True)
-
-    def __str__(self):
-        return self.name
-
-class CatagoryMap(models.Model):
-    catagory = models.ForeignKey(Catagory, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.product) + " is " +  str(self.catagory)

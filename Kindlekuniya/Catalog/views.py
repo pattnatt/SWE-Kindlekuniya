@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
-from .models import Product, CatagoryMap, Catagory
+from .models import Product, Catagory
 
 def index(request):
     context = {
