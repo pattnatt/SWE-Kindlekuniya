@@ -32,6 +32,7 @@ class Product(models.Model):
     size_thickness = models.FloatField()
     description = models.TextField(blank = True)
     pictureUrl = models.ImageField(upload_to = get_product_image_path, blank = True, null = True)
+    quantity = models.PositiveIntegerField(default = 0)
 
     def __str__(self):
         return self.name
@@ -50,10 +51,3 @@ class CatagoryMap(models.Model):
 
     def __str__(self):
         return str(self.product) + " is " +  str(self.catagory)
-
-class Stock(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-
-    def __str__(self):
-        return str(self.product) + " has " + str(self.quantity)
