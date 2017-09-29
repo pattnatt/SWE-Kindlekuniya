@@ -1,25 +1,28 @@
 {% extends 'catalog_base.html' %}
 
 {% block content %}
-<h1>{{ catagory.name }}</h1>
-<br />
-<div class = "container">
-    <div class = "row">
-        {% for product in products %}
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="card test-center">
-                    <div class="card-block">
-                        <br />
-                        <a href="{% url 'Catalog:detail' product.id %}"><img src= "{{ product.pictureUrl.url }}" class="mx-auto d-block" height="200"></a>
-                        <br />
-                        <a href="{% url 'Catalog:detail' product.id %}"><h6 style="text-align:center;">{{ product.name }}</h6></a>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item" style="text-align:center;">{{ product.price|floatformat:2 }} บาท</li>
-                        </ul>
+    <br />
+    <div class = "container">
+        <div class = "row">
+            <div class="col-12">
+                <h1>{{ catagory.name }}</h1>
+                <br />
+            </div>
+            {% for product in products %}
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="card test-center">
+                        <div class="card-block">
+                            <br />
+                            <a href="{% url 'Catalog:detail' product.id %}"><img src= "{{ product.pictureUrl.url }}" class="mx-auto d-block" height="200"></a>
+                            <br />
+                            <a href="{% url 'Catalog:detail' product.id %}"><h6 style="text-align:center;">{{ product.name }}</h6></a>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" style="text-align:center;">{{ product.price|floatformat:2 }} บาท</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</div>
 {% endblock %}
