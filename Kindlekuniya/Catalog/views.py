@@ -9,8 +9,10 @@ def index(request):
 
 def detail(request, product_id):
     product = Product.objects.get(id = int(product_id))
+    quantityWarning = 20
     context = {
         'product' : product,
+        'quantityWarning' : quantityWarning,
     }
     return render(request, 'detail.html', context)
 

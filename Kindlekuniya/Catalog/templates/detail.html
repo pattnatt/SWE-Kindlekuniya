@@ -1,6 +1,93 @@
 {% extends 'catalog_base.html' %}
 
 {% block content %}
-<img src= "{{ product.pictureUrl.url }}" height="200">
-<h1>{{ product.name }}</h1>
+    <div class = "container">
+        <div class = "row">
+            <div class="col-12 col-md-6 col-lg-4">
+                <img src= "{{ product.pictureUrl.url }}" width="310">
+            </div>
+            <div class = "col-12 col-md-6 col-lg-8">
+                <div class = "col-12">
+                    <h2>{{ product.name }}</h2>
+                    <br />
+                </div>
+                {% if product.description %}
+                <div class = "col-12">
+                    <p>{{ product.description }}<p>
+                    <br />
+                </div>
+                {% endif %}
+                <div class = "col-12">
+                    <h5>{{ product.price|floatformat:2 }} บาท<h5>
+                    <br />
+                </div>
+                <div class = "col-12">
+                    {% if product.quantity <= 0 %}
+                        <h5 style="color:red;">Out of Stock<h5>
+
+                    {% elif product.quantity == 1 %}
+                        <h5 style="color:orange;">Only 1 item left<h5>
+                    {% elif product.quantity < quantityWarning %}
+                        <h5 style="color:orange;">Only {{ product.quantity }} items left<h5>
+                    {% else %}
+                        <h5 style="color:LimeGreen;">In stock<h5>
+                    {% endif %}
+                    <br />
+                </div>
+                <div class = "col-12">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>ISBN</td>
+                            <td>{{product.isbn}}</td>
+                        </tr>
+                        <tr>
+                            <td>Author</td>
+                            <td>{{product.author}}</td>
+                        </tr>
+                        <tr>
+                            <td>Publisher</td>
+                            <td>{{product.publisher}}</td>
+                        </tr>
+                        {% if product.catagory %}
+                        <tr>
+                            <td>Catagory</td>
+                            <td>
+                                {% for catagory in product.catagory.all %}
+                                    <a href="{% url 'Catalog:catagory' catagory.id %}">{{ catagory.name }}</a>
+                                    <br/>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td>Size</td>
+                            <td>{{product.size_height|floatformat:-2}} x {{product.size_width|floatformat:-2}} x {{product.size_thickness|floatformat:-2}} mm.</td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td>{{product.weight|floatformat:-2}} g.</td>
+                        </tr>
+                        <tr>
+                            <td>Color</td>
+                            <td>
+                                {% if product.isMonocrome %}
+                                    Monocrome
+                                {% else %}
+                                    Colorized
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Paper Type</td>
+                            <td>{{product.get_paperType_display}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cover Type</td>
+                            <td>{{product.get_coverType_display}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
