@@ -2,7 +2,21 @@
 {% if latest_order_list %}
     <ul>
     {% for order in latest_order_list %}
-       <li>{{ order.orderID }}</li>
+       <li>{{order.date}} {{ order.orderID }}</li>
+       {% for p in  d %}
+           {% for item in p %}
+               {% if item.orderID|stringformat:"s" == order.orderID|stringformat:"s" %}
+                   <li>{{ item.ordItemsID }}
+                       {% for p in product %}
+                           {% if p.id|stringformat:"s" == item.productID|stringformat:"s" %}
+                               {{p.name}}
+                           {% endif %}
+                       {% endfor %}
+                   
+                   </li>
+               {% endif %}
+            {% endfor %}
+       {% endfor %}
     {% endfor %}
     </ul>
 {% else %}

@@ -5,5 +5,5 @@ from . import views
 app_name = 'history'
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^$', views.IndexView, name='index'),
 ]
