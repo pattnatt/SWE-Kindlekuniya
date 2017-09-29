@@ -20,14 +20,16 @@
                 <div class = "container">
                     <div class = "row">
                         {% for product in page.object_list %}
-                            <div class="col-md-4">
+                            <div class="col-12 col-sm-6 col-md-4">
                                 <div class="card test-center">
                                     <div class="card-block">
                                         <br />
                                         <a href="{% url 'Catalog:detail' product.object.id %}"><img src= "{{ product.object.pictureUrl.url }}" class="mx-auto d-block" height="200"></a>
                                         <br />
                                         <a href="{% url 'Catalog:detail' product.object.id %}"><h6 style="text-align:center;">{{ product.object.name }}</h6></a>
-                                        <p style="text-align:center;">{{ product.object.price|floatformat:2 }} บาท</p>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item" style="text-align:center;">{{ product.object.price|floatformat:2 }} บาท</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
