@@ -1,15 +1,61 @@
+<!DOCTYPE html>
+
+
 {% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Theme Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel='stylesheet' href="/static/history/css/main.css" />
+    <link rel='stylesheet' href="/static/history/css/bootstrap.min.css" />
+    <link rel='stylesheet' href="/static/history/css/bootstrap-theme.min.css" />
+    <link rel='stylesheet' href="/static/history/css/theme.css" />
+ </head>
+
+  <body>
+
+    
+
+    <div class="container theme-showcase" role="main">
+        
+
+
+
+{% block content %}
 {% if latest_order_list %}
+    <h1> Order List </h1>
     <ul>
     {% for order in latest_order_list %}
-       <li>{{order.date}} {{ order.orderID }}</li>
+        <h4>Order {{forloop.counter}}</h4>
+        
+        {% with forloop.counter0 as i %}
+        
+       <p>order date : {{order.date}}   &emsp; orderID : {{ order.orderID }}  &emsp; status : {{order.status}} &emsp; trackingNumber : {{order.trackingNo}} &emsp; 
+       
+       {% for ii in totalPrice %}
+       {% if forloop.counter0 == i %}
+       totalPrice : {{ii}}</p>
+       {% endif %}
+       {% endfor%}
+       
        {% for p in  d %}
            {% for item in p %}
                {% if item.orderID|stringformat:"s" == order.orderID|stringformat:"s" %}
-                   <li>{{ item.ordItemsID }}
+                   <li>item : {{ forloop.counter }} &emsp;
                        {% for p in product %}
                            {% if p.id|stringformat:"s" == item.productID|stringformat:"s" %}
-                               {{p.name}}
+                               name : {{p.name}} &emsp; quantity : {{item.quantity}} 
+                               <img src="/{{p.pictureUrl}}">
                            {% endif %}
                        {% endfor %}
                    
@@ -17,8 +63,28 @@
                {% endif %}
             {% endfor %}
        {% endfor %}
+       <br/>
+       {% endwith %}
     {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>No order in your history.</p>
 {% endif %}
+
+{% endblock %}
+
+
+  
+
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/history/javascript/jquery-3.2.1.slim.min.js"></script>
+    <script src="/static/history/javascript/popper.min.js"></script>
+    <script src="/static/history/javascript/bootstrap.min.js"></script>
+  </body>
+</html>

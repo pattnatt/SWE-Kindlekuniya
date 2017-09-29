@@ -9,6 +9,7 @@ import os
 
 class Order(models.Model):
     orderID = models.AutoField(primary_key=True)
+    userID = models.IntegerField(default='0')
     date = models.DateTimeField('order date')
     def __str__(self):
         return str(self.orderID)
