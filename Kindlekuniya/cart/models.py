@@ -2,7 +2,7 @@ from django.db import models
 
 class Product(models.Model):
 
-    quantity = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=1)
     isbn = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     author = models.CharField(max_length=30)
@@ -19,6 +19,12 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+
+    def getAmount(self):
+        return self.price * self.quantity
+
+
+    
 
 
         

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
+from django.db.models import Sum
 
 # Create your views here.
 
