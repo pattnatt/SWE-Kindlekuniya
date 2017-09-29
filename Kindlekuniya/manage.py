@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-
+SITE_ID = 1
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Kindlekuniya.settings")
     try:

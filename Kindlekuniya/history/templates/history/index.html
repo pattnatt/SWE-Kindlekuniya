@@ -1,0 +1,10 @@
+{% load static %}
+{% if latest_order_list %}
+    <ul>
+    {% for order in latest_order_list %}
+       <li>{{ order.orderID }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
