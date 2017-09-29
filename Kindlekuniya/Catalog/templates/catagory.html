@@ -1,7 +1,23 @@
 {% extends 'catalog_base.html' %}
 
 {% block content %}
-{% for product in products %}
-<li><a href="{% url 'Catalog:detail' product.id %}">{{ product.name }}</a></li>
-{% endfor %}
+<h1>{{ catagory.name }}</h1>
+<br />
+<div class = "container">
+    <div class = "row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card test-center">
+                    <div class="card-block">
+                        <br />
+                        <a href="{% url 'Catalog:detail' product.id %}"><img src= "{{ product.pictureUrl.url }}" class="mx-auto d-block" height="200"></a>
+                        <br />
+                        <a href="{% url 'Catalog:detail' product.id %}"><h6 style="text-align:center;">{{ product.name }}</h6></a>
+                        <p style="text-align:center;">{{ product.price|floatformat:2 }} บาท</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

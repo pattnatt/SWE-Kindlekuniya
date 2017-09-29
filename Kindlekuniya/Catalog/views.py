@@ -15,8 +15,10 @@ def detail(request, product_id):
     return render(request, 'detail.html', context)
 
 def catagory(request, catagory_id):
-    products = Product.objects.filter(catagory__id = catagory_id)
+    catagory = Catagory.objects.get(id = int(catagory_id))
+    products = Product.objects.filter(catagory__id = int(catagory_id))
     context = {
+        'catagory' : catagory,
         'products' : products,
     }
     return render(request, 'catagory.html', context)
