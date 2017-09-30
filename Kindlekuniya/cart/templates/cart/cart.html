@@ -45,7 +45,6 @@
                     </tr>
                 </thead>
                 {% for cart in cartItem_list %}
-                
                 <tbody class="cart-header" id="{{cart.id}}">
                     <tr class="item">
                         <td data-th="Product">
@@ -67,36 +66,57 @@
 
                         <td data-th="Quantity" class="text-right">
                             
-                            {{cart.quantity}}           
+                            
                             <div class="btn-group" role="group" aria-label="...">
-
-                                <button onclick="myFunction();" type="button" class="btn btn-sm btn-default">-</button>
-                                <script>
-                                 function myFunction() {
-                                     
+                                <div id="quantity_id_{{cart.id}}"></div>
+                                <button id="button_id_{{cart.id}}_down" class="btn btn-sm btn-default" name="down">-</button>
+                                <button id="button_id_{{cart.id}}_up" class="btn btn-sm btn-default" name="up">+</button>
+                                <script type="text/javascript">
+                                 var quantity_{{cart.id}} = {{cart.quantity}};
+                                 document.getElementById("quantity_id_{{cart.id}}").innerHTML = quantity_{{cart.id}};
+                                 button_id_{{cart.id}}_down.onclick = function(){
+                                     quantity_{{cart.id}} = quantity_{{cart.id}} - 1;
+                                     if(quantity_{{cart.id}} < 1)
+                                         quantity_{{cart.id}} = 1;
+                                     else
+                                         getAmount_{{cart.id}}(-1*{{cart.price}});
+                                     document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
+                                 }
+                                 button_id_{{cart.id}}_up.onclick = function(){
+                                     quantity_{{cart.id}} = quantity_{{cart.id}} + 1;
+                                     if(quantity_{{cart.id}} > 20)
+                                         quantity_{{cart.id}} = 20;
+                                     else
+                                         getAmount_{{cart.id}}({{cart.price}});
+                                     document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
                                  }
                                 </script>
-                                <button type="button" class="btn btn-sm btn-default">+</button>
-
+                                
                             </div>
 
                         </td>
 
-                        <td data-th="Subtotal" class="text-right">
-                            {{cart.getAmount}}
-                            <script type="text/javascript">           
-                             total += {{cart.getAmount}} ;
+                        <td data-th="Subtotal" class="text-right" id="amount_{{cart.id}}">
+                            <script type="text/javascript">
+                             var amount_{{cart.id}} = {{cart.price}} * quantity_{{cart.id}};
+                             total = amount_{{cart.id}} + total;
+                             document.getElementById('amount_{{cart.id}}').innerHTML = amount_{{cart.id}};
+                             function getAmount_{{cart.id}}(change){
+                                 amount_{{cart.id}} = {{cart.price}} * quantity_{{cart.id}};
+                                 document.getElementById('amount_{{cart.id}}').innerHTML = amount_{{cart.id}};
+                                 total = total + change;
+                                 document.getElementById('total_all_in_cart').innerHTML = total + "THB";                                 
+                             }
                             </script>
                         </td>
 
                         <td class="actions" data-th="">
-                            
+                           
                             <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>				
                         </td>
                         
                     </tr>
                 </tbody>
-                
                 {% endfor %}
 
                 
@@ -107,9 +127,9 @@
                         <td class="hidden-xs" colspan="2"></td>
                         <td class="text-right">Total</td>
                         <td class="text-right">
-                            <strong>
+                            <strong id="total_all_in_cart">
                                 <script type="text/javascript">
-                                 document.write(total+ " THB");
+                                 document.getElementById('total_all_in_cart').innerHTML = total + "THB";
                                 </script>
                             </strong></td>
                         <td></td>

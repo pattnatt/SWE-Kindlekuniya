@@ -24,3 +24,17 @@ class ResultsView(generic.ListView):
     def get_queryset(self):
         objects = Product.objects.filter()
         return objects
+
+def btn_sm(request):
+    if request.POST['up']:
+        id = request.POST.get('up')
+        obj = Product.objects.get(pk=id)
+        obj.quantity = object.quantity + 1
+    if request.POST['down']:
+        id = request.POST.get('down')
+        obj = Product.objects.get(pk=id)
+        obj.quantity = object.quantity - 1
+
+        return render(request, 'cart/cart.html' ,Product.objects.filter())
+        
+        
