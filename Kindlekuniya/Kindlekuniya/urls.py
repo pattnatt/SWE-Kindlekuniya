@@ -22,4 +22,6 @@ urlpatterns = [
     url(r'^signup/$', register_views.signup, name='signup'),
     url(r'^signin/$', register_views.signin, name='signin'),
     url(r'^profile/$', register_views.profile, name='profile'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        register_views.activate, name='activate'),
 ]
