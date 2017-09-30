@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.db import connection
 from .forms import signupForm, signinForm
-from .models import signupModelForm,User
+from .models import signupModelForm,User,addressModelForm,Address
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
@@ -15,20 +15,31 @@ import hashlib
 
 def signup(request):
     if request.method == 'POST':
-        form = signupForm(request.POST)
+        form = signupForm(request.POST)        
         password = request.POST['password']
-        # enc_password = pbkdf2_sha256.hash(password)
+        email = request.POST['email']
         enc_password= hashlib.md5(password.encode()).hexdigest()
-        
         
         if form.is_valid():
             form = signupModelForm(request.POST)
+            
             user = form.save(commit=False)
             token = account_activation_token.make_token(user)
             user.isActivated = False
             user.token = token
             user.password = enc_password
             user.save()
+
+            userr = User.objects.get(email=email)
+
+            formAddr = addressModelForm()
+            formAddr = formAddr.save(commit=False)
+            formAddr.addr = request.POST['address']
+            formAddr.userID = userr.userID          
+            formAddr.city = request.POST['city']
+            formAddr.zip = request.POST['zipcode']
+            formAddr.save()
+
             current_site = get_current_site(request)
             message = render_to_string('acc_active_email.html', {
                 'user':user,
@@ -52,17 +63,22 @@ def signin(request):
     if request.method == 'POST':
         form = signinForm(request.POST)
         email = request.POST['email']
-        
+    
         if form.is_valid() and User.objects.get(email=email):
             user = User.objects.get(email=email)
-            password = request.POST['password']
-            # verify = pbkdf2_sha256.verify(password, user.password)
-            # if  verify:
-            print (user.userID)
-            if hashlib.md5(password.encode()).hexdigest() == user.password:
-                request.session['userID'] = user.userID
-                request.session.set_expiry(1800)
-                return redirect("/profile")
+            if user.isActivated:
+                password = request.POST['password']
+                # verify = pbkdf2_sha256.verify(password, user.password)
+                # if  verify:
+                print (user.userID)
+                if hashlib.md5(password.encode()).hexdigest() == user.password:
+                    request.session['userID'] = user.userID
+                    request.session.set_expiry(1800)
+                    return redirect("/profile")
+            else:
+                err = "Please confirm email"
+
+                return render(request, 'signin.html', {'form': form,'err':err})    
     elif request.session.has_key('userID'):
         return redirect("/signout")
     else:

@@ -15,8 +15,17 @@ class User(models.Model):
     def __str__(self):
         return self.email
 
-# class Address(models.Model):
+class Address(models.Model):
+    AddrID = models.AutoField(primary_key=True,default=None)
+    userID = models.IntegerField(default=None)
+    addr = models.CharField(max_length=512,default=None)
+    city = models.CharField(max_length=128,default=None)
+    zip = models.CharField(max_length=5,default=None)
 
+class addressModelForm(ModelForm):
+    class Meta:
+        model = Address
+        fields = ['addr','city','zip']
 
 class signupModelForm(ModelForm):
     class Meta:

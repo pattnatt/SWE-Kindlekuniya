@@ -13,7 +13,10 @@ class signupForm(forms.Form):
         required=True, max_length=128, widget=forms.PasswordInput)
     phone_number = forms.CharField(required=True, max_length=10, min_length=10, validators=[RegexValidator(
         regex='^[0-9]*$', message='Phone number must be numeric 0-9 and Please lengthen phone number to 10.'), ])
-
+    address = forms.CharField(required=True, max_length=128)
+    city = forms.CharField(required=True, max_length=128)
+    zipcode = forms.CharField(required=True, max_length=5, min_length=5,validators=[RegexValidator(
+        regex='^[0-9]*$', message='Zip code must be numeric 0-9 and Please lengthen phone number to 5.'), ])
     def clean_confirm_password(self):
         password1 = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('confirm_password')
@@ -40,5 +43,5 @@ class signinForm(forms.Form):
         if not User.objects.filter(email=email):
             raise forms.ValidationError("Email or Password is invalid.")
         return self.cleaned_data
-
     
+
