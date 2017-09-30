@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'contact',
     'history.apps.HistoryConfig',
     'django_tables2',
+    'templateModule',
 ]
 
 SITE_ID = 1
@@ -157,3 +158,4 @@ if DEBUG :
     ]
     MEDIA_URL = '/static/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
+    STATIC_ROOT = os.path.join(BASE_DIR, "static","static-only")
