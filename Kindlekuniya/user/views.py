@@ -18,14 +18,16 @@ def signup(request):
         if form.is_valid():
             form = signupModelForm(request.POST)
             user = form.save(commit=False)
-            user.is_active = False
+            token = account_activation_token.make_token(user)
+            user.isActivated = False
+            user.token = token
             user.save()
             current_site = get_current_site(request)
             message = render_to_string('acc_active_email.html', {
                 'user':user,
                 'domain':current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
+                'token': token,
             })
             mail_subject = 'Activate your account.'
             to_email = form.cleaned_data.get('email')
@@ -46,7 +48,8 @@ def signin(request):
         email = request.POST['email']
         password = request.POST['password']
         isMatch = User.objects.filter(email=email).filter(password=password)
-        if form.is_valid() and isMatch:
+        isActi
+        if form.is_valid() and isMatch :
             user = User.objects.get(email=email)
             request.session['userID'] = user.userID
             request.session.set_expiry(1800)  
@@ -88,7 +91,7 @@ def activate(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and token == user.token:
-        user.is_active = True
+        user.isActivated = True
         user.save()
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
