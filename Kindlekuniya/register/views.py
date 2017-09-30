@@ -53,10 +53,18 @@ def signin(request):
 
 
 def profile(request):
-    # if request.session.has_key('userID'):
-    #     username = request.session['username']
-    #     return render(request, 'loggedin.html', {"username" : username})
-    return render(request, 'profile.html')
+    if request.session.has_key('userID'):
+        userID = request.session['userID']
+        user = User.objects.get(userID=userID)
+        context = {'user':user}
+        return render(request, "profile.html",context)
+    else:
+        try:
+            del request.session['username']
+        except:
+            pass
+        form = signinForm()
+        return redirect("/signin")
 
 def activate(request, uidb64, token):
     try:
