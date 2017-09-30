@@ -42,14 +42,15 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-
 def signin(request):
     if request.method == 'POST':
         form = signinForm(request.POST)
         email = request.POST['email']
         password = request.POST['password']
-        isMatch = User.objects.filter(email=email).filter(password=password)
-        if form.is_valid() and isMatch:
+        user = User.objects.get(email=email)
+        verify = pbkdf2_sha256.verify(password, user.password)
+        isMatch = User.objects.filter(email=email)
+        if form.is_valid() and isMatch and verify:
             user = User.objects.get(email=email)
             request.session['userID'] = user.userID
             request.session.set_expiry(1800)
