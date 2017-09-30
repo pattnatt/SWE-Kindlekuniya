@@ -36,7 +36,11 @@
                                         <br />
                                         <a href="{% url 'Catalog:detail' product.object.id %}"><h6 style="text-align:center;">{{ product.object.name }}</h6></a>
                                         <ul class="list-group list-group-flush">
-                                            <li class="list-group-item" style="text-align:center;">{{ product.object.price|floatformat:2 }} บาท</li>
+                                            {% if product.object.quantity <= 0 %}
+                                                <li class="list-group-item" style="text-align:center; color:red;">{{ product.object.price|floatformat:2 }} บาท - Out of Stock</li>
+                                            {% else %}
+                                                <li class="list-group-item" style="text-align:center;">{{ product.object.price|floatformat:2 }} บาท</li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </div>
