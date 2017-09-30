@@ -71,4 +71,4 @@ class HistData(models.Model):
     )
 
     def __str__(self):
-        return str(self.orderId)[:8] + '-' + self.orderName
+        return str(self.orderId)[:8] + '-' + str(self.productID)
