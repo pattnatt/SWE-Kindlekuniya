@@ -1,7 +1,3 @@
-<h1>Profile</h1>
-<div>
-    
-</div>
 
 {% extends 'user_base.html' %}
 {% block content %}
@@ -9,13 +5,35 @@
   <div class = "row">
        <div class="col-4"></div>
        <div class="col-4">
-          <h1>Login</h1></br>
-          Email: {{user.email}}
-          <br/>
-          Name: {{user.firstname}} {{user.lastname}}
-          <br/>
-          Phone Number: {{user.phone_number}}
-          <br/>
+            <h1><center>Profile</center></h1></br>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>:  {{user.firstname}} {{user.lastname}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>:  {{user.email}}</td>
+                </tr>
+                <tr>
+                    <td>Phone number</td>
+                    <td>:  {{user.phone_number}}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>:  {{addr.addr}}</td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>:  {{addr.city}}</td>
+                </tr>
+                <tr>
+                    <td>Zipcode</td>
+                    <td>:  {{addr.zip}}</td>
+                </tr>                
+                </tbody>
+            </table>
       </div>
       <div class="col-4"></div>
   </div>

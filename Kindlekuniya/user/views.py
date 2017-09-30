@@ -99,7 +99,8 @@ def profile(request):
     if request.session.has_key('userID'):
         userID = request.session['userID']
         user = User.objects.get(userID=userID)
-        context = {'user':user}
+        addr = Address.objects.get(userID=userID)
+        context = {'user':user,'addr':addr}
         return render(request, "profile.html",context)
     else:
         try:
