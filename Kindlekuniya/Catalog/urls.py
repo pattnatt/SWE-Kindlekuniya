@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^detail/(?P<product_id>[0-9]+)/$', views.detail, name = 'detail'),
     # /catalog/catagory/(number) -> catagory's product
     url(r'^catagory/(?P<catagory_id>[0-9]+)/$', views.catagory, name = 'catagory'),
+    url(r'^view_cart/$', views.view_cart, name = 'view_cart'),
 ]
