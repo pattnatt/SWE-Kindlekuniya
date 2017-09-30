@@ -27,7 +27,7 @@ def signup(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            mail_subject = 'Activate your blog account.'
+            mail_subject = 'Activate your account.'
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
@@ -60,7 +60,7 @@ def signin(request):
 def signout(request):
     if request.method == 'POST':
         try:
-            del request.session['username']
+            del request.session['userID']
         except:
             pass
         return redirect("/signin")
@@ -75,7 +75,7 @@ def profile(request):
         return render(request, "profile.html",context)
     else:
         try:
-            del request.session['username']
+            del request.session['userID']
         except:
             pass
         form = signinForm()
@@ -87,11 +87,9 @@ def activate(request, uidb64, token):
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and account_activation_token.check_token(user, token):
+    if user is not None and token == user.token:
         user.is_active = True
         user.save()
-        login(request, user)
-
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
