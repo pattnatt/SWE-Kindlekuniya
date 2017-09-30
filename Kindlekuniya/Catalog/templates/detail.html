@@ -1,4 +1,5 @@
 {% extends 'catalog_base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <div class = "container">
@@ -11,16 +12,19 @@
                     <h2>{{ product.name }}</h2>
                     <br />
                 </div>
+
                 {% if product.description %}
                 <div class = "col-12">
                     <p>{{ product.description }}<p>
                     <br />
                 </div>
                 {% endif %}
+
                 <div class = "col-12">
                     <h5>{{ product.price|floatformat:2 }} บาท<h5>
                     <br />
                 </div>
+
                 <div class = "col-12">
                     {% if product.quantity <= 0 %}
                         <h5 style="color:red;">Out of Stock<h5>
@@ -34,6 +38,23 @@
                     {% endif %}
                     <br />
                 </div>
+
+                {% if form %}
+                    <div class = "col-12">
+                        <form method='POST' action=''>{% csrf_token %}
+                            {{ form|crispy }}
+                            <input type="submit" value="Add to Cart" class = 'btn btn-success' />
+                        </form>
+                        <br />
+                    </div>
+                {% endif %}
+
+                {% if confirm_message %}
+                    <div class = "col-12">
+                        <p>{{ confirm_message }}<p>
+                    </div>
+                {% endif %}
+
                 <div class = "col-12">
                     <table class="table table-striped">
                         <tr>

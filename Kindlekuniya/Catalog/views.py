@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
 from .models import Product, Catagory
+from django.conf import settings
+from .forms import ProductToCartForm
 
 def index(request):
     context = {
@@ -10,9 +12,21 @@ def index(request):
 def detail(request, product_id):
     product = Product.objects.get(id = int(product_id))
     quantityWarning = 20
+    confirm_message = None
+    form = None
+
+    if product.quantity > 0:
+        form = ProductToCartForm(request.POST or None, max_order = min(quantityWarning, product.quantity))
+        if form.is_valid():
+            product_id = product.id
+            quantity = int(form.cleaned_data['quantity'])
+            confirm_message = "Order " + str(product_id) + " -> " + str(quantity)
+
     context = {
         'product' : product,
         'quantityWarning' : quantityWarning,
+        'form' : form,
+        'confirm_message' : confirm_message,
     }
     return render(request, 'detail.html', context)
 
