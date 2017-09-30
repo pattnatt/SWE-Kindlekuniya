@@ -32,9 +32,12 @@ def signup(request):
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
             return HttpResponse('Please confirm your email address to complete the registration')
+    elif request.session.has_key('userID'):
+        return redirect("/signout")
     else:
         form = signupForm()
     return render(request, 'signup.html', {'form': form})
+
 
 
 def signin(request):
@@ -46,18 +49,37 @@ def signin(request):
         if form.is_valid() and isMatch:
             user = User.objects.get(email=email)
             request.session['userID'] = user.userID
-            context = {'user':user}
-            return render(request, "profile.html",context)
+            request.session.set_expiry(1800)  
+            return redirect("/profile")
+    elif request.session.has_key('userID'):
+        return redirect("/signout")
     else:
         form = signinForm()
     return render(request, 'signin.html', {'form': form})
 
+def signout(request):
+    if request.method == 'POST':
+        try:
+            del request.session['username']
+        except:
+            pass
+        return redirect("/signin")
+    else:
+        return render(request, 'signout.html')
 
 def profile(request):
-    # if request.session.has_key('userID'):
-    #     username = request.session['username']
-    #     return render(request, 'loggedin.html', {"username" : username})
-    return render(request, 'profile.html')
+    if request.session.has_key('userID'):
+        userID = request.session['userID']
+        user = User.objects.get(userID=userID)
+        context = {'user':user}
+        return render(request, "profile.html",context)
+    else:
+        try:
+            del request.session['username']
+        except:
+            pass
+        form = signinForm()
+        return redirect("/signin")
 
 def activate(request, uidb64, token):
     try:
