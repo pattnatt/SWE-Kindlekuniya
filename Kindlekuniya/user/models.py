@@ -7,15 +7,14 @@ class User(models.Model):
     email = models.EmailField(max_length=120,default=None,unique=True)
     firstname = models.CharField(max_length=120,default=None)
     lastname = models.CharField(max_length=120,default=None)
-    is_active = models.BooleanField(default=False)
-    token_activate = models.CharField(max_length=120,default='0')
+    isActivated = models.BooleanField(default=False)
+    token = models.CharField(max_length=120,default='0')
     password = models.CharField(max_length=128,default=None)
     phone_number = models.CharField(max_length=10,default=None)
     def __str__(self):
         return self.email
 
-
 class signupModelForm(ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'firstname','lastname','password','phone_number','token_activate','is_active']
+        fields = ['email', 'firstname','lastname','password','phone_number']
