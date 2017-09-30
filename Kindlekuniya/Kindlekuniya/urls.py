@@ -20,8 +20,8 @@ from user import views as user_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^signup/$', user_views.signup, name='signup'),
-    url(r'^signin/$', user_views.signin, name='signin'),
-    url(r'^signout/$', user_views.signout, name='signout'),
+    url(r'^login/$', user_views.login, name='login'),
+    url(r'^logout/$', user_views.logout, name='logout'),
     url(r'^profile/$', user_views.profile, name='profile'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         user_views.activate, name='activate'),

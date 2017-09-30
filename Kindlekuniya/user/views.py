@@ -53,13 +53,13 @@ def signup(request):
             email.send()
             return HttpResponse('Please confirm your email address to complete the registration')
     elif request.session.has_key('userID'):
-        return redirect("/signout")
+        return redirect("/logout")
     else:
         form = signupForm()
     return render(request, 'signup.html', {'form': form})
 
 
-def signin(request):
+def login(request):
     if request.method == 'POST':
         form = signinForm(request.POST)
         email = request.POST['email']
@@ -78,22 +78,22 @@ def signin(request):
             else:
                 err = "Please confirm email"
 
-                return render(request, 'signin.html', {'form': form,'err':err})    
+                return render(request, 'login.html', {'form': form,'err':err})    
     elif request.session.has_key('userID'):
-        return redirect("/signout")
+        return redirect("/logout")
     else:
         form = signinForm()
-    return render(request, 'signin.html', {'form': form})
+    return render(request, 'login.html', {'form': form})
 
-def signout(request):
+def logout(request):
     if request.method == 'POST':
         try:
             del request.session['userID']
         except:
             pass
-        return redirect("/signin")
+        return redirect("/login")
     else:
-        return render(request, 'signout.html')
+        return render(request, 'logout.html')
 
 def profile(request):
     if request.session.has_key('userID'):
@@ -107,7 +107,7 @@ def profile(request):
         except:
             pass
         form = signinForm()
-        return redirect("/signin")
+        return redirect("/login")
 
 def activate(request, uidb64, token):
     try:
