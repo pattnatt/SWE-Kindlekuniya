@@ -87,7 +87,9 @@ def login(request):
     return render(request, 'login.html', {'form': form})
 
 def logout(request):
-    if request.method == 'POST':
+    if not request.session.has_key('userID'):
+        return redirect("/login")
+    elif request.method == 'POST':
         try:
             del request.session['userID']
         except:
