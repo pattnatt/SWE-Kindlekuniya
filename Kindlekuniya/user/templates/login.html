@@ -1,8 +1,18 @@
-<h2>Login</h2>
-<form method="post">
-
-  {{ err }}
-
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>  <a href="{% url 'signup' %} ">Sign up</a>
+{% extends 'user_base.html' %}
+{% block content %}
+<div class = "container">
+  <div class = "row">
+       <div class="col-4"></div>
+       <div class="col-4">
+          <h1>Login</h1></br>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+        <button type="submit">Login</button>  <a href="{% url 'signup' %} ">Sign up</a>
+        </form>
+        <p>{{ err }}</p>
+      </div>
+      <div class="col-4"></div>
+  </div>
+</div> 
+{% endblock %}
