@@ -52,6 +52,15 @@ def signin(request):
         form = signinForm()
     return render(request, 'signin.html', {'form': form})
 
+def signout(request):
+    if request.method == 'POST':
+        try:
+            del request.session['username']
+        except:
+            pass
+        return redirect("/signin")
+    else:
+        return render(request, 'signout.html')
 
 def profile(request):
     if request.session.has_key('userID'):
