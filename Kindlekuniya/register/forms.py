@@ -30,14 +30,18 @@ class signupForm(forms.Form):
             raise forms.ValidationError("Email don't unique")
         return self.cleaned_data
 
-
-    def clean_password(self):
-        password = self.cleaned_data.get('password')
-        # if password
-        pass
-
-
 class signinForm(forms.Form):
     email = forms.EmailField(required=True, max_length=128)
     password = forms.CharField(
         required=True, max_length=128, widget=forms.PasswordInput)
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+        if not User.objects.filter(email=email):
+            raise forms.ValidationError("Email or Password is invalid.")
+        elif not User.objects.filter(email=email).filter(password=password):
+            raise forms.ValidationError("Email or Password is invalid.")
+        return self.cleaned_data
+
+    
