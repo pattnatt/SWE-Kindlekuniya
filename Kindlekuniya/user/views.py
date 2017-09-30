@@ -51,7 +51,8 @@ def signup(request):
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            alert = 'Please confirm your email address to complete the registration'
+            return render(request,'user_response.html',{'alert':alert})
     elif request.session.has_key('userID'):
         return redirect("/logout")
     else:
@@ -77,8 +78,8 @@ def login(request):
                     return redirect("/profile")
             else:
                 err = "Please confirm email"
+                return render(request, 'login.html', {'form': form,'err':err})   
 
-                return render(request, 'login.html', {'form': form,'err':err})    
     elif request.session.has_key('userID'):
         return redirect("/logout")
     else:
@@ -119,6 +120,9 @@ def activate(request, uidb64, token):
     if user is not None and token == user.token:
         user.isActivated = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        alert = 'Thank you for your email confirmation. Now you can login your account.'
+        return render(request,'user_response.html',{'alert':alert})
     else:
-        return HttpResponse('Activation link is invalid!')
+        alert = 'Activation link is invalid!'
+        return render(request,'user_response.html',{'alert':alert})
+        

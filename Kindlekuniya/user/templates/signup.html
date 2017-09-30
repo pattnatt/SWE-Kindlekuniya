@@ -1,7 +1,21 @@
+{% extends 'user_base.html' %}
+{% load bootstrap %}
+{% block content %}
 
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-  </form>
+<div class = "container">
+  <div class = "row">
+       <div class="col-3"></div>
+       <div class="col-6">
+            <h1><center>Sign up</center></h1></br>
+            <form method="post"> 
+                {% csrf_token %}
+                {{ form|bootstrap }}
+                <br/>
+                <button type="submit" class="btn btn-primary">Sign up</button>
+                <br/>
+            </form>
+      </div>
+      <div class="col-3"></div>
+  </div>
+</div> 
+{% endblock %}
