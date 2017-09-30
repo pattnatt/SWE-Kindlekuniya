@@ -16,3 +16,11 @@ class IndexView(generic.ListView):
 
         
 
+class ResultsView(generic.ListView):
+    model = Product
+    template_name = 'cart/results.html'
+    context_object_name = 'cartItem_list'
+
+    def get_queryset(self):
+        objects = Product.objects.filter()
+        return objects

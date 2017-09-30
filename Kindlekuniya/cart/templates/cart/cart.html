@@ -45,7 +45,8 @@
                     </tr>
                 </thead>
                 {% for cart in cartItem_list %}
-                <tbody>
+                
+                <tbody class="cart-header" id="{{cart.id}}">
                     <tr class="item">
                         <td data-th="Product">
                             <div class="row">
@@ -62,11 +63,21 @@
                             
                         </td>
                         
+                        
+
                         <td data-th="Quantity" class="text-right">
-                            {{cart.quantity}}
+                            
+                            {{cart.quantity}}           
                             <div class="btn-group" role="group" aria-label="...">
-                                <button type="button" class="btn btn-sm btn-default">-</button>
+
+                                <button onclick="myFunction();" type="button" class="btn btn-sm btn-default">-</button>
+                                <script>
+                                 function myFunction() {
+                                     
+                                 }
+                                </script>
                                 <button type="button" class="btn btn-sm btn-default">+</button>
+
                             </div>
 
                         </td>
@@ -79,14 +90,17 @@
                         </td>
 
                         <td class="actions" data-th="">
+                            
                             <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>				
                         </td>
                         
                     </tr>
                 </tbody>
+                
                 {% endfor %}
 
-
+                
+                
                 <tfoot>
                     <tr>
                         <td></td>
@@ -95,7 +109,7 @@
                         <td class="text-right">
                             <strong>
                                 <script type="text/javascript">
-                                 document.write('$' + total);
+                                 document.write(total+ " THB");
                                 </script>
                             </strong></td>
                         <td></td>
@@ -104,7 +118,7 @@
                         <td><a href="#" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                         <td colspan="2" class="hidden-xs"></td>
                         <td></td>
-                        <td colspan="2"><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                        <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
                     </tr>
                 </tfoot>
             </table>
