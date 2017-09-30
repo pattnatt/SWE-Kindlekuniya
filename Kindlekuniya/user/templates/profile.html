@@ -1,9 +1,23 @@
 <h1>Profile</h1>
 <div>
-    Email: {{user.email}}
-    <br/>
-    Name: {{user.firstname}} {{user.lastname}}
-    <br/>
-    Phone Number: {{user.phone_number}}
-    <br/>
+    
 </div>
+
+{% extends 'user_base.html' %}
+{% block content %}
+<div class = "container">
+  <div class = "row">
+       <div class="col-4"></div>
+       <div class="col-4">
+          <h1>Login</h1></br>
+          Email: {{user.email}}
+          <br/>
+          Name: {{user.firstname}} {{user.lastname}}
+          <br/>
+          Phone Number: {{user.phone_number}}
+          <br/>
+      </div>
+      <div class="col-4"></div>
+  </div>
+</div> 
+{% endblock %}
