@@ -22,7 +22,7 @@ def detail(request, product_id):
         if form.is_valid():
             product_id = product.id
             quantity = int(form.cleaned_data['quantity'])
-            confirm_message = "Add to cart."
+            confirm_message = "Added to cart."
             request.session[cart_prefix + str(product_id)] = quantity
 
     context = {
