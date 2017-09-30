@@ -31,6 +31,8 @@ def signup(request):
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
             return HttpResponse('Please confirm your email address to complete the registration')
+    elif request.session.has_key('userID'):
+        return redirect("/signout")
     else:
         form = signupForm()
     return render(request, 'signup.html', {'form': form})
@@ -48,6 +50,8 @@ def signin(request):
             request.session['userID'] = user.userID
             request.session.set_expiry(1800)  
             return redirect("/profile")
+    elif request.session.has_key('userID'):
+        return redirect("/signout")
     else:
         form = signinForm()
     return render(request, 'signin.html', {'form': form})
