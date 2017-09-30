@@ -1,4 +1,5 @@
 from django.db import models
+from Catalog.models import Product
 import uuid
 
 
@@ -53,8 +54,8 @@ class HistEntry(models.Model):
 
 class HistData(models.Model):
     orderId = models.ForeignKey(HistEntry, on_delete=models.CASCADE,)
-    # productID = models.ForeignKey(Product, on_delete = models.CASCADE)
-    orderName = models.CharField(max_length=300, verbose_name="Product Name")
+    productID = models.ForeignKey(Product, on_delete = models.CASCADE, null = True, default = None)
+    # orderName = models.CharField(max_length=300, verbose_name="Product Name")
     quantity = models.PositiveSmallIntegerField(default=1)
     sumPrice = models.DecimalField(
         default=0,
