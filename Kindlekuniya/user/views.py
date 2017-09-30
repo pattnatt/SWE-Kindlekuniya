@@ -10,17 +10,24 @@ from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
-
+from passlib.hash import pbkdf2_sha256
+import hashlib
 
 def signup(request):
     if request.method == 'POST':
         form = signupForm(request.POST)
+        password = request.POST['password']
+        # enc_password = pbkdf2_sha256.hash(password)
+        enc_password= hashlib.md5(password.encode()).hexdigest()
+        
+        
         if form.is_valid():
             form = signupModelForm(request.POST)
             user = form.save(commit=False)
             token = account_activation_token.make_token(user)
             user.isActivated = False
             user.token = token
+            user.password = enc_password
             user.save()
             current_site = get_current_site(request)
             message = render_to_string('acc_active_email.html', {
@@ -41,19 +48,21 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-
 def signin(request):
     if request.method == 'POST':
         form = signinForm(request.POST)
         email = request.POST['email']
-        password = request.POST['password']
-        isMatch = User.objects.filter(email=email).filter(password=password)
-        isActi
-        if form.is_valid() and isMatch :
+        
+        if form.is_valid() and User.objects.get(email=email):
             user = User.objects.get(email=email)
-            request.session['userID'] = user.userID
-            request.session.set_expiry(1800)  
-            return redirect("/profile")
+            password = request.POST['password']
+            # verify = pbkdf2_sha256.verify(password, user.password)
+            # if  verify:
+            print (user.userID)
+            if hashlib.md5(password.encode()).hexdigest() == user.password:
+                request.session['userID'] = user.userID
+                request.session.set_expiry(1800)
+                return redirect("/profile")
     elif request.session.has_key('userID'):
         return redirect("/signout")
     else:

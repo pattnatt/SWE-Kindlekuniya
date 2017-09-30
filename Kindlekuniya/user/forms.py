@@ -36,10 +36,8 @@ class signinForm(forms.Form):
 
     def clean(self):
         email = self.cleaned_data.get('email')
-        password = self.cleaned_data.get('password')
+        password = forms.CharField(required=True, min_length=8, max_length=128, widget=forms.PasswordInput, validators=[RegexValidator(regex='^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$', message ='Password must contain at least one alphabet and one digit')])
         if not User.objects.filter(email=email):
-            raise forms.ValidationError("Email or Password is invalid.")
-        elif not User.objects.filter(email=email).filter(password=password):
             raise forms.ValidationError("Email or Password is invalid.")
         return self.cleaned_data
 
