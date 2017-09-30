@@ -1,0 +1,14 @@
+{% load render_table from django_tables2 %}
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <title>Order history</title>
+    <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+</head>
+<body>
+  <h1>Order history</h1>
+  <p>Welcome {{ request.user }}, these are your order history</p>
+{% render_table table %}
+</body>
+</html>
