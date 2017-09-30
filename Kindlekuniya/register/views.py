@@ -36,6 +36,7 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
+
 def signin(request):
     if request.method == 'POST':
         form = signinForm(request.POST)
@@ -45,8 +46,8 @@ def signin(request):
         if form.is_valid() and isMatch:
             user = User.objects.get(email=email)
             request.session['userID'] = user.userID
-            context = {'user':user}
-            return render(request, "profile.html",context)
+            request.session.set_expiry(1800)  
+            return redirect("/profile")
     else:
         form = signinForm()
     return render(request, 'signin.html', {'form': form})
