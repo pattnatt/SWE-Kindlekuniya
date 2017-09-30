@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from passlib.hash import pbkdf2_sha256
 
 # Create your models here.
 class User(models.Model):
@@ -11,7 +12,8 @@ class User(models.Model):
     phone_number = models.CharField(max_length=10,default=None)
     def __str__(self):
         return self.email
-
+    def verify_password(self, raw_password):
+        return pbkdf2_sha256.verify(raw_password, self.password)
 
 class signupModelForm(ModelForm):
     class Meta:

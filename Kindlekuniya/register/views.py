@@ -10,14 +10,17 @@ from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
-
+from passlib.hash import pbkdf2_sha256
 
 def signup(request):
     if request.method == 'POST':
         form = signupForm(request.POST)
+        password = request.POST['password']
+        enc_password = pbkdf2_sha256.encrypt(password, rounds=120000, salt_size=32)
         if form.is_valid():
             form = signupModelForm(request.POST)
             user = form.save(commit=False)
+            user.password = enc_password
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
@@ -49,7 +52,7 @@ def signin(request):
         if form.is_valid() and isMatch:
             user = User.objects.get(email=email)
             request.session['userID'] = user.userID
-            request.session.set_expiry(1800)  
+            request.session.set_expiry(1800)
             return redirect("/profile")
     elif request.session.has_key('userID'):
         return redirect("/signout")
@@ -91,7 +94,6 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
