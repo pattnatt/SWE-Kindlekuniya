@@ -1,11 +1,10 @@
-
-{% extends 'user_base.html' %}
-{% block content %}
+{% extends 'template.html' %}
 {% load bootstrap %}
+{% block content %}
 <div class = "container">
   <div class = "row">
-       <div class="col-4"></div>
-       <div class="col-4">
+       <div class="col-xs-1 col-sm-3 col-md-4"></div>
+       <div class="col-xs-10 col-sm-6 col-md-4">
             <h1><center>Profile</center></h1></br>
             <table class="table">
                 <tbody>
@@ -32,11 +31,11 @@
                 <tr>
                     <td>Zipcode</td>
                     <td>:  {{addr.zip}}</td>
-                </tr>                
+                </tr>
                 </tbody>
             </table>
       </div>
-      <div class="col-4"></div>
+      <div class="col-xs-1 col-sm-3 col-md-4"></div>
   </div>
-</div> 
+</div>
 {% endblock %}

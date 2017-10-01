@@ -15,14 +15,14 @@ import hashlib
 
 def signup(request):
     if request.method == 'POST':
-        form = signupForm(request.POST)        
+        form = signupForm(request.POST)
         password = request.POST['password']
         email = request.POST['email']
         enc_password= hashlib.md5(password.encode()).hexdigest()
-        
+
         if form.is_valid():
             form = signupModelForm(request.POST)
-            
+
             user = form.save(commit=False)
             token = account_activation_token.make_token(user)
             user.isActivated = False
@@ -35,7 +35,7 @@ def signup(request):
             formAddr = addressModelForm()
             formAddr = formAddr.save(commit=False)
             formAddr.addr = request.POST['address']
-            formAddr.userID = userr.userID          
+            formAddr.userID = userr.userID
             formAddr.city = request.POST['city']
             formAddr.zip = request.POST['zipcode']
             formAddr.save()
@@ -64,7 +64,7 @@ def login(request):
     if request.method == 'POST':
         form = signinForm(request.POST)
         email = request.POST['email']
-    
+
         if form.is_valid() and User.objects.get(email=email):
             user = User.objects.get(email=email)
             if user.isActivated:
@@ -75,10 +75,10 @@ def login(request):
                 if hashlib.md5(password.encode()).hexdigest() == user.password:
                     request.session['userID'] = user.userID
                     request.session.set_expiry(1800)
-                    return redirect("/profile")
+                    return redirect("/")
             else:
                 err = "Please confirm email"
-                return render(request, 'login.html', {'form': form,'err':err})   
+                return render(request, 'login.html', {'form': form,'err':err})
 
     elif request.session.has_key('userID'):
         return redirect("/logout")
@@ -127,4 +127,3 @@ def activate(request, uidb64, token):
     else:
         alert = 'Activation link is invalid!'
         return render(request,'user_response.html',{'alert':alert})
-        

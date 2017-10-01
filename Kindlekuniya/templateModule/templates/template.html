@@ -107,8 +107,13 @@
                 <!-- <form class="form-inline"> -->
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/search">Search</a></li>
-                    <li><a href="/">Sign Up</a></li>
-                    <li><a href="/">Login</a></li>
+                    {% if request.session.userID %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                    {% endif %}
                     <a href=""><img class="imgcart" src="{% static 'img/ShoppingCart.png' %} " width=40px/></a>
                 </ul>
                 <!-- </form> -->
@@ -120,7 +125,8 @@
     <br>
     </br>
 
-        {% block content %} {% endblock %}
+        {% block content %}
+        {% endblock %}
 
 
 </body>
