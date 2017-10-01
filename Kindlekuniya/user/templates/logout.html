@@ -1,0 +1,18 @@
+{% extends 'user_base.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class = "container">
+  <div class = "row">
+       <div class="col-4"></div>
+       <div class="col-4">
+          <h1>Logout</h1></br>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Logout</button>
+            <!-- <button type="submit">Back</button> -->
+        </form>
+      </div>
+      <div class="col-4"></div>
+  </div>
+</div> 
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'user_base.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class = "container">
+  <div class = "row">
+       <div class="col-4"></div>
+       <div class="col-4">
+          <h1>Login</h1></br>
+        <form method="post">
+          {% csrf_token %}
+          {{ form|bootstrap }}
+        <button type="submit" class="btn btn-success">Login</button>  <a href="{% url 'signup' %} ">Sign up</a>
+        </form>
+        <br/>
+        <p style="color:red; text-align:center;">{{ err }}</p>
+      </div>
+      <div class="col-4"></div>
+  </div>
+</div> 
+{% endblock %}
