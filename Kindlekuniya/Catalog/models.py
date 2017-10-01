@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 import os
 
 def get_product_image_path(instance, filename):
@@ -41,6 +42,7 @@ class Product(models.Model):
     description = models.TextField(blank = True)
     pictureUrl = models.ImageField(upload_to = get_product_image_path, blank = True, null = True)
     quantity = models.PositiveIntegerField(default = 0)
+    created_at = models.DateTimeField(default = datetime.now, blank = True)
 
     def __str__(self):
         return self.name

@@ -1,23 +1,60 @@
-{% extends 'catalog_base.html' %}
+{% extends 'template.html' %}
 {% load crispy_forms_tags %}
+{% block style %}
+    h1 {
+        text-align: center;
+    }
 
+    p {
+        text-align: center;
+    }
+
+    .phead {
+        font-size: 1.5em;
+    }
+
+    .row {
+        padding-top: 100px;
+    }
+
+{% endblock %}
 {% block content %}
-    <div class = "container">
-        <div class='row'>
-            <div class='col-md-4'>
-            </div>
-            <div class='col-md-4'>
-                <h1>{{ title }}</h1>
-                {% if confirm_message %}
-                    <p>{{ confirm_message }}<p>
-                {% endif %}
-                {% if form %}
-                    <form method='POST' action=''>{% csrf_token %}
-                        {{ form|crispy }}
-                        <input type="submit" value="submit form" class = 'btn btn-default' />
-                    </form>
-                {% endif %}
-            </div>
+<div class="container">
+    <div class='row'>
+        <div class='col-md-4'>
+        </div>
+        <div class='col-md-4'>
+            <h1>{{ title }}</h1>
+            {% if confirm_message %}
+                <p>{{ confirm_message }}<p>
+            {% endif %}
+            {% if form %}
+                <form method='POST' action=''>{% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" value="submit form" class = 'btn btn-default' />
+                </form>
+            {% endif %}
         </div>
     </div>
+
+    <div class="row" align="center">
+            <div class="col-md-4">
+                <p class="phead">VISIT US</p>
+                <p>28 Ngamwongwan,</p>
+                <p>Lat yao, Chatuchak, Bangkok 10900</p>
+            </div>
+            <div class="col-md-4">
+                <p class="phead">OPENING HOURS</p>
+                <p>Mon-Fri 7am-10pm</p>
+                <p>Saturday 8am-10pm</p>
+                <p>Sunday 8am-11pm</p>
+            </div>
+            <div class="col-md-4">
+                <p class="phead">CUSTOMER SERVICE</p>
+                <p>02-123-4567</p>
+                <p>080-111-2222</p>
+                <p>kindlekuniya_info@</p>
+            </div>
+        </div>
+</div>
 {% endblock %}

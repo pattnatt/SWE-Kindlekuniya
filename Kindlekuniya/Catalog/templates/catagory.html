@@ -1,7 +1,8 @@
-{% extends 'catalog_base.html' %}
+{% extends 'template.html' %}
+
+{% load staticfiles %}
 
 {% block content %}
-    <br />
     <div class = "container">
         <div class = "row">
             <div class="col-12">
@@ -10,12 +11,16 @@
             </div>
             {% for product in products %}
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card test-center">
+                    <div class="card mx-auto">
                         <div class="card-block">
                             <br />
-                            <a href="{% url 'Catalog:detail' product.id %}"><img src= "{{ product.pictureUrl.url }}" class="mx-auto d-block" height="200"></a>
+                            <div class="text-center">
+                                <a href="{% url 'Catalog:detail' product.id %}">
+                                    <img src= "{{ product.pictureUrl.url }}" class="mx-auto d-block" height="200">
+                                </a>
+                            </div>
                             <br />
-                            <a href="{% url 'Catalog:detail' product.id %}"><h6 style="text-align:center;">{{ product.name }}</h6></a>
+                            <a href="{% url 'Catalog:detail' product.id %}"><h4 style="text-align:center;">{{ product.name }}</h4></a>
                             <ul class="list-group list-group-flush">
                                 {% if product.quantity <= 0 %}
                                     <li class="list-group-item" style="text-align:center; color:red;">{{ product.price|floatformat:2 }} บาท - Out of Stock</li>

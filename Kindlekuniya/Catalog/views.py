@@ -7,7 +7,9 @@ from .forms import ProductToCartForm
 cart_prefix = 'CART_PRODUCT_'
 
 def index(request):
+    products = Product.objects.all().order_by('-created_at')[0:12]
     context = {
+        'products' : products,
     }
     return render(request, 'index.html', context)
 
@@ -52,7 +54,7 @@ def view_cart(request):
                     if product:
                         cart_product[product] = request.session[key]
     context = {
-        'cart_product' : cart_product
+        'cart_product' : cart_product,
     }
 
     return render(request, 'view_cart.html', context)

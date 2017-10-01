@@ -1,5 +1,6 @@
-{% extends 'catalog_base.html' %}
+{% extends 'template.html' %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 
 {% block content %}
     <form method="get" action=".">
@@ -29,12 +30,16 @@
                         </div>
                         {% for product in page.object_list %}
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card test-center">
+                                <div class="card card-outline-secondary">
                                     <div class="card-block">
                                         <br />
-                                        <a href="{% url 'Catalog:detail' product.object.id %}"><img src= "{{ product.object.pictureUrl.url }}" class="mx-auto d-block" height="200"></a>
+                                        <div class="text-center">
+                                            <a href="{% url 'Catalog:detail' product.object.id %}">
+                                                <img src= "{{ product.object.pictureUrl.url }}" class="mx-auto d-block" height="200">
+                                            </a>
+                                        </div>
                                         <br />
-                                        <a href="{% url 'Catalog:detail' product.object.id %}"><h6 style="text-align:center;">{{ product.object.name }}</h6></a>
+                                        <a href="{% url 'Catalog:detail' product.object.id %}"><h4 style="text-align:center;">{{ product.object.name }}</h4></a>
                                         <ul class="list-group list-group-flush">
                                             {% if product.object.quantity <= 0 %}
                                                 <li class="list-group-item" style="text-align:center; color:red;">{{ product.object.price|floatformat:2 }} บาท - Out of Stock</li>

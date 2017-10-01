@@ -4,7 +4,7 @@ from django.conf import settings
 from .forms import contactForm
 
 def index(request):
-    title = 'Contact'
+    title = 'Contact Us'
     form = contactForm(request.POST or None)
     confirm_message = None
 

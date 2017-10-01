@@ -15,30 +15,30 @@
 </head>
 
 <style>
-  body{
-    left:10px;
-    margin: 0;
-}
-.imgcart{
-    padding-top: 6px;
-    padding-right: 6px;
-}
-.imgbook{
-    width: 300px;
-}
-.search{
-    padding-top: 6px;
-}
-/*  */
-.flex {
-        display: flex;
-        flex-wrap: wrap;
-        width: 800px;
-        height:100px;
-        /* align-items: center; */
-        margin:0 auto;
+     body{
+        left:10px;
+        margin: 0;
     }
-   
+    .imgcart{
+        padding-top: 6px;
+        padding-right: 6px;
+    }
+    .imgbook{
+        width: 300px;
+    }
+    .search{
+        padding-top: 6px;
+    }
+    /*  */
+    .flex {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+            height:100px;
+            /* align-items: center; */
+            margin:0 auto;
+        }
+
     .navbar {
         margin-bottom: 0;
     }
@@ -58,24 +58,14 @@
         max-width: 40rem;
     }
     .album {
-        min-height: 50rem; /* Can be removed; just added for demo purposes */
         padding-top: 3rem;
         padding-bottom: 3rem;
         vertical-align: center;
         /* background-color: #f7f7f7; */
     }
     .card {
-        float: left;
-        width: 33.333%;
-        padding: .75rem;
-        margin-bottom: 2rem;
-        border: 0;
-    }
-    .card > img {
-        margin-bottom: .75rem;
-    }
-    .card-text {
-        font-size: 85%;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 1rem;
     }
     {% block style %}
     {% endblock %}
@@ -85,7 +75,6 @@
     <div>
         <img src="{% static 'img/logo3.png' %}" class="img-responsive center-block" />
     </div>
-
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -100,23 +89,22 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/index/">Home</a></li>
+                    <li><a href="{% url 'Catalog:index' %}">Home</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-
-                            <li><a href="/genres/">Novel</a></li>
-                            <li><a href="/genres/">Fiction</a></li>
-                            <li><a href="/genres/">Philosophy</a></li>
+                            {% for genre in all_catagory %}
+                            <li><a href="{% url 'Catalog:catagory' genre.id %}">{{genre.name}}</a></li>
+                            {% endfor %}
 
                         </ul>
                     </li>
-                    <li><a href="/contact/">Contact</a></li>
+                    <li><a href="{% url 'contact:index' %}">Contact</a></li>
                     <!-- <li><a href="/help/">Help</a></li/> -->
                 </ul>
                 <!-- <form class="form-inline"> -->
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Search</a></li>
+                    <li><a href="/search">Search</a></li>
                     <li><a href="/">Sign Up</a></li>
                     <li><a href="/">Login</a></li>
                     <a href=""><img class="imgcart" src="{% static 'img/ShoppingCart.png' %} " width=40px/></a>
@@ -130,9 +118,7 @@
     <br>
     </br>
 
-    <div class="album text-muted">
         {% block content %} {% endblock %}
-    </div>
 
 
 </body>
