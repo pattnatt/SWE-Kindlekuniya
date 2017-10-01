@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+{% load bootstrap %}
+{% block content %}
+
+<div class = "container">
+  <div class = "row">
+       <div class="col-xs-1 col-sm-2 col-md-3"></div>
+       <div class="col-xs-10 col-sm-8 col-md-6">
+            <h1><center>Sign up</center></h1></br>
+            <form method="post">
+                {% csrf_token %}
+                {{ form|bootstrap }}
+
+                <button type="submit" class="btn btn-primary">Sign up</button>
+                <br/><br/>
+            </form>
+      </div>
+      <div class="col-xs-1 col-sm-2 col-md-3"></div>
+  </div>
+</div>
+{% endblock %}

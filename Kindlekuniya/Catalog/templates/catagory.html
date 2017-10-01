@@ -1,0 +1,37 @@
+{% extends 'template.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class = "container">
+        <div class = "row">
+            <div class="col-12">
+                <h1>{{ catagory.name }}</h1>
+                <br />
+            </div>
+            {% for product in products %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card mx-auto">
+                        <div class="card-block">
+                            <br />
+                            <div class="text-center">
+                                <a href="{% url 'Catalog:detail' product.id %}">
+                                    <img src= "{{ product.pictureUrl.url }}" class="mx-auto d-block" height="200">
+                                </a>
+                            </div>
+                            <br />
+                            <a href="{% url 'Catalog:detail' product.id %}"><h4 style="text-align:center;">{{ product.name }}</h4></a>
+                            <ul class="list-group list-group-flush">
+                                {% if product.quantity <= 0 %}
+                                    <li class="list-group-item" style="text-align:center; color:red;">{{ product.price|floatformat:2 }} บาท - Out of Stock</li>
+                                {% else %}
+                                    <li class="list-group-item" style="text-align:center;">{{ product.price|floatformat:2 }} บาท</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'template.html' %}
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% load staticfiles %}
+
+{% block content %}
+    <form method="get" action=".">
+        <div class = "row">
+            <div class="col-md-12" align="center">
+                <h2>Search</h2>
+                <br />
+                <table>
+                    {{ form.as_table }}
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <input type="submit" value="Search">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+        {% if query %}
+            {% if page.object_list %}
+                <div class = "container">
+                    <div class = "row">
+                        <div class="col-12">
+                            <h3>Results</h3>
+                            <br />
+                        </div>
+                        {% for product in page.object_list %}
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card card-outline-secondary">
+                                    <div class="card-block">
+                                        <br />
+                                        <div class="text-center">
+                                            <a href="{% url 'Catalog:detail' product.object.id %}">
+                                                <img src= "{{ product.object.pictureUrl.url }}" class="mx-auto d-block" height="200">
+                                            </a>
+                                        </div>
+                                        <br />
+                                        <a href="{% url 'Catalog:detail' product.object.id %}"><h4 style="text-align:center;">{{ product.object.name }}</h4></a>
+                                        <ul class="list-group list-group-flush">
+                                            {% if product.object.quantity <= 0 %}
+                                                <li class="list-group-item" style="text-align:center; color:red;">{{ product.object.price|floatformat:2 }} บาท - Out of Stock</li>
+                                            {% else %}
+                                                <li class="list-group-item" style="text-align:center;">{{ product.object.price|floatformat:2 }} บาท</li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+            <div class = "container">
+                <div class = "row">
+                    <div class="col-12">
+                        <h3>Results</h3>
+                        <br />
+                    </div>
+                    <div class="col-12">
+                        <p>No results found.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if page.has_previous or page.has_next %}
+                <div>
+                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    |
+                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            {# Show some example queries to run, maybe query syntax, something else? #}
+        {% endif %}
+    </form>
+{% endblock %}
