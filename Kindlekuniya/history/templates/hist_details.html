@@ -1,21 +1,25 @@
+{% extends 'template.html' %}
+
+{% load staticfiles %}
 {% load render_table from django_tables2 %}
 {% load static %}
-<!doctype html>
-<html>
-  <head>
+
+{% block header %}
     <title>Order history</title>
     <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
-</head>
-  <body>
-    {# TODO: error handling #}
-    {# TODO: change to checking userID #}
-    {% if user == histEntry.orderOwner %}
-    <h3>Order {{ histEntry.orderId|truncatechars:11 }} from {{ histEntry.orderTime }}</h3>
-    {% render_table histDataTable %}
-    {% else %}
-    <h3>{{ error_message }}</h3>
-    {% endif %}
-    <br>
-    <a href="{% url 'index' %}">Back</a>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+    <div class = "container">
+        {# TODO: error handling #}
+        {# TODO: change to checking userID #}
+        {% if user == histEntry.orderOwner %}
+        <h3>Order {{ histEntry.orderId|truncatechars:11 }} from {{ histEntry.orderTime }}</h3>
+        {% render_table histDataTable %}
+        {% else %}
+        <h3>{{ error_message }}</h3>
+        {% endif %}
+        <br>
+        <a href="{% url 'index' %}">Back</a>
+    </div>
+{% endblock %}
