@@ -68,7 +68,7 @@
                             
                             
                             <div class="btn-group" role="group" aria-label="...">
-                                <div id="quantity_id_{{cart.id}}"></div>
+                                <p id="quantity_id_{{cart.id}}"></p>
                                 <button id="button_id_{{cart.id}}_down" class="btn btn-sm btn-default" name="down">-</button>
                                 <button id="button_id_{{cart.id}}_up" class="btn btn-sm btn-default" name="up">+</button>
                                 <script type="text/javascript">
@@ -76,19 +76,24 @@
                                  document.getElementById("quantity_id_{{cart.id}}").innerHTML = quantity_{{cart.id}};
                                  button_id_{{cart.id}}_down.onclick = function(){
                                      quantity_{{cart.id}} = quantity_{{cart.id}} - 1;
-                                     if(quantity_{{cart.id}} < 1)
+                                     if(quantity_{{cart.id}} < 1){
                                          quantity_{{cart.id}} = 1;
-                                     else
+                                     }
+                                     else{
                                          getAmount_{{cart.id}}(-1*{{cart.price}});
-                                     document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
+                                         document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
+                                         
+                                     }
                                  }
                                  button_id_{{cart.id}}_up.onclick = function(){
                                      quantity_{{cart.id}} = quantity_{{cart.id}} + 1;
-                                     if(quantity_{{cart.id}} > 20)
+                                     if(quantity_{{cart.id}} > 20){
                                          quantity_{{cart.id}} = 20;
-                                     else
+                                     }
+                                     else{
                                          getAmount_{{cart.id}}({{cart.price}});
-                                     document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
+                                         document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
+                                     }
                                  }
                                 </script>
                                 
@@ -105,13 +110,13 @@
                                  amount_{{cart.id}} = {{cart.price}} * quantity_{{cart.id}};
                                  document.getElementById('amount_{{cart.id}}').innerHTML = amount_{{cart.id}};
                                  total = total + change;
-                                 document.getElementById('total_all_in_cart').innerHTML = total + "THB";                                 
+                                 document.getElementById('total_all_in_cart').innerHTML = total + " THB";                                 
                              }
                             </script>
                         </td>
 
                         <td class="actions" data-th="">
-                           
+                            
                             <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>				
                         </td>
                         
@@ -129,7 +134,7 @@
                         <td class="text-right">
                             <strong id="total_all_in_cart">
                                 <script type="text/javascript">
-                                 document.getElementById('total_all_in_cart').innerHTML = total + "THB";
+                                 document.getElementById('total_all_in_cart').innerHTML = total + " THB";
                                 </script>
                             </strong></td>
                         <td></td>
@@ -144,12 +149,7 @@
             </table>
         </div>
 
-
-        
     </body>
-    <script>
-     
-    </script>
 </html>
 
 

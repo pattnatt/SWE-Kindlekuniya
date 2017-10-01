@@ -6,18 +6,17 @@ from django.views import generic
 
 from .models import Product
 
-class IndexView(generic.ListView):
+def IndexView(request):
     template_name = 'cart/cart.html'
-    context_object_name = 'cartItem_list'
+    context = Product.objects.filter()
 
-    def get_queryset(self):
-        objects = Product.objects.filter()
-        return objects
+    if request.method == 'POST':
+        return HttpResponse("success")
+    else:
+        return render(request, template_name, {'cartItem_list':context} )
 
         
-
 class ResultsView(generic.ListView):
-    model = Product
     template_name = 'cart/results.html'
     context_object_name = 'cartItem_list'
 
@@ -25,16 +24,7 @@ class ResultsView(generic.ListView):
         objects = Product.objects.filter()
         return objects
 
-def btn_sm(request):
-    if request.POST['up']:
-        id = request.POST.get('up')
-        obj = Product.objects.get(pk=id)
-        obj.quantity = object.quantity + 1
-    if request.POST['down']:
-        id = request.POST.get('down')
-        obj = Product.objects.get(pk=id)
-        obj.quantity = object.quantity - 1
 
-        return render(request, 'cart/cart.html' ,Product.objects.filter())
-        
+
+
         
