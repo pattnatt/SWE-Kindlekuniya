@@ -21,10 +21,15 @@ def IndexView(request):
             obj.quantity = item_quantity
             obj.save()
             return render(request, template_name, context)
+        elif request.POST.get('delete_item'):
+            item_id = request.POST.get('delete_item')
+            obj = Product.objects.get(pk=item_id)
+            obj.delete()
+            return render(request, template_name, context)
         else:
             return HttpResponse("fail2")
     else:
-        return render(request, template_name, context )
+        return render(request, template_name, context)
 
         
 class ResultsView(generic.ListView):
