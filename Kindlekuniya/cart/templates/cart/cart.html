@@ -73,7 +73,7 @@
                             <div class="btn-group" role="group" aria-label="...">
                                 <form method="post">
                                     {% csrf_token %}
-                                    <input id="quantity_id_{{cart.id}}" name="quantity_of_item" type="number" value="{{cart.quantity}}" style="height:10px;width:90px">
+                                    <input id="quantity_id_{{cart.id}}" name="quantity_of_item" type="number" value="{{cart.quantity}}" style="height:10px;width:90px" min="1" max="20">
                                     <input id="id_of_input_{{cart.id}}" name="id_of_input" type="hidden" value="{{cart.id}}">
                                     <input type="submit" value="update" style="width:90px;">
                                 </form>
