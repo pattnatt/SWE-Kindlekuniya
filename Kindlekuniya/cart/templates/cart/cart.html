@@ -6,7 +6,7 @@
     </head>
 
     <body>
-        <h1>Cart</h1>
+        <h1 style="text-align:center">Cart</h1>
 
         <style>
          .container{
@@ -44,7 +44,9 @@
                         <th style="width:5%"></th>
                     </tr>
                 </thead>
+                
                 {% for cart in cartItem_list %}
+                
                 <tbody class="cart-header" id="{{cart.id}}">
                     <tr class="item">
                         <td data-th="Product">
@@ -68,33 +70,15 @@
                             
                             
                             <div class="btn-group" role="group" aria-label="...">
-                                <p id="quantity_id_{{cart.id}}"></p>
-                                <button id="button_id_{{cart.id}}_down" class="btn btn-sm btn-default" name="down">-</button>
-                                <button id="button_id_{{cart.id}}_up" class="btn btn-sm btn-default" name="up">+</button>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input id="quantity_id_{{cart.id}}" name="quantity_of_item" type="text" value="{{cart.quantity}}" style="width:50px;">
+                                    <input id="id_of_input_{{cart.id}}" name="id_of_input" type="hidden" value="{{cart.id}}">
+                                    <input type="submit" value="update" style="width:90px;">
+                                </form>
                                 <script type="text/javascript">
                                  var quantity_{{cart.id}} = {{cart.quantity}};
-                                 document.getElementById("quantity_id_{{cart.id}}").innerHTML = quantity_{{cart.id}};
-                                 button_id_{{cart.id}}_down.onclick = function(){
-                                     quantity_{{cart.id}} = quantity_{{cart.id}} - 1;
-                                     if(quantity_{{cart.id}} < 1){
-                                         quantity_{{cart.id}} = 1;
-                                     }
-                                     else{
-                                         getAmount_{{cart.id}}(-1*{{cart.price}});
-                                         document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
-                                         
-                                     }
-                                 }
-                                 button_id_{{cart.id}}_up.onclick = function(){
-                                     quantity_{{cart.id}} = quantity_{{cart.id}} + 1;
-                                     if(quantity_{{cart.id}} > 20){
-                                         quantity_{{cart.id}} = 20;
-                                     }
-                                     else{
-                                         getAmount_{{cart.id}}({{cart.price}});
-                                         document.getElementById('quantity_id_{{cart.id}}').innerHTML = quantity_{{cart.id}};
-                                     }
-                                 }
+                                 
                                 </script>
                                 
                             </div>
@@ -102,22 +86,17 @@
                         </td>
 
                         <td data-th="Subtotal" class="text-right" id="amount_{{cart.id}}">
+                            {{cart.getAmount}}
                             <script type="text/javascript">
                              var amount_{{cart.id}} = {{cart.price}} * quantity_{{cart.id}};
                              total = amount_{{cart.id}} + total;
-                             document.getElementById('amount_{{cart.id}}').innerHTML = amount_{{cart.id}};
-                             function getAmount_{{cart.id}}(change){
-                                 amount_{{cart.id}} = {{cart.price}} * quantity_{{cart.id}};
-                                 document.getElementById('amount_{{cart.id}}').innerHTML = amount_{{cart.id}};
-                                 total = total + change;
-                                 document.getElementById('total_all_in_cart').innerHTML = total + " THB";                                 
-                             }
                             </script>
                         </td>
 
                         <td class="actions" data-th="">
-                            
-                            <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>				
+                            <form method="post">
+                                <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                            </form>
                         </td>
                         
                     </tr>

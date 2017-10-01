@@ -8,12 +8,23 @@ from .models import Product
 
 def IndexView(request):
     template_name = 'cart/cart.html'
-    context = Product.objects.filter()
-
+    items = Product.objects.filter()
+    context = {
+        'cartItem_list':items,
+    }
+    
     if request.method == 'POST':
-        return HttpResponse("success")
+        if request.POST.get('id_of_input'):
+            item_id = request.POST.get('id_of_input')
+            item_quantity = request.POST.get('quantity_of_item')
+            obj = Product.objects.get(pk=item_id)
+            obj.quantity = item_quantity
+            obj.save()
+            return render(request, template_name, context)
+        else:
+            return HttpResponse("fail2")
     else:
-        return render(request, template_name, {'cartItem_list':context} )
+        return render(request, template_name, context )
 
         
 class ResultsView(generic.ListView):
@@ -24,7 +35,3 @@ class ResultsView(generic.ListView):
         objects = Product.objects.filter()
         return objects
 
-
-
-
-        
