@@ -6,6 +6,17 @@ from .forms import ProductToCartForm
 
 cart_prefix = 'CART_PRODUCT_'
 
+def get_product_in_cart(request):
+    cart_product = {}
+    if request.session.keys():
+        for key in request.session.keys():
+            if len(str(key)) > len(cart_prefix):
+                if str(key)[0:len(cart_prefix)] == cart_prefix:
+                    product = Product.objects.get(id = int(str(key)[len(cart_prefix):]))
+                    if product:
+                        cart_product[product] = request.session[key]
+    return cart_product
+
 def index(request):
     products = Product.objects.all().order_by('-created_at')[0:12]
     context = {
@@ -45,16 +56,8 @@ def catagory(request, catagory_id):
     return render(request, 'catagory.html', context)
 
 def view_cart(request):
-    cart_product = {}
-    if request.session.keys():
-        for key in request.session.keys():
-            if len(str(key)) > len(cart_prefix):
-                if str(key)[0:len(cart_prefix)] == cart_prefix:
-                    product = Product.objects.get(id = int(str(key)[len(cart_prefix):]))
-                    if product:
-                        cart_product[product] = request.session[key]
     context = {
-        'cart_product' : cart_product,
+        'cart_product' : get_product_in_cart(request),
     }
 
     return render(request, 'view_cart.html', context)

@@ -115,7 +115,7 @@
                         <li><a href="{% url 'login' %}">Login</a></li>
                         <li><a href="{% url 'signup' %}">Sign Up</a></li>
                     {% endif %}
-                    <a href=""><img class="imgcart" src="{% static 'img/ShoppingCart.png' %} " width=40px/></a>
+                    <a href="{% url 'cart:cart' %}"><img class="imgcart" src="{% static 'img/ShoppingCart.png' %} " width=40px/></a>
                 </ul>
                 <!-- </form> -->
             </div>
