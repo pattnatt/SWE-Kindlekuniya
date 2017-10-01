@@ -13,11 +13,11 @@
     <div class = "container">
         {# TODO: error handling #}
         {# TODO: change to checking userID #}
-        {% if user == histEntry.orderOwner %}
-        <h3>Order {{ histEntry.orderId|truncatechars:11 }} from {{ histEntry.orderTime }}</h3>
-        {% render_table histDataTable %}
+        {% if user == histEntry.user %}
+            <h3>Order {{ histEntry.orderId|truncatechars:11 }} from {{ histEntry.orderTime }}</h3>
+            {% render_table histDataTable %}
         {% else %}
-        <h3>{{ error_message }}</h3>
+            <h3>{{ error_message }}</h3>
         {% endif %}
         <br>
         <a href="{% url 'index' %}">Back</a>

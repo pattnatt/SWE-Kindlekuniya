@@ -1,7 +1,7 @@
 from django.db import models
 from Catalog.models import Product
+from user.models import User, Address
 import uuid
-
 
 class HistEntry(models.Model):
     orderId = models.UUIDField(
@@ -9,8 +9,7 @@ class HistEntry(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False)
-    # userID = models.ForeignKey(User, on_delete=models.CASCADE,)
-    orderOwner = models.CharField(max_length=64)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, default = None)
     orderTime = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Order Time'
@@ -28,6 +27,7 @@ class HistEntry(models.Model):
         choices=SHIPPING_STATUSES,
         default=PROCESS
     )
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null = True, default = None)
     # shippingMethod = models.ForeignKey(ShippingMethod, on_delete=models.CASCADE)
     trackingNo = models.CharField(
         max_length=16,

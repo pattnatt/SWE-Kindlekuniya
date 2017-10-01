@@ -10,9 +10,16 @@
 {% endblock %}
 
 {% block content %}
+
     <div class = "container">
-        <h1>Order history</h1>
-        <p>Welcome {{ request.user }}, these are your order history</p>
-        {% render_table table %}
+        {% if request.session.userID %}
+            <h1>Order history</h1>
+            <p>Welcome {{ user.firstname }} {{ user.lastname }}, these are your order history</p>
+            {% render_table table %}
+        {% else %}
+            <h3>Please Login to view order history.</h3>
+        {% endif %}
     </div>
+
+
 {% endblock %}
