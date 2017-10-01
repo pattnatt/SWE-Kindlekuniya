@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>cart</title>
+    </head>
+
+    <body>
+        <h1 style="text-align:center">Results</h1>
+
+        <style>
+         .container{
+             max-width: 1000px;
+         }
+         .table>thead>tr.names>th{
+             border-bottom: 1px;
+         }
+         .table>tbody>tr.item>td{
+             padding-bottom: 20px;
+             padding-top: 20px;
+             vertical-align: middle;
+         }
+         .table>tfoot>tr.no-border>td{
+             border-top: 0 none;
+             padding-top: 20px;
+         }
+         .img-product{
+             padding-top: 20px;
+         }
+        </style>
+        <script type="text/javascript">           
+         var total = 0; 
+         var shipping = 100;                
+        </script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <div class="container">
+                <table id="cart" class="table table-responsive">
+                        <thead>
+                            <tr class="names">
+                                <th style="width:50%">Product</th>
+                                <th style="width:10%" class="text-right hidden-xs">Price</th>
+                                <th style="width:15%" class="text-right">Quantity</th>
+                        
+                                <th style="width:10%"></th>
+                            </tr>
+                        </thead>
+                        
+                        {% for cart in cartItem_list %}
+                        <tbody class="cart-header" id="{{cart.id}}">
+                        
+                            <tr class="item">
+                                <td data-th="Product">
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-3 hidden-xs"><img src="{{cart.pictureUrl}}" alt="Converse" class="img-product img-responsive img-rounded"/></div>
+                                        <div class="col-sm-9">        
+                                            <h4 class="nomargin">{{cart.name}}</h4>
+                                            <p class="hidden-xs">{{cart.discription}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-th="Price" class="text-right hidden-xs">
+                                    
+                                    {{cart.price}}
+                                    
+                                </td>
+                    
+                                
+        
+                                <td data-th="Quantity" class="text-right">
+                                    
+                                    <p id="demo">{{cart.quantity}}</p>                            
+                                
+        
+                                </td>
+                                <script type="text/javascript">           
+                                    total += {{cart.getAmount}} ;
+                                   </script>
+                                
+
+                                {% endfor %}
+
+            
+                              
+                                
+                            </tr>
+                        </tbody>
+                        
+                        
+                        
+                        
+                           
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td class="hidden-xs" colspan="2"></td>
+                                <td class="text-right">Total</td>
+                                <td class="text-right">
+                                    <strong>
+                                        <script type="text/javascript">
+                                            document.write(total+ " THB");
+                                        
+                                           </script>
+                                    </strong>
+                                </td>
+                                <td></td>
+
+                            </tr> </br>
+
+                            <tr>
+                                    <td></td>
+                                    <td class="hidden-xs" colspan="2"></td>
+                                    <td class="text-right">Shipping</td>
+                                    <td class="text-right">
+                                        <strong>
+                                            <script type="text/javascript">
+                                                document.write(shipping+ " THB");
+                                            
+                                               </script>
+                                        </strong>
+                                    </td>
+                                    <td></td>
+    
+                            </tr> </br>
+
+                            <tr>
+                                    <td></td>
+                                    <td class="hidden-xs" colspan="2"></td>
+                                    <td class="text-right">Total + Shipping</td>
+                                    <td class="text-right">
+                                        <strong>
+                                            <script type="text/javascript">
+                                                document.write(shipping+total+ " THB");
+                                            
+                                               </script>
+                                        </strong>
+                                    </td>
+                                    <td></td>
+    
+                            </tr>
+                            
+                            <tr class="no-border">
+                                <td><a href="#" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+                                <td colspan="2" class="hidden-xs"></td>
+                                <td></td>
+                                <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+        </div>
+
+
+        
+    </body>
+    <script>
+     
+    </script>
+</html>

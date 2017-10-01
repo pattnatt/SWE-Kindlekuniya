@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from templateModule import views as template_views
 from user import views as user_views
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('Catalog.urls')),
@@ -17,4 +18,5 @@ urlpatterns = [
     url(r'^profile/$', user_views.profile, name='profile'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         user_views.activate, name='activate'),
+    url(r'^cart/' , include('cart.urls')),
 ]

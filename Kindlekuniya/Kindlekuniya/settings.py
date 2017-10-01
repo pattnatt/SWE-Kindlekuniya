@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'templateModule',
     'user',
     'bootstrapform',
+    'cart.apps.CartConfig',
 ]
 
 SITE_ID = 1
