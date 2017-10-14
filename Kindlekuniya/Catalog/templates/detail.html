@@ -91,13 +91,7 @@
                         </tr>
                         <tr>
                             <td>Color</td>
-                            <td>
-                                {% if product.isMonocrome %}
-                                    Monocrome
-                                {% else %}
-                                    Colorized
-                                {% endif %}
-                            </td>
+                            <td>{{product.get_printingType_display}}</td>
                         </tr>
                         <tr>
                             <td>Paper Type</td>

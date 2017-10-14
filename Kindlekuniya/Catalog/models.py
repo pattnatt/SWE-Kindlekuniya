@@ -26,6 +26,11 @@ class Product(models.Model):
         ('GR', 'Green Read Paper'),
     )
 
+    PRINTING_TYPE = (
+        ('MN', 'Monocrome'),
+        ('CL', 'Colorized'),
+    )
+
     isbn = models.DecimalField(max_digits = 13, decimal_places = 0, unique = True)
     name = models.CharField(max_length = 250)
     author = models.CharField(max_length = 250)
@@ -33,7 +38,7 @@ class Product(models.Model):
     publisher = models.CharField(max_length = 250)
     price = models.FloatField()
     weight = models.FloatField()
-    isMonocrome = models.BooleanField(default = True)
+    printingType = models.CharField(max_length = 2, choices=PRINTING_TYPE)
     paperType = models.CharField(max_length = 2, choices=PAPER_TYPE)
     coverType = models.CharField(max_length = 2, choices=COVER_TYPE)
     size_height = models.FloatField()
