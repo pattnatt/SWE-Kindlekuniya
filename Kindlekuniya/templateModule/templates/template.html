@@ -1,0 +1,135 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Kindlekuniya</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href='{% static "css/bootstrap.min.css" %}'>
+    <link rel="stylesheet" href='{% static "css/main.css" %}'>
+    <script src='{% static "js/jquery.min.js" %}'></script>
+    <script src='{% static "js/bootstrap.min.js" %}'></script>
+    <link rel="icon" href='{% static "img/favicon.ico" %}'>
+    {% block header %}
+    {% endblock %}
+</head>
+
+<style>
+     body{
+        left:10px;
+        margin: 0;
+    }
+    .imgcart{
+        padding-top: 6px;
+        padding-right: 6px;
+    }
+    .imgbook{
+        width: 300px;
+    }
+    .search{
+        padding-top: 6px;
+    }
+    /*  */
+    .flex {
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+            height:100px;
+            /* align-items: center; */
+            margin:0 auto;
+        }
+
+    .navbar {
+        margin-bottom: 0;
+    }
+    .jumbotron {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+        margin-bottom: 0;
+        background-color: #fff;
+    }
+    .jumbotron p:last-child {
+        margin-bottom: 0;
+    }
+    .jumbotron-heading {
+        font-weight: 300;
+    }
+    .jumbotron .container {
+        max-width: 40rem;
+    }
+    .album {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        vertical-align: center;
+        /* background-color: #f7f7f7; */
+    }
+    .card {
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 1rem;
+    }
+    {% block style %}
+    {% endblock %}
+</style>
+
+<body>
+    <div>
+        <img src="{% static 'img/logo3.png' %}" class="img-responsive center-block" />
+    </div>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed navbar-toggler-left" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'Catalog:index' %}">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for genre in all_catagory %}
+                            <li><a href="{% url 'Catalog:catagory' genre.id %}">{{genre.name}}</a></li>
+                            {% endfor %}
+
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'contact:index' %}">Contact</a></li>
+                    <!-- <li><a href="/help/">Help</a></li/> -->
+                </ul>
+                <!-- <form class="form-inline"> -->
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/search">Search</a></li>
+                    {% if request.session.userID %}
+                        <li><a href="/history">Order History</a></li>
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                    {% endif %}
+                    <a href="{% url 'cart:cart' %}"><img class="imgcart" src="{% static 'img/ShoppingCart.png' %} " width=40px/></a>
+                </ul>
+                <!-- </form> -->
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <br>
+    </br>
+
+        {% block content %}
+        {% endblock %}
+
+
+</body>
+
+</html>

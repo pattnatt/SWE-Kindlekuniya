@@ -1,10 +1,10 @@
-{% extends 'user_base.html' %}
+{% extends 'template.html' %}
 {% load bootstrap %}
 {% block content %}
 <div class = "container">
   <div class = "row">
-       <div class="col-4"></div>
-       <div class="col-4">
+       <div class="col-xs-1 col-sm-3 col-md-4"></div>
+       <div class="col-xs-10 col-sm-6 col-md-4">
           <h1>Logout</h1></br>
         <form method="post">
             {% csrf_token %}
@@ -12,7 +12,7 @@
             <!-- <button type="submit">Back</button> -->
         </form>
       </div>
-      <div class="col-4"></div>
+      <div class="col-xs-1 col-sm-3 col-md-4"></div>
   </div>
-</div> 
+</div>
 {% endblock %}

@@ -11,10 +11,15 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+from django.conf import global_settings
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+EMAIL_HOST =  'smtp.gmail.com'
+EMAIL_HOST_USER = 'contact.kindlekuniya@gmail.com'
+EMAIL_HOST_PASSWORD = 'genquembmomiyjfc'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -26,14 +31,6 @@ SECRET_KEY = 'n(=p(9uru3qhm(290sfl@i41co40zt@k($7r1$p9*ku=d)*1*r'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'testing.poons@gmail.com'
-EMAIL_HOST_PASSWORD = 'SWE-5810502393'
-EMAIL_PORT = 587
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,14 +40,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'crispy_forms',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'Catalog',
+    'contact',
+    'history.apps.HistoryConfig',
+    'django_tables2',
+    'templateModule',
     'user',
     'bootstrapform',
+    'cart.apps.CartConfig',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,13 +81,29 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+                "Catalog.context_processors.AllCatagory",
             ],
         },
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 WSGI_APPLICATION = 'Kindlekuniya.wsgi.application'
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -94,14 +116,12 @@ WSGI_APPLICATION = 'Kindlekuniya.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kindlekuniya',
-        'USER': 'root',
-        'PASSWORD': 'sk@user',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -144,4 +164,6 @@ if DEBUG :
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static"),
     ]
-SITE_ID = 1
+    MEDIA_URL = '/static/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
+    STATIC_ROOT = os.path.join(BASE_DIR, "static","static-only")
