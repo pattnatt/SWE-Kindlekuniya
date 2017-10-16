@@ -14,8 +14,12 @@
                         <div class="card-block">
                             <br />
                             <div class="text-center">
-                                <a href="{% url 'Catalog:detail' product.product_id %}">
-                                    <img src= "{{ product.picture_url.url }}" class="mx-auto d-block" height="200">
+                              <a href="{% url 'Catalog:detail' product.product_id %}">
+                                {% if product.picture_url.url != None %}
+                                <img src= "{{ product.picture_url.url }}" class="mx-auto d-block" height="200">
+                                {% else %}
+                                <img src= "/static/media/product_image/book_nocover.png" class="mx-auto d-block" height="200">
+                                {% endif %}
                                 </a>
                             </div>
                             <br />
