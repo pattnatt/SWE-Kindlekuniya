@@ -56,8 +56,8 @@ def detail(request, product_id):
 
 
 def catagory(request, catagory_id):
-    catagory = Catagory.objects.get(product_id=int(catagory_id))
-    products = Product.objects.filter(catagory__id=int(catagory_id))
+    catagory = Catagory.objects.get(id=int(catagory_id))
+    products = Product.objects.filter(catagory__id=catagory_id)
     context = {
         'catagory': catagory,
         'products': products,
