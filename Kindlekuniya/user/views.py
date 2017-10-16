@@ -10,7 +10,6 @@ from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
-from passlib.hash import pbkdf2_sha256
 import hashlib
 
 
