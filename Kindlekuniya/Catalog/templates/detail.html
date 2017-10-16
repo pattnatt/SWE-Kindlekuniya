@@ -6,7 +6,7 @@
     <div class = "container">
         <div class = "row">
             <div class="col-12 col-md-6 col-lg-4">
-                <img src= "{{ product.pictureUrl.url }}" width="310">
+                <img src= "{{ product.picture_url.url }}" width="310">
             </div>
             <div class = "col-12 col-md-6 col-lg-8">
                 <div class = "col-12">
@@ -22,20 +22,20 @@
                 {% endif %}
 
                 <div class = "col-12">
-                    <h5>{{ product.price|floatformat:2 }} บาท<h5>
+                    <h5>{{ product.price|floatformat:2 }} บาท</h5>
                     <br />
                 </div>
 
                 <div class = "col-12">
                     {% if product.quantity <= 0 %}
-                        <h5 style="color:red;">Out of Stock<h5>
+                        <h5 style="color:red;">Out of Stock</h5>
 
                     {% elif product.quantity == 1 %}
-                        <h5 style="color:orange;">Only 1 item left<h5>
+                        <h5 style="color:orange;">Only 1 item left</h5>
                     {% elif product.quantity < quantityWarning %}
-                        <h5 style="color:orange;">Only {{ product.quantity }} items left<h5>
+                        <h5 style="color:orange;">Only {{ product.quantity }} items left</h5>
                     {% else %}
-                        <h5 style="color:LimeGreen;">In stock<h5>
+                        <h5 style="color:LimeGreen;">In stock</h5>
                     {% endif %}
                     <br />
                 </div>
@@ -52,7 +52,7 @@
 
                 {% if confirm_message %}
                     <div class = "col-12">
-                        <p>{{ confirm_message }}<p>
+                        <p>{{ confirm_message }}</p>
                     </div>
                 {% endif %}
 

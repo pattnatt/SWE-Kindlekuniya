@@ -1,16 +1,20 @@
 from django.db import models
 from datetime import datetime
 import os
+import uuid
+
 
 def get_product_image_path(instance, filename):
-    return os.path.join('product_image', str(instance.id), filename)
+    return os.path.join('product_image', str(instance.product_id), filename)
+
 
 class Catagory(models.Model):
-    name = models.CharField(max_length = 100)
-    description = models.TextField(blank = True)
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     COVER_TYPE = (
@@ -26,23 +30,51 @@ class Product(models.Model):
         ('GR', 'Green Read Paper'),
     )
 
-    isbn = models.DecimalField(max_digits = 13, decimal_places = 0, unique = True)
-    name = models.CharField(max_length = 250)
-    author = models.CharField(max_length = 250)
+    PRINTING_TYPE = (
+        ('MN', 'Monochrome'),
+        ('CL', 'Full CMY'),
+        ('SN', 'Single Tone'),
+        ('TT', 'Two Tone'),
+    )
+
+    product_id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+    isbn = models.DecimalField(max_digits=13, decimal_places=0, unique=True)
+    name = models.CharField(max_length=250)
+    author = models.CharField(max_length=250)
     catagory = models.ManyToManyField(Catagory)
-    publisher = models.CharField(max_length = 250)
+    publisher = models.CharField(max_length=250)
     price = models.FloatField()
     weight = models.FloatField()
-    isMonocrome = models.BooleanField(default = True)
-    paperType = models.CharField(max_length = 2, choices=PAPER_TYPE)
-    coverType = models.CharField(max_length = 2, choices=COVER_TYPE)
+    printing_type = models.CharField(
+        max_length=2,
+        choices=PRINTING_TYPE,
+        default='MN',
+    )
+    paper_type = models.CharField(
+        max_length=2,
+        choices=PAPER_TYPE,
+        default='CP',
+    )
+    cover_type = models.CharField(
+        max_length=2,
+        choices=COVER_TYPE,
+        default='PD',
+    )
     size_height = models.FloatField()
     size_width = models.FloatField()
     size_thickness = models.FloatField()
-    description = models.TextField(blank = True)
-    pictureUrl = models.ImageField(upload_to = get_product_image_path, blank = True, null = True)
-    quantity = models.PositiveIntegerField(default = 0)
-    created_at = models.DateTimeField(default = datetime.now, blank = True)
+    description = models.TextField(blank=True)
+    picture_url = models.ImageField(
+        upload_to=get_product_image_path,
+        blank=True,
+        null=True
+    )
+    quantity = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(default=datetime.now, blank=True)
 
     def __str__(self):
         return self.name

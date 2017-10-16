@@ -46,14 +46,14 @@
                             </tr>
                         </thead>
 
-                        {% for book, quantity in cartItem_list.items %}
-                        <tbody class="cart-header" id="{{book.id}}">
+                        {% for book, quantity in cart_item_list.items %}
+                        <tbody class="cart-header" id="{{book.product_id}}">
 
                             <tr class="item">
                                 <td data-th="Product">
 
                                     <div class="row">
-                                        <div class="col-sm-3 hidden-xs"><img src="{{book.pictureUrl.url}}" alt="Converse" class="img-product img-responsive img-rounded"/></div>
+                                        <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded"/></div>
                                         <div class="col-sm-9">
                                             <h4 class="nomargin">{{book.name}}</h4>
                                         </div>

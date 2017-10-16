@@ -6,16 +6,13 @@
 
 {% block header %}
     <title>Order history</title>
-    <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
 {% endblock %}
 
 {% block content %}
     <div class = "container">
-        {# TODO: error handling #}
-        {# TODO: change to checking userID #}
-        {% if user == histEntry.user %}
-            <h3>Order {{ histEntry.orderId|truncatechars:11 }} from {{ histEntry.orderTime }}</h3>
-            {% render_table histDataTable %}
+        {% if user.email == check %}
+            <h3>Order {{ hist_entry.order_id|truncatechars:11 }} from {{ hist_entry.order_time }}</h3>
+            {% render_table hist_data_table %}
         {% else %}
             <h3>{{ error_message }}</h3>
         {% endif %}

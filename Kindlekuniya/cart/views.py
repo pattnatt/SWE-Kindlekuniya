@@ -6,11 +6,12 @@ from Catalog.models import Product
 from history.models import HistEntry, HistData
 from user.models import User, Address
 
+
 def IndexView(request):
     template_name = 'cart/cart.html'
     items = get_product_in_cart(request)
     context = {
-        'cartItem_list':items,
+        'cart_item_list': items,
     }
 
     if request.method == 'POST':
@@ -23,7 +24,7 @@ def IndexView(request):
 
             items = get_product_in_cart(request)
             context = {
-                'cartItem_list':items,
+                'cart_item_list': items,
             }
             return render(request, template_name, context)
         elif request.POST.get('delete_item'):
@@ -34,7 +35,7 @@ def IndexView(request):
 
             items = get_product_in_cart(request)
             context = {
-                'cartItem_list':items,
+                'cart_item_list': items,
             }
             return render(request, template_name, context)
         else:
@@ -47,20 +48,23 @@ def ResultsView(request):
     template_name = 'cart/results.html'
     items = get_product_in_cart(request)
     context = {
-        'cartItem_list':items,
+        'cart_item_list': items,
     }
 
-    if request.method == 'POST' and request.session['userID'] and items:
-        user = User.objects.get(userID = int(request.session['userID']))
-        address = Address.objects.get(userID = int(request.session['userID']))
+    if request.method == 'POST' and request.session['user_id'] and items:
+        user = User.objects.get(user_id=request.session['user_id'])
+        address = Address.objects.get(user_id=int(request.session['user_id']))
 
         new_entry = HistEntry(user=user, address=address,)
         new_entry.save()
 
         for product, quantity in items.items():
-            new_data = HistData(orderId=new_entry, productID=product,
-                quantity=quantity, sumPrice=product.price*quantity,
-                tax = product.price*quantity,
+            new_data = HistData(
+                order_id=new_entry,
+                product_id=str(product.product_id),
+                quantity=quantity,
+                sum_price=product.price*quantity,
+                tax=product.price*quantity,
             )
             new_data.save()
             product.quantity -= quantity
@@ -69,22 +73,26 @@ def ResultsView(request):
 
     return render(request, template_name, context)
 
+
 def PaymentView(request):
     template_name = 'cart/payment.html'
     items = get_product_in_cart(request)
     message = 'Checkout Failed'
 
-    if request.session.has_key('userID') and items:
-        user = User.objects.get(userID = int(request.session['userID']))
-        address = Address.objects.get(userID = int(request.session['userID']))
+    if request.session.has_key('user_id') and items:
+        user = User.objects.get(user_id=request.session['user_id'])
+        address = Address.objects.get(user_id=request.session['user_id'])
 
         new_entry = HistEntry(user=user, address=address,)
         new_entry.save()
 
         for product, quantity in items.items():
-            new_data = HistData(orderId=new_entry, productID=product,
-                quantity=quantity, sumPrice=float(product.price)*float(quantity),
-                tax = float(product.price)*float(quantity),
+            new_data = HistData(
+                order_id=new_entry,
+                product_id=str(product.product_id),
+                quantity=quantity,
+                sum_price=float(product.price)*float(quantity),
+                tax=float(product.price)*float(quantity),
             )
             new_data.save()
             product.quantity -= int(quantity)
@@ -92,7 +100,7 @@ def PaymentView(request):
         message = 'Checkout Success'
 
     context = {
-        'message':message,
+        'message': message,
     }
 
     return render(request, template_name, context)

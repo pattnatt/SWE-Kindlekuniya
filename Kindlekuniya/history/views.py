@@ -4,37 +4,39 @@ from .models import HistEntry, HistData
 from .tables import HistEntryTable, HistDataTable
 from user.models import User, Address
 
+
 def get_user(request):
-    if(request.session.has_key('userID')):
-         return User.objects.get(userID = int(request.session['userID']))
+    if(request.session.has_key('user_id')):
+        return User.objects.get(user_id=request.session['user_id'])
     else:
-         return None
+        return None
+
 
 def index(request):
-    # TODO: change to userID
-    histsTable = HistEntryTable(HistEntry.objects.filter(
+    hists_table = HistEntryTable(HistEntry.objects.filter(
         user=get_user(request)
     ))
-    histsTable.paginate(page=request.GET.get('page', 1), per_page=25)
-    RequestConfig(request).configure(histsTable)
+    hists_table.paginate(page=request.GET.get('page', 1), per_page=25)
+    RequestConfig(request).configure(hists_table)
     context = {
-        'table': histsTable,
-        'user' : get_user(request),
+        'table': hists_table,
+        'user': get_user(request),
     }
     return render(request, 'hist_index.html', context)
 
 
-def detail(request, orderId):
-    histDataTable = HistDataTable(HistData.objects.filter(
-        orderId=orderId
+def detail(request, order_id):
+    hist_data_table = HistDataTable(HistData.objects.filter(
+        order_id=order_id
     ))
-    histEntry = HistEntry.objects.get(orderId=orderId)
-    histDataTable.paginate(page=request.GET.get('page', 1), per_page=25)
-    RequestConfig(request).configure(histDataTable)
+    hist_entry = HistEntry.objects.get(order_id=order_id)
+    hist_data_table.paginate(page=request.GET.get('page', 1), per_page=25)
+    RequestConfig(request).configure(hist_data_table)
     context = {
-        'histDataTable': histDataTable,
-        'histEntry': histEntry,
-        'error_message': "Specified entry is invalid or not authorised",
+        'hist_data_table': hist_data_table,
+        'hist_entry': hist_entry,
+        'error_message': "Specified entry is invalid or not authorised for " + str(get_user(request)),
         'user': get_user(request),
+        'check': str(hist_entry.user)
     }
     return render(request, 'hist_details.html', context)
