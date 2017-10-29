@@ -78,3 +78,46 @@ class SigninForm(forms.Form):
         if not User.objects.filter(email=email):
             raise forms.ValidationError("Email or Password is invalid.")
         return self.cleaned_data
+
+class EditProfileForm(forms.Form):
+    firstname = forms.CharField(required=True, max_length=128)
+    lastname = forms.CharField(required=True, max_length=128)
+    old_password = forms.CharField(
+        required=True,
+        min_length=8,
+        max_length=128,
+        widget=forms.PasswordInput
+    )
+    new_password = forms.CharField(
+        required=True,
+        min_length=8,
+        max_length=128,
+        widget=forms.PasswordInput,
+        validators=[RegexValidator(
+            regex='^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$',
+            message='Password must contain at least one alphabet and one digit'
+        )]
+    )
+    confirm_password = forms.CharField(
+        required=True, max_length=128, widget=forms.PasswordInput)
+    phone_number = forms.CharField(
+        required=True,
+        max_length=10,
+        min_length=10,
+        validators=[RegexValidator(
+            regex='^[0][0-9]*$',
+            message='Phone number must be numeric 0-9 and Please lengthen phone number to 10.'
+        ), ]
+    )
+    address = forms.CharField(
+        required=True, max_length=128, widget=forms.Textarea())
+    city = forms.CharField(required=True, max_length=128)
+    zipcode = forms.CharField(
+        required=True,
+        max_length=5,
+        min_length=5,
+        validators=[RegexValidator(
+            regex='^[0-9]*$',
+            message='Zip code must be numeric 0-9 and Please lengthen phone number to 5.'
+        ), ]
+    )

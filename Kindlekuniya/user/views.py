@@ -41,7 +41,7 @@ def signup(request):
             form_addr.save()
 
             current_site = get_current_site(request)
-            message = render_to_string('acc_active_email.html', {
+            message = render_to_string('active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -50,8 +50,12 @@ def signup(request):
             mail_subject = 'Activate your account.'
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
-            alert = 'Please confirm your email address to complete the registration'
+            try:
+                a=email.send()
+                alert = 'Please confirm your email address to complete the registration within 30 minutes.'            
+            except:
+                alert = 'Email is not valid'            
+
             return render(request, 'user_response.html', {'alert': alert})
     elif request.session.has_key('user_id'):
         return redirect("/logout")
@@ -92,7 +96,7 @@ def login(request):
                 )
 
     elif request.session.has_key('user_id'):
-        return redirect("/logout")
+        return redirect("/user/logout")
     else:
         form = SigninForm()
     return render(request, 'login.html', {'form': form})
@@ -100,15 +104,15 @@ def login(request):
 
 def logout(request):
     if not request.session.has_key('user_id'):
-        return redirect("/login")
+        return redirect("/user/login")
     elif request.method == 'POST':
         try:
             del request.session['user_id']
         except:
             pass
-        return redirect("/login")
+        return redirect("/user/login")
     else:
-        return render(request, 'logout.html')
+        return render(request   , 'logout.html')
 
 
 def profile(request):
@@ -124,7 +128,7 @@ def profile(request):
         except:
             pass
         form = SigninForm()
-        return redirect("/login")
+        return redirect("/user/login")
 
 
 def activate(request, uidb64, token):

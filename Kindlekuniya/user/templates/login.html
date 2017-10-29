@@ -9,7 +9,7 @@
         <form method="post">
           {% csrf_token %}
           {{ form|bootstrap }}
-        <button type="submit" class="btn btn-success">Login</button>  <a href="{% url 'signup' %} ">Sign up</a>
+        <button type="submit" class="btn btn-success">Login</button>  <a href="{% url 'user:signup' %} ">Sign up</a>
         </form>
         <br/>
         <p style="color:red; text-align:center;">{{ err }}</p>
