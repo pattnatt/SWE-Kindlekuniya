@@ -1,0 +1,26 @@
+{% extends 'template.html' %}
+{% load bootstrap %}
+{% block content %}
+
+<div class = "container">
+  <div class = "row">
+       <div class="col-xs-1 col-sm-2 col-md-3"></div>
+       <div class="col-xs-10 col-sm-8 col-md-6">
+            <h1><center>Resend Activation Email</center></h1></br>
+            {% if err %}
+            <p class='alert alert-warning'>{{ err }}</p>     
+            {% elif success %}  
+            <p class='alert alert-success'>{{ success }}</p>     
+            {% endif %}  
+            <form method="post">
+                {% csrf_token %}
+                {{ form|bootstrap }}
+
+                <button type="submit" class="btn btn-primary">Send</button>
+                <br/><br/>
+            </form>
+      </div>
+      <div class="col-xs-1 col-sm-2 col-md-3"></div>
+  </div>
+</div>
+{% endblock %}
