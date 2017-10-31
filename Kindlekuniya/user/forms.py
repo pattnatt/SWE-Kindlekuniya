@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.core.validators import RegexValidator
 from .models import SignupModelForm, User, Address
-from passlib.hash import pbkdf2_sha256
+
 
 class SignupForm(forms.Form):
     email = forms.EmailField(required=True, max_length=128)
@@ -19,7 +19,9 @@ class SignupForm(forms.Form):
         )]
     )
     confirm_password = forms.CharField(
-        required=True, widget=forms.PasswordInput)
+        required=True,
+        widget=forms.PasswordInput
+    )
     phone_number = forms.CharField(
         required=True,
         max_length=10,
@@ -79,8 +81,10 @@ class SigninForm(forms.Form):
             raise forms.ValidationError("Email or Password is invalid.")
         return self.cleaned_data
 
+
 class EditProfileForm(forms.Form):
-    email = forms.EmailField(widget=forms.TextInput(attrs={'readonly':'readonly'}))      
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'readonly': 'readonly'}))
     firstname = forms.CharField(required=True, max_length=128)
     lastname = forms.CharField(required=True, max_length=128)
     phone_number = forms.CharField(
@@ -93,20 +97,28 @@ class EditProfileForm(forms.Form):
         ), ]
     )
 
-class EmailForm(forms.Form):
-    email = forms.EmailField(required=True, max_length=128)    
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(required=True, max_length=128)
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if not User.objects.filter(email=email):
             raise forms.ValidationError("Email does not exist.")
         return self.cleaned_data
 
+
+class ResendEmailForm(ForgotPasswordForm):
+    pass
+
+
 class ChangePasswordForm(forms.Form):
-    email = forms.EmailField(widget=forms.TextInput(attrs={'readonly':'readonly'}))          
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'readonly': 'readonly'}))
     old_password = forms.CharField(
         required=True,
         widget=forms.PasswordInput
-     )
+    )
     new_password = forms.CharField(
         required=True,
         min_length=8,
@@ -119,7 +131,6 @@ class ChangePasswordForm(forms.Form):
     )
     confirm_password = forms.CharField(
         required=True, widget=forms.PasswordInput)
-    
 
     def clean_confirm_password(self):
         password1 = self.cleaned_data.get('new_password')
@@ -130,7 +141,8 @@ class ChangePasswordForm(forms.Form):
 
         return self.cleaned_data
 
-class ForgotPasswordForm(forms.Form):
+
+class ResetPasswordForm(forms.Form):
     new_password = forms.CharField(
         required=True,
         min_length=8,
@@ -143,7 +155,6 @@ class ForgotPasswordForm(forms.Form):
     )
     confirm_password = forms.CharField(
         required=True, widget=forms.PasswordInput)
-    
 
     def clean_confirm_password(self):
         password1 = self.cleaned_data.get('new_password')
@@ -153,36 +164,3 @@ class ForgotPasswordForm(forms.Form):
             raise forms.ValidationError("Password don't match.")
 
         return self.cleaned_data
-
-                
-# class EditAddress(forms.Form):
-#         # self.fields['address'] = forms.CharField(
-#         #     required=True, 
-#         #     max_length=128, 
-#         #     widget=forms.Textarea(),
-#         #     initial=user.address
-#         # )
-#         # self.fields['city'] = forms.CharField(
-#         #     required=True, 
-#         #     max_length=128,
-#         #     initial=user.city
-#         # )
-#         # self.fields['zipcode'] = forms.CharField(
-#         #     required=True,
-#         #     max_length=5,
-#         #     min_length=5,
-#         #     validators=[RegexValidator(
-#         #         regex='^[0-9]*$',
-#         #         message='Zip code must be numeric 0-9 and Please lengthen phone number to 5.'
-#         #     ), ],
-#         #     initial=user.zipcode
-#         # )
-#     def a():
-#         pass
-    
-    # address = forms.CharField()
-    # city = forms.CharField()
-    # zipcode = forms.CharField()
-    
-    
-    
