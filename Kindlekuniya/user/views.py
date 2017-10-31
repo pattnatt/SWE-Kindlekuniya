@@ -9,9 +9,10 @@ from django.shortcuts import render, redirect
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db import connection
 from passlib.hash import pbkdf2_sha256
+
 
 def email_activation(user):
     domain = 'http://localhost:8000'
@@ -28,6 +29,7 @@ def email_activation(user):
     email = EmailMessage(mail_subject, message, to=[to_email])
     email.send()
 
+
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -35,7 +37,7 @@ def signup(request):
             email = request.POST['email']
             password = request.POST['password']
             password = pbkdf2_sha256.hash(password)
-            
+
             form_signup = SignupModelForm(request.POST)
             # it will return an object that hasn’t yet been saved to the database
             user = form_signup.save(commit=False)
@@ -51,7 +53,7 @@ def signup(request):
             address.save()
 
             email_activation(user)
-            alert = 'Please confirm your email address to complete the registration.'            
+            alert = 'Please confirm your email address to complete the registration.'
             return render('user_response.html', {'alert': alert})
 
     elif request.session.has_key('user_id'):
@@ -66,26 +68,28 @@ def edit_profile(request):
         form = EditProfileForm(request.POST)
         user_id = request.session['user_id']
         if form.is_valid():
-            user = User.objects.get(id = user_id)
+            user = User.objects.get(id=user_id)
             user.firstname = request.POST['firstname']
             user.lastname = request.POST['lastname']
             user.phone_number = request.POST['phone_number']
             user.save()
             return HttpResponseRedirect("/user/profile")
-    
+
     elif request.session.has_key('user_id'):
         user_id = request.session['user_id']
         user = User.objects.get(id=user_id)
-        form = EditProfileForm(initial={'firstname':user.firstname,'lastname':user.lastname,'email':user.email,'phone_number':user.phone_number})
+        form = EditProfileForm(initial={'firstname': user.firstname, 'lastname': user.lastname,
+                                        'email': user.email, 'phone_number': user.phone_number})
     else:
         return HttpResponseRedirect("/user/login")
- 
+
     return render(request, 'edit_profile.html', {'form': form})
+
 
 def change_password(request):
     if request.method == 'POST':
         form = ChangePasswordForm(request.POST)
-        if form.is_valid():    
+        if form.is_valid():
             password = request.POST['old_password']
             new_password = request.POST['new_password']
             user = User.objects.get(email=request.POST['email'])
@@ -99,71 +103,81 @@ def change_password(request):
                     request,
                     'change_password.html',
                     {'form': form, 'err': err}
-                )    
+                )
         elif request.POST['old_password'] == '':
             return HttpResponseRedirect("/user/profile")
-            
+
     elif request.session.has_key('user_id'):
         user_id = request.session['user_id']
         user = User.objects.get(id=user_id)
-        form = ChangePasswordForm(initial={'email':user.email})
+        form = ChangePasswordForm(initial={'email': user.email})
     else:
         return HttpResponseRedirect("/user/login")
- 
+
     return render(request, 'change_password.html', {'form': form})
 
+
 def reset_password(request, uidb64, token):
+    success = False
+    err = False
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and token == user.token and not user.token == '':
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_activated = False
         if request.method == 'POST':
             form = ResetPasswordForm(request.POST)
-            if form.is_valid():    
+            if form.is_valid():
                 new_password = request.POST['new_password']
                 user.password = pbkdf2_sha256.hash(new_password)
-                user.token = ''
+                user.is_activated = True
+                user.reset_password = False
                 user.save()
-                return HttpResponseRedirect("/user/login")
+                success = 'Reset password is complete.'
         else:
             form = ResetPasswordForm()
-        return render(request, 'reset_password.html', {'form': form,'uidb64':uidb64, 'token':token})
     else:
-        alert = 'Activation link is invalid!'
-        return render(request, 'user_response.html', {'alert': alert})
+        form = ResetPasswordForm()
+        err = 'Activation link is invalid!'
 
-    
+    return render(request, 'reset_password.html', {'form': form, 'uidb64': uidb64,
+                                                   'token': token, 'err': err, 'success': success})
 
 
 def forgot_password(request):
+    success = False
+    err = False
     if request.method == 'POST':
-        form = ForgotPasswordForm(request.POST)
-        if form.is_valid():   
+        form = ResendEmailForm(request.POST)
+        if form.is_valid():
             user = User.objects.get(email=request.POST['email'])
             token = account_activation_token.make_token(user)
-            user.token = token  
-            user.is_activated = 'AC'  
+            user.token = token
+            user.reset_password = True
             user.save()
-            current_site = get_current_site(request)
-            message = render_to_string('forgot_password_email.html', {
+            user.is_activated = True
+            domain = 'http://localhost:8000'
+            message = render_to_string('reset_password_email.html', {
                 'user': user,
-                'domain': current_site.domain,
+                'domain': domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': token,
             })
             mail_subject = 'Reset your password'
-            email = EmailMessage(mail_subject, message, to=[request.POST['email']])
+            to_email = request.POST['email']
+            email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-            
-            alert = 'Please check your email.'
-            return render(request, 'user_response.html', {'alert': alert})
+            success = 'Please check your email.'
+            form = ResendEmailForm()
     else:
-        form = ForgotPasswordForm()
- 
-    return render(request, 'forgot_password.html', {'form': form})
+        err = 'Please enter your email address to retrieve your password.'
+        form = ResendEmailForm()
+
+    return render(request, 'forgot_password.html', {'form': form, 'success': success, 'err': err})
+
 
 def login(request):
     if request.method == 'POST':
@@ -184,7 +198,7 @@ def login(request):
                         request,
                         'login.html',
                         {'form': form, 'err': err}
-                    )    
+                    )
             elif user.is_activated == 'WT':
                 err = "Please confirm email"
                 return render(
@@ -217,7 +231,7 @@ def logout(request):
             pass
         return HttpResponseRedirect("/user/login")
     else:
-        return render(request   , 'logout.html')
+        return render(request, 'logout.html')
 
 
 def profile(request):
@@ -254,12 +268,13 @@ def activate(request, uidb64, token):
         else:
             return HttpResponseRedirect("/user/resend_email")
 
+
 def resend_email(request):
     success = False
     err = False
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
-        if form.is_valid():   
+        if form.is_valid():
             user = User.objects.get(email=request.POST['email'])
             user.is_activated = 'WT'
             user.save()
@@ -268,4 +283,4 @@ def resend_email(request):
     else:
         form = ForgotPasswordForm()
         err = 'Your activation link is a invalid.'
-    return render(request, 'resend_email.html', {'form': form,'err':err,'success':success})
+    return render(request, 'resend_email.html', {'form': form, 'err': err, 'success': success})

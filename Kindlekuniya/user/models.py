@@ -25,7 +25,7 @@ class User(models.Model):
         choices=ACTIVE_TYPE,
         default='WT'
     )
-    forget_password = models.BooleanField(default=False)
+    reset_password = models.BooleanField(default=False)
     password = models.CharField(max_length=512, default=None)
     phone_number = models.CharField(max_length=10, default=None)
 
