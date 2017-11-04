@@ -53,8 +53,8 @@ def signup(request):
             address.save()
 
             email_activation(user)
-            alert = 'Please confirm your email address to complete the registration.'
-            return render('user_response.html', {'alert': alert})
+            success = 'Please confirm your email address to complete the registration.'
+            return render(request,'user_response.html', {'success': success})
 
     elif request.session.has_key('user_id'):
         return redirect("/logout")
@@ -251,6 +251,7 @@ def profile(request):
 
 
 def activate(request, uidb64, token):
+    success = False
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -260,11 +261,12 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_activated = 'AC'
         user.save()
-        alert = 'Thank you for your email confirmation. Now you can login your account.'
-        return render(request, 'user_response.html', {'alert': alert})
+        success = 'Thank you for your email confirmation. Now you can login your account.'
+        return render(request, 'user_response.html', {'success': success})
     else:
-        if user.is_activated == 'Active':
-            alert = "Your account is activated."
+        if user.is_activated == 'AC':
+            success = "Your account is activated."
+            return render(request, 'user_response.html', {'success': success})
         else:
             return HttpResponseRedirect("/user/resend_email")
 
@@ -274,10 +276,9 @@ def resend_email(request):
     err = False
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
-        if form.is_valid():
-            user = User.objects.get(email=request.POST['email'])
-            user.is_activated = 'WT'
-            user.save()
+        if form.is_valid() and not User.objects.get(email=email):
+            email=request.POST['email']
+            user = User.objects.get(email=email)
             email_activation(user)
             success = 'Please confirm your email address to complete the registration.'
     else:

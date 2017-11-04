@@ -7,7 +7,12 @@
        <div class="col-sm-2"></div>
        <div class="col-sm-8">
             </br>
+            {% if success %}
+            <h4  class="text-success"><center>{{ success }}</center></h4></br>
+            {% endif %}
+            {% if alert %}
             <h4><center>{{ alert }}</center></h4></br>
+            {% endif %}
             {% if link %}
             <h4><center><a href='{{ link }}'>{{ link_name }}</a></center></h4></br>
             {% endif %}
