@@ -12,7 +12,7 @@
 {% block content %}
 
     <div class = "container">
-        {% if request.session.userID %}
+        {% if request.session.user_id %}
             <h1>Order history</h1>
             <p>Welcome {{ user.firstname }} {{ user.lastname }}, these are your order history</p>
             {% render_table table %}

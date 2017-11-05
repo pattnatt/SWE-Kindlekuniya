@@ -46,13 +46,13 @@
                     </tr>
                 </thead>
 
-                {% for book, quantity in cartItem_list.items  %}
+                {% for book, quantity in cart_item_list.items  %}
 
                 <tbody class="cart-header" id="{{book.id}}">
                     <tr class="item">
                         <td data-th="Product">
                             <div class="row">
-                                <div class="col-sm-3 hidden-xs"><img src="{{book.pictureUrl.url}}" alt="Converse" class="img-product img-responsive img-rounded"/></div>
+                                <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded"/></div>
                                 <div class="col-sm-9">
                                     <h4 class="nomargin">{{book.name}}</h4>
                                 </div>
@@ -127,8 +127,8 @@
                         <td><a href="{% url 'Catalog:index' %}" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                         <td colspan="2" class="hidden-xs"></td>
                         <td></td>
-                        {% if cartItem_list %}
-                            {% if request.session.userID %}
+                        {% if cart_item_list %}
+                            {% if request.session.user_id %}
                                 <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout</a></td>
                             {% else %}
                                 <td colspan="2"><a href="{% url 'login' %}" class="btn btn-primary btn-block">Login</a></td>

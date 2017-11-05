@@ -16,8 +16,8 @@ from django.conf import global_settings
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 EMAIL_HOST =  'smtp.gmail.com'
-EMAIL_HOST_USER = 'contact.kindlekuniya@gmail.com'
-EMAIL_HOST_PASSWORD = 'genquembmomiyjfc'
+EMAIL_HOST_USER = 'supakit.kr@gmail.com'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 
@@ -30,7 +30,10 @@ SECRET_KEY = 'n(=p(9uru3qhm(290sfl@i41co40zt@k($7r1$p9*ku=d)*1*r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+    'localhost',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,6 +57,7 @@ INSTALLED_APPS = [
     'user',
     'bootstrapform',
     'cart.apps.CartConfig',
+    'passlib',
 ]
 
 SITE_ID = 1

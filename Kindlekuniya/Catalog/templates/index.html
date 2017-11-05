@@ -14,12 +14,16 @@
                         <div class="card-block">
                             <br />
                             <div class="text-center">
-                                <a href="{% url 'Catalog:detail' product.id %}">
-                                    <img src= "{{ product.pictureUrl.url }}" class="mx-auto d-block" height="200">
+                              <a href="{% url 'Catalog:detail' product.product_id %}">
+                                {% if product.picture_url.url != None %}
+                                <img src= "{{ product.picture_url.url }}" class="mx-auto d-block" height="200">
+                                {% else %}
+                                <img src= "/static/media/product_image/book_nocover.png" class="mx-auto d-block" height="200">
+                                {% endif %}
                                 </a>
                             </div>
                             <br />
-                            <a href="{% url 'Catalog:detail' product.id %}"><h4 style="text-align:center;">{{ product.name }}</h4></a>
+                            <a href="{% url 'Catalog:detail' product.product_id %}"><h4 style="text-align:center;">{{ product.name }}</h4></a>
                             <ul class="list-group list-group-flush">
                                 {% if product.quantity <= 0 %}
                                     <li class="list-group-item" style="text-align:center; color:red;">{{ product.price|floatformat:2 }} บาท - Out of Stock</li>

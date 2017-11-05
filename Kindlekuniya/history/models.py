@@ -3,14 +3,20 @@ from Catalog.models import Product
 from user.models import User, Address
 import uuid
 
+
 class HistEntry(models.Model):
-    orderId = models.UUIDField(
+    order_id = models.UUIDField(
         verbose_name='Order ID',
         primary_key=True,
-        default=uuid.uuid4,
+        default=uuid.uuid4(),
         editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True, default = None)
-    orderTime = models.DateTimeField(
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        default=None
+    )
+    order_time = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Order Time'
     )
@@ -27,9 +33,13 @@ class HistEntry(models.Model):
         choices=SHIPPING_STATUSES,
         default=PROCESS
     )
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, null = True, default = None)
-    # shippingMethod = models.ForeignKey(ShippingMethod, on_delete=models.CASCADE)
-    trackingNo = models.CharField(
+    address = models.ForeignKey(
+        Address,
+        on_delete=models.CASCADE,
+        null=True,
+        default=None
+    )
+    tracking_no = models.CharField(
         max_length=16,
         blank=True,
         default='',
@@ -41,7 +51,7 @@ class HistEntry(models.Model):
         (CREDIT, 'Credit Card'),
         # (CASH, 'Cash Transfer'),
         )
-    payMethod = models.CharField(
+    pay_method = models.CharField(
         max_length=7,
         choices=PAYMENT_METHODS,
         default=CREDIT,
@@ -49,15 +59,24 @@ class HistEntry(models.Model):
     )
 
     def __str__(self):
-        return str(self.orderId)[:8] + '-' + str(self.orderTime)
+        return str(self.order_id)[:8] + '-' + str(self.order_time)
 
 
 class HistData(models.Model):
-    orderId = models.ForeignKey(HistEntry, on_delete=models.CASCADE,)
-    productID = models.ForeignKey(Product, on_delete = models.CASCADE, null = True, default = None)
-    # orderName = models.CharField(max_length=300, verbose_name="Product Name")
+    entry_id = models.UUIDField(
+        verbose_name='Entry ID',
+        primary_key=True,
+        default=uuid.uuid4,
+        unique=True,
+        editable=False)
+    order_id = models.ForeignKey(HistEntry, on_delete=models.CASCADE,)
+    product_id = models.CharField(
+        max_length=30,
+        default=None,
+        verbose_name='Product'
+    )
     quantity = models.PositiveSmallIntegerField(default=1)
-    sumPrice = models.DecimalField(
+    sum_price = models.DecimalField(
         default=0,
         max_digits=8,
         decimal_places=2,
@@ -71,4 +90,4 @@ class HistData(models.Model):
     )
 
     def __str__(self):
-        return str(self.orderId)[:8] + '-' + str(self.productID)
+        return str(self.order_id)[:8] + '-' + str(self.product_id)
