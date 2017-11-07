@@ -12,10 +12,18 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
     </head>
     <style>
+        #lblCartCount {
+        font-size: 12px;
+        background: #df1e1e;
+        color: #fff;
+        padding: 1 6px;
+        vertical-align: top;
+}
         {% block style %}
         {% endblock %}
     </style>
     <body>
+            <div class="p-3 mb-2 bg-light text-dark">.bg-light
             <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
                     <!-- Brand/logo -->
                     <a class="navbar-brand" href="{% url 'Catalog:index' %}">
@@ -33,14 +41,13 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle " href="#" id="navbardrop" data-toggle="dropdown">
+                                    <a class="nav-link dropdown-toggle " href="#" id="navbardrop" data-toggle="dropdown" >
                                         Categories
                                     </a>
                                     <ul class="dropdown-menu">
                                             {% for genre in all_catagory %}
-                                            <li><a href="{% url 'Catalog:catagory' genre.id %}">{{genre.name}}</a></li>
+                                            <li class="nav-item"><a class="nav-link bg-light text-dark" href="{% url 'Catalog:catagory' genre.id %}">{{genre.name}}</a></li>
                                             {% endfor %}
-                
                                         </ul>
                                   </li>
                         </ul>
@@ -69,7 +76,7 @@
                                 {% endif %}
 
                                 <a class="navbar-brand nav-link" href="{% url 'cart:cart' %}">
-                                    <img class="imgcart" src={% static 'img/ShoppingCart.png' %} width=35px>
+                                    <img class="imgcart" src={% static 'img/ShoppingCart.png' %} width=35px><span ID="lblCartCount" class="badge badge-pill badge-danger">1</span>
                                 </a>
                             </ul>
                     </div>
@@ -80,5 +87,6 @@
             <br> 
             {% block content %}
             {% endblock %}
+            </div>
     </body>
     </html>

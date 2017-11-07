@@ -2,10 +2,16 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="width: 1100px; margin: 0 auto">
+    <div id="carouselExampleControls" class="carousel slide img-fluid" data-ride="carousel" style="width: 1100px; margin: 0 auto">
+         <!-- Indicators -->
+         <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
         <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block w-100" src="/static/media/slides/main-slide.jpg" alt="First slide">
+            <img class="d-block w-100" src="/static/media/slides/main.jpg" alt="First slide">
         </div>
         <div class="carousel-item">
             <img class="d-block w-100" src="/static/media/slides/1-slide.jpg" alt="Second slide">
@@ -39,7 +45,7 @@
                             <div class="text-center">
                               <a href="{% url 'Catalog:detail' product.product_id %}">
                                 {% if product.picture_url.url != None %}
-                                <img src= "{{ product.picture_url.url }}" class="mx-auto d-block" height="200">
+                                <img src= "{{ product.picture_url.url }}" class="mx-auto d-block img-fluid" height="200">
                                 {% else %}
                                 <img src= "/static/media/product_image/book_nocover.png" class="mx-auto d-block" height="200">
                                 {% endif %}
