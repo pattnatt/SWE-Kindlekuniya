@@ -16,8 +16,8 @@ from django.conf import global_settings
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 EMAIL_HOST =  'smtp.gmail.com'
-EMAIL_HOST_USER = 'supakit.kr@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'contact.kindlekuniya@gmail.com'
+EMAIL_HOST_PASSWORD = 'genquembmomiyjfc'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 
