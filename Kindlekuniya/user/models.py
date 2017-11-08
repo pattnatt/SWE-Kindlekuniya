@@ -11,7 +11,7 @@ class User(models.Model):
         ('WT', 'Waiting'),
     )
     
-    id = models.UUIDField(
+    user_id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
@@ -33,14 +33,14 @@ class User(models.Model):
         return self.email
 
 class Address(models.Model):
-    id = models.UUIDField(
+    address_id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
         unique=True
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    addr = models.CharField(max_length=512, default=None)
+    address = models.CharField(max_length=512, default=None)
     city = models.CharField(max_length=128, default=None)
     zipcode = models.CharField(max_length=5, default=None)
 
@@ -51,7 +51,7 @@ class Address(models.Model):
 class AddressModelForm(ModelForm):
     class Meta:
         model = Address
-        fields = ['addr', 'city', 'zipcode','user']
+        fields = ['address', 'city', 'zipcode','user']
 
 
 class SignupModelForm(ModelForm):

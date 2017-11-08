@@ -46,7 +46,7 @@ def signup(request):
 
             form_address = AddressModelForm()
             address = form_address.save(commit=False)
-            address.addr = request.POST['address']
+            address.address = request.POST['address']
             address.city = request.POST['city']
             address.zipcode = request.POST['zipcode']
             address.user = user
@@ -57,7 +57,7 @@ def signup(request):
             return render(request,'user_response.html', {'success': success})
 
     elif request.session.has_key('user_id'):
-        return redirect("/logout")
+        return redirect("/user/logout")
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
@@ -68,7 +68,7 @@ def edit_profile(request):
         form = EditProfileForm(request.POST)
         user_id = request.session['user_id']
         if form.is_valid():
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(user_id=user_id)
             user.firstname = request.POST['firstname']
             user.lastname = request.POST['lastname']
             user.phone_number = request.POST['phone_number']
@@ -77,7 +77,7 @@ def edit_profile(request):
 
     elif request.session.has_key('user_id'):
         user_id = request.session['user_id']
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(user_id=user_id)
         form = EditProfileForm(initial={'firstname': user.firstname, 'lastname': user.lastname,
                                         'email': user.email, 'phone_number': user.phone_number})
     else:
@@ -109,7 +109,7 @@ def change_password(request):
 
     elif request.session.has_key('user_id'):
         user_id = request.session['user_id']
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(user_id=user_id)
         form = ChangePasswordForm(initial={'email': user.email})
     else:
         return HttpResponseRedirect("/user/login")
@@ -127,13 +127,13 @@ def reset_password(request, uidb64, token):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
-        user.is_activated = False
+        user.is_activated = 'WT'
         if request.method == 'POST':
             form = ResetPasswordForm(request.POST)
             if form.is_valid():
                 new_password = request.POST['new_password']
                 user.password = pbkdf2_sha256.hash(new_password)
-                user.is_activated = True
+                user.is_activated = 'AC'
                 user.reset_password = False
                 user.save()
                 success = 'Reset password is complete.'
@@ -158,7 +158,7 @@ def forgot_password(request):
             user.token = token
             user.reset_password = True
             user.save()
-            user.is_activated = True
+            user.is_activated = 'AC'
             domain = 'http://localhost:8000'
             message = render_to_string('reset_password_email.html', {
                 'user': user,
@@ -186,14 +186,17 @@ def login(request):
 
         if form.is_valid() and User.objects.get(email=email):
             user = User.objects.get(email=email)
+            
             if user.is_activated == 'AC':
                 password = request.POST['password']
+                print(password)
+                print(user.password)
                 if pbkdf2_sha256.verify(password, user.password):
-                    request.session['user_id'] = user.id
+                    request.session['user_id'] = user.user_id
                     request.session.set_expiry(1800)
                     return HttpResponseRedirect("/user/profile")
                 else:
-                    err = "User or Password is invalid"
+                    err = "Email or Password is invalid"
                     return render(
                         request,
                         'login.html',
@@ -207,7 +210,7 @@ def login(request):
                     {'form': form, 'err': err}
                 )
             else:
-                err = "User or Password is invalid"
+                err = "Email or Password is invalid"
                 return render(
                     request,
                     'login.html',
@@ -237,9 +240,11 @@ def logout(request):
 def profile(request):
     if request.session.has_key('user_id'):
         user_id = request.session['user_id']
-        user = User.objects.get(id=user_id)
-        addr = Address.objects.get(user_id=user_id)
-        context = {'user': user, 'addr': addr}
+        user = User.objects.get(user_id=user_id)
+        address = Address.objects.get(user_id=user_id)
+        time = request.session.get_expiry_age()
+        
+        context = {'user': user, 'address': address}
         return render(request, "profile.html", context)
     else:
         try:
