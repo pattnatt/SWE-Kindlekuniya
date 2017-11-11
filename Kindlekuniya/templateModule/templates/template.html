@@ -18,12 +18,14 @@
         color: #fff;
         padding: 1 6px;
         vertical-align: top;
-}
+        }
+        body { background: rgb(240, 240, 240); }
+
         {% block style %}
         {% endblock %}
     </style>
     <body>
-            <div class="p-3 mb-2 bg-light text-dark">.bg-light
+            <!-- <div class="p-3 mb-2 bg-light text-dark "> -->
             <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
                     <!-- Brand/logo -->
                     <a class="navbar-brand" href="{% url 'Catalog:index' %}">
@@ -84,9 +86,9 @@
             <br>
             <br>
             <br>
-            <br> 
+            
             {% block content %}
             {% endblock %}
-            </div>
+            <!-- </div> -->
     </body>
     </html>
