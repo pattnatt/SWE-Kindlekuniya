@@ -42,7 +42,7 @@ def signup(request):
             # it will return an object that hasn’t yet been saved to the database
             user = form_signup.save(commit=False)
             user.password = password
-            user.save()
+            
 
             form_address = AddressModelForm()
             address = form_address.save(commit=False)
@@ -51,7 +51,9 @@ def signup(request):
             address.zipcode = request.POST['zipcode']
             address.user = user
             address.save()
-
+            
+            user.default_address = address.address_id
+            user.save()
             email_activation(user)
             success = 'Please confirm your email address to complete the registration.'
             return render(request,'user_response.html', {'success': success})
@@ -85,6 +87,12 @@ def edit_profile(request):
 
     return render(request, 'edit_profile.html', {'form': form})
 
+def edit_address(request):
+    # , {'form': form}
+    if request.method == 'POST':
+        pass
+    return render(request, 'edit_address.html',context=None)
+    
 
 def change_password(request):
     if request.method == 'POST':
