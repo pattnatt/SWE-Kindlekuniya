@@ -10,6 +10,10 @@ class User(models.Model):
         ('CL', 'Closed'),
         ('WT', 'Waiting'),
     )
+    RESET_TYPE = (
+        ('RS', 'Reset'),
+        ('CL', 'Closed'),
+    )
     
     user_id = models.UUIDField(
         primary_key=True,
@@ -25,10 +29,14 @@ class User(models.Model):
         choices=ACTIVE_TYPE,
         default='WT'
     )
-    reset_password = models.BooleanField(default=False)
+    reset_password = models.CharField(
+        max_length=2,
+        choices=RESET_TYPE,
+        default='CL'
+    )
     password = models.CharField(max_length=512, default=None)
     phone_number = models.CharField(max_length=10, default=None)
-
+    default_address = models.UUIDField(default=None)
     def __str__(self):
         return self.email
 
@@ -43,7 +51,7 @@ class Address(models.Model):
     address = models.CharField(max_length=512, default=None)
     city = models.CharField(max_length=128, default=None)
     zipcode = models.CharField(max_length=5, default=None)
-
+    
     def __str__(self):
         return self.user.email
 
