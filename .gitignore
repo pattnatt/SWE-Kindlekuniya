@@ -24,6 +24,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+esdata/elasticsearch/nodes/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
