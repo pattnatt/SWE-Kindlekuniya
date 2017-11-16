@@ -1,0 +1,36 @@
+{% extends 'template.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load static %}
+
+{% block header %}
+    <title>Transfer confirmation form</title>
+{% endblock %}
+
+{% block content %}
+
+    <div style="width:80%; margin:0 auto;">
+    <div style="float:left"; display:inline-block;>
+        {% if True %}
+            <h1>Transfer confirmation form</h1>
+            <p>Welcome {{ user.firstname }} {{ user.lastname }}, these are your orders waiting for payment</p>
+        <p>Insert table here</p>
+    </div>
+    <div style="float:right"; display:inline-block;>
+            {% if confirm_message %}
+                <p>{{ confirm_message }}<p>
+            {% endif %}
+            {% if form %}
+                <form method='POST' action=''>{% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" value="Submit" class = 'btn btn-default' />
+                </form>
+            {% endif %}
+        {% else %}
+            <h3>Please Login to confirm your payment.</h3>
+        {% endif %}
+    </div>
+    </div>
+
+
+{% endblock %}
