@@ -1,22 +1,186 @@
-{% extends 'template.html' %}
-{% load bootstrap %}
-{% block content %}
+{% extends 'template.html' %} {% load bootstrap %} {% block content %}
 
-<div class = "container">
-  <div class = "row">
-       <div class="col-xs-1 col-sm-2 col-md-3"></div>
-       <div class="col-xs-10 col-sm-8 col-md-6">
-            <h1><center>Edit Profile</center></h1></br>
-            <form method="post">
-                {% csrf_token %}
-                {{ form|bootstrap }}
+    .table-sortable tbody tr {
+        cursor: move;
+    }
 
-                <button type="submit" class="btn btn-success">Save</button>
-                <button type="cancel" class="btn btn-danger">Back</button>
-                <br/><br/>
+    input.add {
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        background-color: #6FFF5C;
+        -moz-box-shadow: 0 0 4px rgba(0, 0, 0, .75);
+        box-shadow: 0 0 4px rgba(0, 0, 0, .75);
+    }
+</style>
+
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+<div class="container">
+    <div class="row clearfix">
+            <form method="POST" id="post-form">
+            <!-- {% csrf_token %} -->
+            <!-- {{ form|bootstrap }} -->
+        <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        #
+                    </th>
+                    <th class="text-center">
+                        Address
+                    </th>
+                    <th class="text-center">
+                        City
+                    </th>
+                    <th class="text-center">
+                        Zipcode
+                    </th>
+
+                    <th class="text-center">
+                        Status
+                    </th>
+                    <th class="text-center">
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id='addr0' data-id="0" class="hidden">
+                    <td data-name="button">
+                        <button type="button" class="btn btn-success row-addsub">Add</button>
+                    </td>
+                    <td data-name="address">
+                        <textarea type="text" name='address0' placeholder='Address' class="form-control"></textarea>
+                    </td>
+                    <td data-name="city">
+                        <input type="text" name='city0' placeholder='City' class="form-control"/>
+                    </td>
+                    <td data-name="zipcode">
+                            <input type="text" name="zipcode0" placeholder="Zipcode" class="form-control"/>
+                    </td>
+                    <td data-name="status">
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="status0" onclick="checkStatus(this)" value="Optional"/>Set Default</label>
+                        </div>
+                    </td>
+
+                    <td data-name="del">
+                        <!-- <button name "del0" class='btn btn-danger row-remove'>Remove</button> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
             </form>
-      </div>
-      <div class="col-xs-1 col-sm-2 col-md-3"></div>
-  </div>
+    </div>
 </div>
-{% endblock %}
+</div>
+
+<script>
+    // using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function checkStatus(checkbox)
+        {
+            if (checkbox.checked)
+            {
+                document.getElementsByName("status0")[0].value = "Default";
+            }else{
+                document.getElementsByName("status0")[0].value = "Optional";                
+            }
+        }
+    $(document).ready(function () {
+        
+        function add_rows () {
+            // Dynamic Rows Code
+            // Get max row id and set new id
+            var newid = 0;
+            $.each($("#tab_logic tr"), function () {
+                if (parseInt($(this).data("id")) > newid) {
+                    newid = parseInt($(this).data("id"));
+                }
+            });
+            newid++;
+            var tr = $("<tr></tr>", {
+                id: "addr" + newid,
+                "data-id": newid
+            });
+            // loop through each td and create new elements with name of newid
+            $.each($("#tab_logic tbody tr:nth(0) td"), function () {
+                var cur_td = $(this);
+                var children = cur_td.children();
+                // add new td and element if it has a nane
+                if ($(this).data("name") != undefined) {
+                    var td = $("<td></td>", {
+                        "data-name": $(cur_td).data("name")
+                    });
+                    var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
+                    c.attr("name", $(cur_td).data("name") + newid);
+                    c.appendTo($(td));
+                    td.appendTo($(tr));
+                } else {
+                    var td = $("<td></td>", {
+                        'text': $('#tab_logic tr').length
+                    }).appendTo($(tr));
+                }
+            });
+            // add the new row
+            $(tr).appendTo($('#tab_logic'));
+            $(tr).find("td button.row-remove").on("click", function () {
+                $(this).closest("tr").remove();
+            });
+            $('#tab_logic').on('click', "td button.row-remove", function () {
+                var current = $(this).parents("tr");
+                if (current.attr('id')) {
+                    // Parent
+                    while (true) {
+                        var next = current.next();
+                        if (next.length == 0 || next.attr('id')) {
+                            break;
+                        }
+                        next.remove();
+                    }
+                    current.remove();
+                } else {
+                    //child
+                    current.remove();
+                }
+            });
+            $(tr).find('td button.row-addsub').on("click", function () {
+                var address = document.getElementsByName("address1")[0].value;
+                var city = document.getElementsByName("city1")[0].value;
+                var zipcode = document.getElementsByName("zipcode1")[0].value;
+                var status = document.getElementsByName("status0")[0].value;
+                $("tr").has(this).after('<tr><td>'+newid+'</td><td>'+address+'</td><td>'+city+'</td><td>'+zipcode+'</td><td><button class="btn btn-primary row-setdefault">Set Default</button></td><td><button class="btn btn-danger row-remove">Remove</button></td></tr>');
+            });
+        };
+        // Sortable Code
+        var fixHelperModified = function (e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width())
+            });
+            return $helper;
+        };
+        $(".table-sortable tbody").sortable({
+            helper: fixHelperModified
+        }).disableSelection();
+        $(".table-sortable thead").disableSelection();
+        add_rows();
+    })
+
+</script> {% endblock %}
