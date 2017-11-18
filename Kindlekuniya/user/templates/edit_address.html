@@ -9,9 +9,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="text-center">
-                            #
-                        </th>
+
                         <th class="text-center">
                             Address
                         </th>
@@ -22,94 +20,107 @@
                             Zipcode
                         </th>
 
-                        <th class="text-center">
-                            Status
-                        </th>
-                        <th class="text-center">
-                            Delete
-                        </th>
-                        <th class="text-center">
-                            Edit
-                        </th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <form method="POST">
                         {% csrf_token %}
 
-                        <tr id='addr0' data-id="0">
-                            <td width="10%">
-                                {% if edit_address  %}
-                                    <input type="hidden" id="save" name="save" value="{{ address_id }}">
-                                {% endif %}
-                                <button type="submit" class="btn btn-success">Save</button>
-                            </td>
-                            <td width="30%">
+                        <tr>
+
+                            <td width="50%">
                                 {{ form.address|bootstrap }}
                             </td>
-                            <td width="30%">
+                            <td width="40%">
                                 {{ form.city|bootstrap }}
                             </td>
                             <td width="10%">
                                 {{ form.zipcode|bootstrap }}
                             </td>
-                            <td width="10%">
 
-                            </td>
-
-                            <td width="10%">
-
-                            </td>
-                            <td width="10%">
-
-                            </td>
                         </tr>
-                    </form>
-                    {% for address in address_list %}
-                    <tr>
-                        <td>
+                </tbody>
 
-                        </td>
-                        <td>
-                            {{ address.0 }}
-                        </td>
-                        <td>
-                            {{ address.1 }}
-                        </td>
-                        <td>
-                            {{ address.2 }}
-                        </td>
-                        <td>
-                            <form method="POST">
-                                {% csrf_token %} {% if address.4 %}
-                                <button name "setdefault" class='btn btn-primary'>Set Default</button>
-                                <input type="hidden" id="setdefault" name="setdefault" value="{{ address.3 }}"> {% else %} Default Address {% endif %}
-                            </form>
-                        </td>
+                <tr>
+                    <td colspan="3" align="right">
+                        {% if edit_address %}
+                        <input type="hidden" id="save" name="save" value="{{ address_id }}"> {% endif %}
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" onclick="location.href='/user/profile'" class="btn btn-danger">Back</button>
+                    </td>
 
-                        <td>
-                            <form method="POST">
-                                {% csrf_token %} {% if address.4 %}
-                                <button name "remove" class='btn btn-danger'>Remove</button>
-                                <input type="hidden" id="remove" name="remove" value="{{ address.3 }}"> {% else %} Cannot Remove {% endif %}
+                </tr>
+                </form>
+            </table>
+            <table class="table">
+                <tr>
 
-                            </form>
-                        </td>
-                        <td>
-                            <form method="POST">
-                                {% csrf_token %}
-                                <button name "edit" class='btn btn-warning'>Edit</button>
-                                <input type="hidden" id="edit" name="edit" value="{{ address.3 }}">
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                    <thead>
+                        <th class="text-center" width='30%'>
+                            Address
+                        </th>
+                        <th class="text-center" width='30%'>
+                            City
+                        </th>
+                        <th class="text-center" width='10%'>
+                            Zipcode
+                        </th>
+
+                        <th class="text-center" width='10%'>
+                            Status
+                        </th>
+                        <th class="text-center" width='10%'>
+                            Delete
+                        </th>
+                        <th class="text-center" width='10%'>
+                            Edit
+                        </th>
+                </tr>
+                </thead>
+                {% for address in address_list %}
+                <tr>
+
+                    <td align='center'>
+                        {{ address.0 }}
+                    </td>
+                    <td align='center'>
+                        {{ address.1 }}
+                    </td>
+                    <td align='center'>
+                        {{ address.2 }}
+                    </td>
+                    <td align='center'>
+                        <form method="POST">
+                            {% csrf_token %} {% if address.4 %}
+                            <button name "setdefault" class='btn btn-primary'>Set Default</button>
+                            <input type="hidden" id="setdefault" name="setdefault" value="{{ address.3 }}"> {% else %} Default Address {% endif %}
+                        </form>
+                    </td>
+
+                    <td align='center'>
+                        <form method="POST">
+                            {% csrf_token %} {% if address.4 %}
+                            <button name "remove" class='btn btn-danger'>Remove</button>
+                            <input type="hidden" id="remove" name="remove" value="{{ address.3 }}"> {% else %} Cannot Remove {% endif %}
+
+                        </form>
+                    </td>
+                    <td align='center'>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button name "edit" class='btn btn-warning'>Edit</button>
+                            <input type="hidden" id="edit" name="edit" value="{{ address.3 }}">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
 
     </div>
 </div>
-
-
-{% endblock %}
+<br/>
+<br/>
+<br/> {% endblock %}

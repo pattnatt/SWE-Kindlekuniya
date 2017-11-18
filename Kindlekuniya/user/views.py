@@ -109,8 +109,11 @@ def edit_address(request):
     edit = False
     if request.method == 'POST':
         form = EditAddressForm(request.POST)
+        
         if form.is_valid():
+            print('==============form valid================')
             if 'save' in request.POST:
+                print('==============edit save================')
                 address_id = request.POST['save']                                
                 address = Address.objects.get(user_id=user_id,address_id=address_id)            
                 address.address = request.POST['address']
@@ -118,6 +121,8 @@ def edit_address(request):
                 address.zipcode = request.POST['zipcode']
                 address.save()
             else:
+                print('==============new save================')
+                
                 user = User.objects.get(user_id=user_id)            
                 form_address = AddressModelForm()
                 address = form_address.save(commit=False)
@@ -127,6 +132,8 @@ def edit_address(request):
                 address.user = user
                 address.save()
         else:
+            print('==============form not valid================')
+            
             if 'remove' in request.POST:
                 address_id = request.POST['remove']                
                 res = Address.objects.filter(address_id=address_id).delete()            
@@ -135,6 +142,8 @@ def edit_address(request):
                 user.default_address = request.POST['setdefault']
                 user.save()
             elif 'edit' in request.POST:
+                print('==============edit ================')
+                
                 address_id = request.POST['edit']
                 init = Address.objects.get(user=user,address_id=address_id)
                 form = EditAddressForm(initial={'address':init.address,'city':init.city,'zipcode':init.zipcode})
