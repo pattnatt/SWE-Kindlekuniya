@@ -6,15 +6,16 @@
 {% block content %}
     <form method="get" action=".">
         <div class = "row">
-            <div class="col-md-12" align="center">
-                <h2>Search</h2>
+            <div class="col-2 col-sm-3 col-md-4"></div>
+            <div class="col-8 col-sm-6 col-md-4">
+                <h2>Search Products</h2>
                 <br />
                 <table>
-                    {{ form.as_table }}
+                    {{ form|bootstrap }}
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" value="Search">
+                            <input type="submit" value="Search" class="btn btn-success">
                         </td>
                     </tr>
                 </table>

@@ -7,6 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
@@ -19,14 +20,21 @@
         padding: 1 6px;
         vertical-align: top;
         }
+
         body { background: rgb(240, 240, 240); }
+
+        .material-icons.md-21 { font-size: 21px; }
+        .material-icons.md-22 { font-size: 22px; }
+        .material-icons.md-24 { font-size: 24px; }
+        .material-icons.md-36 { font-size: 36px; }
+        .material-icons.md-48 { font-size: 48px; }
 
         {% block style %}
         {% endblock %}
     </style>
     <body>
             <!-- <div class="p-3 mb-2 bg-light text-dark "> -->
-            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
                     <!-- Brand/logo -->
                     <a class="navbar-brand" href="{% url 'Catalog:index' %}">
                             <img src={% static 'img/logo4.png' %} alt="Logo" style="width:120px;">
@@ -50,14 +58,19 @@
                                             {% for genre in all_catagory %}
                                             <li class="nav-item"><a class="nav-link bg-light text-dark" href="{% url 'Catalog:catagory' genre.id %}">{{genre.name}}</a></li>
                                             {% endfor %}
-                                        </ul>
-                                  </li>
+                                    </ul>
+                            </li>
+                            <li class="nav-item">
+                                <div class="input-group ">
+                                    <input type="text" class="form-control input-sm" placeholder="Search" name="q">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default btn-sm" ><i class="material-icons md-21">search</i></button>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                         <!-- Right -->
                         <ul class="navbar-nav ml-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/search">Search</a>
-                                </li>
                                 {% if request.session.user_id %}
                                     <li class="nav-item">
                                         <a class="nav-link" href="/history">Order History</a>
@@ -86,7 +99,7 @@
             <br>
             <br>
             <br>
-            
+
             {% block content %}
             {% endblock %}
             <!-- </div> -->
