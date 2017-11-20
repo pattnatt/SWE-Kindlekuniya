@@ -1,45 +1,92 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <title>Cart</title>
         <meta charset="utf-8">
-        <title>cart</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     </head>
 
     <body>
-        <h1 style="text-align:center">Cart</h1>
+        
+        <script>
+            $(document).ready(function() {
+                
+                $('.product-quantity input').change( function() {
+                    var price = $(this).closest('tr').children('td.price').text();
+                    var quantity = $(this).val();
+                    $(this).closest('tr').children('td.amountt').fadeOut(50, function() {
+                            $(this).text(price*quantity).fadeIn();
+                    });
+                    
+                });
+
+
+
+                $(".product-removal button").click(function() {
+                        this.closest ('tr').remove();
+                        recalculateCart();
+                });
+
+                function recalculateCart()
+                {
+                    var subtotal = 0;
+                    $('.amount').each(function () {
+                            subtotal += parseFloat($(this).text());
+                    });
+
+                    $('#total_all_in_cart').fadeOut(100, function() {
+                            $(this).html(subtotal +" THB").fadeIn();
+                    });
+                }
+            });        
+            
+
+        </script>
+
+    
 
         <style>
-         .container{
-             max-width: 1000px;
-         }
-         .table>thead>tr.names>th{
-             border-bottom: 1px;
-         }
-         .table>tbody>tr.item>td{
-             padding-bottom: 20px;
-             padding-top: 20px;
-             vertical-align: middle;
-         }
-         .table>tfoot>tr.no-border>td{
-             border-top: 0 none;
-             padding-top: 20px;
-         }
-         .img-product{
-             padding-top: 20px;
-         }
+            .header{
+                padding: 20px;
+            }
+
+            .hidden-xs{
+                font-size: 90%;
+            }
+            
+            .col{
+                padding: 20px;
+            }
+        
+        
         </style>
+
         <script type="text/javascript">           
-         var total = 0;                 
+         var total = 0;
         </script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
         
         <div class="container">
+                <div class="row">
+                        <div class="col" ></div>
+                        <div class="col" ></div>
+                        <div class="col" ></div>
+                        <div class="col" >
+                                <div class="card bg-success text-white">
+                                        <div class="card-body"><i class="fa fa-angle-double-right"></i> Item List</div>
+                                      </div>
+                        </div>
+                      </div>
             <table id="cart" class="table table-responsive">
                 <thead>
                     <tr class="names">
-                        <th style="width:50%">Product</th>
-                        <th style="width:10%" class="text-right hidden-xs">Price</th>
+                        <th >Product</th>
+                        <th style="width:10%" class="text-right">Price</th>
                         <th style="width:15%" class="text-right">Quantity</th>
                         <th style="width:10%" class="text-right">Amount</th>
                         <th style="width:5%"></th>
@@ -47,19 +94,19 @@
                 </thead>
                 
                 {% for cart in cartItem_list %}
-                
                 <tbody class="cart-header" id="{{cart.id}}">
                     <tr class="item">
                         <td data-th="Product">
                             <div class="row">
-                                <div class="col-sm-3 hidden-xs"><img src="{{cart.pictureUrl}}" alt="Converse" class="img-product img-responsive img-rounded"/></div>
+                                <div class="col-sm-3 hidden-xs"><img src="{{cart.pictureUrl}}" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
                                 <div class="col-sm-9">        
                                     <h4 class="nomargin">{{cart.name}}</h4>
                                     <p class="hidden-xs">{{cart.discription}}</p>
                                 </div>
                             </div>
                         </td>
-                        <td data-th="Price" class="text-right hidden-xs">
+
+                        <td data-th="Price" class="price text-right hidden-xs">
                             
                             {{cart.price}}
                             
@@ -70,13 +117,11 @@
                         <td data-th="Quantity" class="text-right">
                             
                             
-                            <div class="btn-group" role="group" aria-label="...">
-                                <form method="post">
+                            <div class="btn-group product-quantity" role="group" aria-label="...">
                                     {% csrf_token %}
-                                    <input id="quantity_id_{{cart.id}}" name="quantity_of_item" type="number" value="{{cart.quantity}}" style="height:10px;width:90px" min="1" max="20">
+                                    <input id="quantity_id_{{cart.id}}" name="quantity_of_item" type="number" value="{{cart.quantity}}" min="1" max="20">
                                     <input id="id_of_input_{{cart.id}}" name="id_of_input" type="hidden" value="{{cart.id}}">
-                                    <input type="submit" value="update" style="width:90px;">
-                                </form>
+
                                 <script type="text/javascript">
                                  var quantity_{{cart.id}} = {{cart.quantity}};
                                  
@@ -86,23 +131,26 @@
 
                         </td>
 
-                        <td data-th="Subtotal" class="text-right" id="amount_{{cart.id}}">
-                            {{cart.getAmount}}
+                        <td data-th="Subtotal" class="amountt text-right" id="amount_{{cart.id}}">
+                            <p class="amount">{{cart.getAmount}}</p>
                             <script type="text/javascript">
                              var amount_{{cart.id}} = {{cart.price}} * quantity_{{cart.id}};
                              total = amount_{{cart.id}} + total;
                             </script>
                         </td>
-
+                        <div class="product-removal-parent">
                         <td class="actions" data-th="">
-                            <form method="post">
+                            <div class="product-removal">
                                 {% csrf_token %}
-                                <button class="btn btn-default btn-sm" type="submit" name="delete_item" value="{{cart.id}}"><i class="fa fa-trash-o"></i></button>
-                            </form>
+                                <button class="btn btn-outline-danger" type="submit" name="delete_item" value="{{cart.id}}"><i class="fa fa-trash-o"></i></button>
+                            </div>
                         </td>
+                        </div>
+                        
                         
                     </tr>
                 </tbody>
+
                 {% endfor %}
 
                 
