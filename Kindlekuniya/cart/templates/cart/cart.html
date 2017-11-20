@@ -131,7 +131,7 @@
                             {% if request.session.user_id %}
                                 <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout</a></td>
                             {% else %}
-                                <td colspan="2"><a href="{% url 'login' %}" class="btn btn-primary btn-block">Login</a></td>
+                                <td colspan="2"><a href="{% url 'user:login' %}" class="btn btn-primary btn-block">Login</a></td>
                             {% endif %}
                         {% else %}
                             <td></td>
