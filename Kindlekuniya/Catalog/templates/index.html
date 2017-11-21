@@ -3,8 +3,27 @@
 
 {% block style %}
     #scroll {
-         overflow-x: scroll;
+         overflow: auto;
     }
+    #no_y_scroll
+    {
+         overflow-y: hidden;
+    }
+
+    #scroll::-webkit-scrollbar {
+        height: 12px;
+    }
+
+    #scroll::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    #scroll::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+    }
+
 {% endblock %}
 
 {% block content %}
@@ -77,5 +96,5 @@
             </div>
         </div>
     {% endfor %}
-    
+
 {% endblock %}
