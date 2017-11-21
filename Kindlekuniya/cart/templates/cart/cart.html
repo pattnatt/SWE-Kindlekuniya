@@ -1,58 +1,77 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <title>Cart</title>
         <meta charset="utf-8">
-        <title>cart</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
     <body>
-        <h1 style="text-align:center">Cart</h1>
 
         <style>
-         .container{
-             max-width: 1000px;
-         }
-         .table>thead>tr.names>th{
-             border-bottom: 1px;
-         }
-         .table>tbody>tr.item>td{
-             padding-bottom: 20px;
-             padding-top: 20px;
-             vertical-align: middle;
-         }
-         .table>tfoot>tr.no-border>td{
-             border-top: 0 none;
-             padding-top: 20px;
-         }
-         .img-product{
-             padding-top: 20px;
-         }
+         .header{
+                padding: 20px;
+            }
+
+            .hidden-xs{
+                font-size: 90%;
+            }
+            
+            .col{
+                padding: 20px;
+            }
+            
+            .container{
+                
+            }
         </style>
+
         <script type="text/javascript">
          var total = 0;
         </script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+       
 
         <div class="container">
+
+                <div class="row">
+                        <div class="col" ></div>
+                        <div class="col" ></div>
+                        <div class="col" ></div>
+                        <div class="col" >
+                                <div class="card bg-success text-white">
+                                        <div class="card-body"><i class="fa fa-angle-double-right"></i> Item List</div>
+                                      </div>
+                        </div>
+                      </div>
+
             <table id="cart" class="table table-responsive">
                 <thead>
                     <tr class="names">
-                        <th style="width:50%">Product</th>
-                        <th style="width:10%" class="text-right hidden-xs">Price</th>
+                        <th >Product</th>
+                        <th style="width:10%" class="text-right">Price</th>
                         <th style="width:15%" class="text-right">Quantity</th>
                         <th style="width:10%" class="text-right">Amount</th>
-                        <th style="width:5%"></th>
+                        <th style="width:10%"></th>
                     </tr>
                 </thead>
 
                 {% for book, quantity in cart_item_list.items  %}
-
+                
                 <tbody class="cart-header" id="{{book.id}}">
                     <tr class="item">
                         <td data-th="Product">
                             <div class="row">
-                                <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded"/></div>
+                                    {% if book.picture_url.url != None %}
+                                    <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                    {% else %}
+                                    <div class="col-sm-3 hidden-xs"><img src= "/static/media/product_image/book_nocover.png" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                    {% endif %}
+                                
                                 <div class="col-sm-9">
                                     <h4 class="nomargin">{{book.name}}</h4>
                                 </div>
@@ -100,7 +119,7 @@
                         <td class="actions" data-th="">
                             <form method="post">
                                 {% csrf_token %}
-                                <button class="btn btn-default btn-sm" type="submit" name="delete_item" value="{{book.id}}"><i class="fa fa-trash-o"></i></button>
+                                <button class="btn btn-outline-danger btn-sm" type="submit" name="delete_item" value="{{book.id}}"><i class="fa fa-trash-o"></i></button>
                             </form>
                         </td>
 
@@ -129,7 +148,7 @@
                         <td></td>
                         {% if cart_item_list %}
                             {% if request.session.user_id %}
-                                <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout</a></td>
+                                <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
                             {% else %}
                                 <td colspan="2"><a href="{% url 'login' %}" class="btn btn-primary btn-block">Login</a></td>
                             {% endif %}
