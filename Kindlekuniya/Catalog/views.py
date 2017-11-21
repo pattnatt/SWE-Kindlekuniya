@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
-from .models import Product, Catagory
+from .models import Product, Catagory, IndexGroup
 from django.conf import settings
 from .forms import ProductToCartForm
 
@@ -23,8 +23,10 @@ def get_product_in_cart(request):
 
 def index(request):
     products = Product.objects.all().order_by('-created_at')[0:12]
+    index_groups = IndexGroup.objects.filter(is_showing = '1').order_by('-priority')[:]
     context = {
         'products': products,
+        'index_groups': index_groups,
     }
     return render(request, 'index.html', context)
 

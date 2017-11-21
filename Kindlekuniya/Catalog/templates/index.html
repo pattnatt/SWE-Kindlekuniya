@@ -1,6 +1,12 @@
 {% extends 'template.html' %}
 {% load staticfiles %}
 
+{% block style %}
+    #scroll {
+         overflow-x: scroll;
+    }
+{% endblock %}
+
 {% block content %}
     <div id="carouselExampleControls" class="carousel slide img-fluid" data-ride="carousel" style="width: 1100px; margin: 0 auto">
          <!-- Indicators -->
@@ -30,40 +36,45 @@
         </a>
     </div>
     <br>
-    
-    <div class = "container">
-        <div class = "row">
-            <div class="col-12">
-                <h1>New Products</h1>
-                <br />
+
+    {% for group in index_groups %}
+        <br />
+        <div class="container">
+            <div class = "row">
+                <div class="col-12">
+                    <h1>{{ group.title }}</h1>
+                    <p>{{ group.description }}</p>
+                </div>
             </div>
-            {% for product in products %}
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card mx-auto">
-                        <div class="card-block">
-                            <br />
-                            <div class="text-center">
-                              <a href="{% url 'Catalog:detail' product.product_id %}">
-                                {% if product.picture_url.url != None %}
-                                <img src= "{{ product.picture_url.url }}" class="mx-auto d-block img-fluid" height="200">
-                                {% else %}
-                                <img src= "/static/media/product_image/book_nocover.png" class="mx-auto d-block" height="200">
-                                {% endif %}
-                                </a>
+            <div class="row flex-row flex-nowrap" id="scroll">
+                {% for product in group.product.all %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card mx-auto">
+                            <div class="card-block">
+                                <br />
+                                <div class="text-center">
+                                  <a href="{% url 'Catalog:detail' product.product_id %}">
+                                    {% if product.picture_url.url != None %}
+                                    <img src= "{{ product.picture_url.url }}" class="mx-auto d-block img-fluid" height="200">
+                                    {% else %}
+                                    <img src= "/static/media/product_image/book_nocover.png" class="mx-auto d-block" height="200">
+                                    {% endif %}
+                                    </a>
+                                </div>
+                                <br />
+                                <a href="{% url 'Catalog:detail' product.product_id %}"><h4 style="text-align:center;">{{ product.name }}</h4></a>
+                                <ul class="list-group list-group-flush">
+                                    {% if product.quantity <= 0 %}
+                                        <li class="list-group-item" style="text-align:center; color:red;">{{ product.price|floatformat:2 }} บาท - Out of Stock</li>
+                                    {% else %}
+                                        <li class="list-group-item" style="text-align:center;">{{ product.price|floatformat:2 }} บาท</li>
+                                    {% endif %}
+                                </ul>
                             </div>
-                            <br />
-                            <a href="{% url 'Catalog:detail' product.product_id %}"><h4 style="text-align:center;">{{ product.name }}</h4></a>
-                            <ul class="list-group list-group-flush">
-                                {% if product.quantity <= 0 %}
-                                    <li class="list-group-item" style="text-align:center; color:red;">{{ product.price|floatformat:2 }} บาท - Out of Stock</li>
-                                {% else %}
-                                    <li class="list-group-item" style="text-align:center;">{{ product.price|floatformat:2 }} บาท</li>
-                                {% endif %}
-                            </ul>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endfor %}
 {% endblock %}

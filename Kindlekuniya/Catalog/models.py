@@ -78,3 +78,32 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class IndexGroup(models.Model):
+    SHOWING_BOOLEAN = (
+        ('1', 'Yes'),
+        ('0', 'No'),
+    )
+
+    PRIORITY = (
+        ('5', '5 (Highest)'),
+        ('4', '4'),
+        ('3', '3'),
+        ('2', '2'),
+        ('1', '1 (Lowest)'),
+    )
+
+    name = models.CharField(max_length=250)
+    title = models.CharField(max_length=250)
+    description = models.TextField(blank=True)
+    product = models.ManyToManyField(Product)
+    priority = models.CharField(
+        max_length = 1,
+        choices = PRIORITY,
+        default = '1',
+    )
+    is_showing = models.CharField(
+        max_length = 1,
+        choices = SHOWING_BOOLEAN,
+        default = '1',
+    )
