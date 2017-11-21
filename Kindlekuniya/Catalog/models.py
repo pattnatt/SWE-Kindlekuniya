@@ -107,3 +107,9 @@ class IndexGroup(models.Model):
         choices = SHOWING_BOOLEAN,
         default = '1',
     )
+
+    def __str__(self):
+        if self.is_showing == '1' :
+            return self.priority + " - Showing - " + self.name
+        else :
+            return self.priority + " - Hiding - " + self.name
