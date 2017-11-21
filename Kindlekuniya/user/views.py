@@ -39,11 +39,8 @@ def signup(request):
             password = pbkdf2_sha256.hash(password)
 
             form_signup = SignupModelForm(request.POST)
-            # it will return an object that hasn’t yet been saved to the database
             user = form_signup.save(commit=False)
             user.password = password
-            
-
             form_address = AddressModelForm()
             address = form_address.save(commit=False)
             address.address = request.POST['address']
@@ -91,9 +88,9 @@ def get_address(user_id):
     address_list = []
     user = User.objects.get(user_id=user_id)        
     for value in Address.objects.filter(user=user):
-        default = True
+        default = ''
         if value.address_id == user.default_address:
-            default = False
+            default = 'disabled'
         address_list.append([value.address,value.city,value.zipcode,value.address_id,default])
     return address_list
 
@@ -111,9 +108,7 @@ def edit_address(request):
         form = EditAddressForm(request.POST)
         
         if form.is_valid():
-            print('==============form valid================')
             if 'save' in request.POST:
-                print('==============edit save================')
                 address_id = request.POST['save']                                
                 address = Address.objects.get(user_id=user_id,address_id=address_id)            
                 address.address = request.POST['address']
@@ -121,8 +116,6 @@ def edit_address(request):
                 address.zipcode = request.POST['zipcode']
                 address.save()
             else:
-                print('==============new save================')
-                
                 user = User.objects.get(user_id=user_id)            
                 form_address = AddressModelForm()
                 address = form_address.save(commit=False)
@@ -132,8 +125,6 @@ def edit_address(request):
                 address.user = user
                 address.save()
         else:
-            print('==============form not valid================')
-            
             if 'remove' in request.POST:
                 address_id = request.POST['remove']                
                 res = Address.objects.filter(address_id=address_id).delete()            
@@ -142,8 +133,6 @@ def edit_address(request):
                 user.default_address = request.POST['setdefault']
                 user.save()
             elif 'edit' in request.POST:
-                print('==============edit ================')
-                
                 address_id = request.POST['edit']
                 init = Address.objects.get(user=user,address_id=address_id)
                 form = EditAddressForm(initial={'address':init.address,'city':init.city,'zipcode':init.zipcode})
