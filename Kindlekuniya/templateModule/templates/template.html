@@ -92,7 +92,10 @@
                                 </li>
                             {% endif %}
                                 <a class="navbar-brand nav-link" href="{% url 'cart:cart' %}">
-                                <img class="imgcart" src={% static 'img/ShoppingCart.png' %} width=35px><span ID="lblCartCount" class="badge badge-pill badge-danger">1</span>
+                                <img class="imgcart" src={% static 'img/ShoppingCart.png' %} width=35px>
+                            {% if product_count > 0 %}
+                                <span ID="lblCartCount" class="badge badge-pill badge-danger">{{ product_count }}</span>
+                            {% endif %}
                             </a>
                         </ul>
                     </div>

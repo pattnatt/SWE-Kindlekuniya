@@ -22,6 +22,18 @@ def get_product_in_cart(request):
                         cart_product[product] = request.session[key]
     return cart_product
 
+def get_product_count_in_cart(request):
+    product_count = 0
+    if request.session.keys():
+        for key in request.session.keys():
+            if len(str(key)) > len(cart_prefix):
+                if str(key)[0:len(cart_prefix)] == cart_prefix:
+                    product = Product.objects.get(
+                        product_id=str(key)[len(cart_prefix):]
+                    )
+                    if product:
+                        product_count += int(request.session[key])
+    return product_count
 
 def index(request):
     products = Product.objects.all().order_by('-created_at')[0:12]
@@ -42,12 +54,9 @@ def detail(request, product_id):
     warning_message_2 = None
     form = None
     current_quantity = 0
-    for key in request.session.keys():
-        if len(str(key)) > len(cart_prefix):
-            if (str(key)[0:len(cart_prefix)] == cart_prefix and
-            str(key)[len(cart_prefix):] == product_id):
-                current_quantity = request.session[key]
-                break
+    key = cart_prefix + product_id
+    if key in request.session:
+        current_quantity = request.session[key]
 
     if confirm_message_stock:
         confirm_message = confirm_message_stock
@@ -64,7 +73,7 @@ def detail(request, product_id):
         if form.is_valid():
             product_id = product.product_id
             quantity = int(form.cleaned_data['quantity'])
-            request.session[cart_prefix + str(product_id)] = quantity + current_quantity
+            request.session[key] = quantity + current_quantity
 
             confirm_message_stock = str(quantity) + " " + str(product.name) + " has been added to your cart."
             return HttpResponseRedirect(reverse("Catalog:detail", args=(product_id,)))
