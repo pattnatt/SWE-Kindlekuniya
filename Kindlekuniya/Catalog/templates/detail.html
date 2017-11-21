@@ -2,7 +2,12 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{% block script %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock %}
+
 {% block content %}
+    <br />
     <div class = "container">
         <div class = "row">
           <div class="col-12 col-md-6 col-lg-4">
@@ -33,20 +38,29 @@
                 <div class = "col-12">
                     {% if product.quantity <= 0 %}
                         <h5 style="color:red;">Out of Stock</h5>
-
                     {% elif product.quantity == 1 %}
                         <h5 style="color:orange;">Only 1 item left</h5>
-                    {% elif product.quantity < quantityWarning %}
+                    {% elif product.quantity < quantity_warning %}
                         <h5 style="color:orange;">Only {{ product.quantity }} items left</h5>
                     {% else %}
                         <h5 style="color:LimeGreen;">In stock</h5>
                     {% endif %}
                     <br />
+                    {% if warning_message_1 %}
+                        <h6 style="color:red;">{{ warning_message_1 }}</h6>
+                    {%  endif %}
+                    {% if warning_message_2 %}
+                        <h6 style="color:red;">{{ warning_message_2 }}</h6>
+                    {%  endif %}
+                    {% if warning_message_1 %}
+                        <br />
+                    {%  endif %}
                 </div>
 
                 {% if form %}
                     <div class = "col-12">
-                        <form method='POST' action=''>{% csrf_token %}
+                        <form method='POST' action=''>
+                            {% csrf_token %}
                             {{ form|crispy }}
                             <input type="submit" value="Add to Cart" class = 'btn btn-success' />
                         </form>
@@ -55,9 +69,9 @@
                 {% endif %}
 
                 {% if confirm_message %}
-                    <div class = "col-12">
-                        <p>{{ confirm_message }}</p>
-                    </div>
+                <script>
+                    swal ( "Success", "{{ confirm_message }}" ,  "success" )
+                </script>
                 {% endif %}
 
                 <div class = "col-12">

@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.urls import reverse
 from .models import Product, Catagory, IndexGroup
 from django.conf import settings
 from .forms import ProductToCartForm
 
 cart_prefix = 'CART_PRODUCT_'
+confirm_message_stock = None
 
 
 def get_product_in_cart(request):
@@ -32,27 +34,60 @@ def index(request):
 
 
 def detail(request, product_id):
+    global confirm_message_stock
     product = Product.objects.get(product_id=product_id)
     quantity_warning = 20
     confirm_message = None
+    warning_message_1 = None
+    warning_message_2 = None
     form = None
+    current_quantity = 0
+    for key in request.session.keys():
+        if len(str(key)) > len(cart_prefix):
+            if (str(key)[0:len(cart_prefix)] == cart_prefix and
+            str(key)[len(cart_prefix):] == product_id):
+                current_quantity = request.session[key]
+                break
 
-    if product.quantity > 0:
+    if confirm_message_stock:
+        confirm_message = confirm_message_stock
+        confirm_message_stock = None
+
+    if (product.quantity > 0 and current_quantity < quantity_warning
+    and current_quantity < product.quantity):
         form = ProductToCartForm(
             request.POST or None,
-            max_order=min(quantity_warning, product.quantity)
+            max_order=min(quantity_warning - current_quantity, product.quantity
+            , product.quantity - current_quantity),
+            current_quantity = current_quantity,
         )
         if form.is_valid():
             product_id = product.product_id
             quantity = int(form.cleaned_data['quantity'])
-            confirm_message = "Added to cart."
-            request.session[cart_prefix + str(product_id)] = quantity
+            request.session[cart_prefix + str(product_id)] = quantity + current_quantity
+
+            confirm_message_stock = str(quantity) + " " + str(product.name) + " has been added to your cart."
+            return HttpResponseRedirect(reverse("Catalog:detail", args=(product_id,)))
+    elif product.quantity > 0 :
+        if current_quantity == quantity_warning and product.quantity > quantity_warning :
+            warning_message_1 = ("You cannot add more item to your cart because you already have "
+            + str(current_quantity) + " items in your cart.")
+            warning_message_2 = ("If you want to purchase more than 20 items, please contact us in contact form.")
+        elif current_quantity > 1 :
+            warning_message_1 = ("You cannot add more item to your cart because you already have "
+            + str(current_quantity) + " items in your cart.")
+        else :
+            warning_message_1 = ("You cannot add more item to your cart because you already have "
+            + str(current_quantity) + " item in your cart.")
 
     context = {
         'product': product,
         'quantity_warning': quantity_warning,
+        'current_quantity': current_quantity,
         'form': form,
         'confirm_message': confirm_message,
+        'warning_message_1': warning_message_1,
+        'warning_message_2': warning_message_2,
     }
     return render(request, 'detail.html', context)
 
