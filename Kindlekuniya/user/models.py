@@ -53,7 +53,7 @@ class Address(models.Model):
     zipcode = models.CharField(max_length=5, default=None)
     
     def __str__(self):
-        return self.user.email
+        return self.address+ " "+self.city + " " + self.zipcode
 
 
 class AddressModelForm(ModelForm):
