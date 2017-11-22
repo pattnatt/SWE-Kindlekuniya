@@ -164,3 +164,18 @@ class ResetPasswordForm(forms.Form):
             raise forms.ValidationError("Password don't match.")
 
         return self.cleaned_data
+
+class EditAddressForm(forms.Form):
+    address = forms.CharField(
+        required=True, max_length=128, widget=forms.Textarea(),label='')
+    city = forms.CharField(required=True, max_length=128,label='')
+    zipcode = forms.CharField(
+        required=True,
+        max_length=5,
+        min_length=5,
+        validators=[RegexValidator(
+            regex='^[0-9]*$',
+            message='Zip code must be numeric 0-9 and Please lengthen phone number to 5.'
+        ),],
+        label=''   
+    )

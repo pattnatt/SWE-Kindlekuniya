@@ -1,22 +1,120 @@
-{% extends 'template.html' %}
-{% load bootstrap %}
-{% block content %}
+{% extends 'template.html' %} {% load bootstrap %} {% block content %}
 
-<div class = "container">
-  <div class = "row">
-       <div class="col-xs-1 col-sm-2 col-md-3"></div>
-       <div class="col-xs-10 col-sm-8 col-md-6">
-            <h1><center>Edit Profile</center></h1></br>
-            <form method="post">
-                {% csrf_token %}
-                {{ form|bootstrap }}
+<script>
+    function remove_confirm() {
+        return confirm('Do you really want to remove?');
+    }
+</script>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            Address
+                        </th>
+                        <th class="text-center">
+                            City
+                        </th>
+                        <th class="text-center">
+                            Zipcode
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <tr>
+                            <td width="50%">
+                                {{ form.address|bootstrap }}
+                            </td>
+                            <td width="40%">
+                                {{ form.city|bootstrap }}
+                            </td>
+                            <td width="10%">
+                                {{ form.zipcode|bootstrap }}
+                            </td>
+                        </tr>
+                </tbody>
 
-                <button type="submit" class="btn btn-success">Save</button>
-                <button type="cancel" class="btn btn-danger">Back</button>
-                <br/><br/>
-            </form>
-      </div>
-      <div class="col-xs-1 col-sm-2 col-md-3"></div>
-  </div>
+                <tr>
+                    <td colspan="3" align="right">
+                        {% if edit_address %}
+                        <input type="hidden" id="save" name="save" value="{{ address_id }}"> 
+                        {% endif %}
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" onclick="location.href='/user/profile'" class="btn btn-danger">Back</button>
+                    </td>
+                </tr>
+                </form>
+            </table>
+            <table class="table">
+                <tr>
+                    <thead>
+                        <th class="text-center" width='30%'>
+                            Address
+                        </th>
+                        <th class="text-center" width='30%'>
+                            City
+                        </th>
+                        <th class="text-center" width='10%'>
+                            Zipcode
+                        </th>
+                        <th class="text-center" width='10%'>
+                            Status
+                        </th>
+                        <th class="text-center" width='10%'>
+                            Delete
+                        </th>
+                        <th class="text-center" width='10%'>
+                            Edit
+                        </th>
+                </tr>
+                </thead>
+                {% for address in address_list %}
+                <tr>
+                    <td align='center'>
+                        {{ address.0 }}
+                    </td>
+                    <td align='center'>
+                        {{ address.1 }}
+                    </td>
+                    <td align='center'>
+                        {{ address.2 }}
+                    </td>
+                    <td align='center'>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button name "setdefault" class='btn btn-primary' {{ address.4 }}>Set Default</button>
+                            <input type="hidden" id="setdefault" name="setdefault" value="{{ address.3 }}"> 
+                            
+                        </form>
+                    </td>
+
+                    <td align='center'>
+                        <form method="POST" onsubmit="return remove_confirm();">
+                            {% csrf_token %} 
+                            <button name "remove" class='btn btn-danger' {{ address.4 }} >Remove</button>
+                            <input type="hidden" id="remove" name="remove" value="{{ address.3 }}"> 
+
+                        </form>
+                    </td>
+                    <td align='center'>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button name "edit" class='btn btn-warning'>Edit</button>
+                            <input type="hidden" id="edit" name="edit" value="{{ address.3 }}">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </div>
-{% endblock %}
+<br/>
+<br/>
+<br/> {% endblock %}
