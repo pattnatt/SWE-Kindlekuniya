@@ -109,6 +109,7 @@
                     <li><a href="/search">Search</a></li>
                     {% if request.session.user_id %}
                         <li><a href="/history">Order History</a></li>
+                        <li><a href="/transfer">Send Confirmation</a></li>
                         <li><a href="{% url 'user:profile' %}">Profile</a></li>
                         <li><a href="{% url 'user:logout' %}">Logout</a></li>
                     {% else %}

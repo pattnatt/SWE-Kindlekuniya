@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^history/', include('history.urls')),
     url(r'^user/',include('user.urls')),
     url(r'^cart/' , include('cart.urls')),
+    url(r'^transfer/' , include('transfer.urls')),
 ]

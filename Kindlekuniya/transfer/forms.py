@@ -1,5 +1,13 @@
 from django import forms
 from history.models import HistEntry
+from user.models import User
+
+
+def get_user(request):
+    if(request.session.has_key('user_id')):
+        return User.objects.get(user_id=request.session['user_id'])
+    else:
+        return None
 
 
 class TransferForm(forms.Form):
@@ -17,7 +25,7 @@ class TransferForm(forms.Form):
         self.request = kwargs.pop("request")
         super(TransferForm, self).__init__(*args, **kwargs)
         self.fields["order_id"].queryset = HistEntry.objects.filter(
-            user=self.request.user_id,
+            user=get_user(self.request),
             status='WAITING',
             pay_method='CASH',
         )
