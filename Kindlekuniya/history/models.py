@@ -61,7 +61,7 @@ class HistEntry(models.Model):
     )
 
     def __str__(self):
-        return str(self.order_id)[:8] + '-' + str(self.order_time)
+        return str(self.order_id)[:8] + ' - ' + str(self.order_time)[:16]
 
 
 class HistData(models.Model):

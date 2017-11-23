@@ -3,6 +3,7 @@ from django.conf import settings
 from .forms import TransferForm
 from user.models import User
 from .models import TransferEntry
+from history.models import HistData
 
 def index(request):
     title = 'Transfer Confirmation Form'

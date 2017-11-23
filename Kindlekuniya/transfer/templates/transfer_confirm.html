@@ -10,13 +10,8 @@
 {% block content %}
 <div class="container">
   {% if request.session.user_id %}
+  <h1 align="center">Transfer confirmation form</h1>
   <div class="row">
-    <div class="col-sm-6">
-      <h1>Transfer confirmation form</h1>
-      <p>Welcome {{ user.firstname }} {{ user.lastname }}, these are your orders waiting for payment</p>
-      <p>TODO : Insert "order waiting for transfer" table here</p>
-      <p>TODO : Display sensible options in form</p>
-    </div>
     <div class="col-sm-6">
       {% if confirm_message %}
       <p>{{ confirm_message }}</p>
@@ -30,6 +25,26 @@
         <input type="submit" value="Submit" class = 'btn btn-default' />
       </form>
       {% endif %}
+    </div>
+    <div class="col-sm-6">
+      <h4>Detail for order {{order_id}}</h4>
+      <table class="table table-responsive">
+        <thead>
+          <tr class="names">
+            <th>Product</th>
+            <th style="width:10%" class="text-right">Price</th>
+            <th style="width:15%" class="text-right">Quantity</th>
+            <th style="width:10%" class="text-right">Amount</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <td>A</td>
+          <td></td>
+          <td>{{tax}}</td>
+          <td></td>
+        </tbody>
+      </table>
     </div>
   </div>
   {% else %}
