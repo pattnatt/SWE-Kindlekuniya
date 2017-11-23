@@ -33,7 +33,7 @@ class HistEntry(models.Model):
     status = models.CharField(
         max_length=7,
         choices=SHIPPING_STATUSES,
-        default=PROCESS
+        default=WAITING
     )
     address = models.ForeignKey(
         Address,
@@ -56,7 +56,7 @@ class HistEntry(models.Model):
     pay_method = models.CharField(
         max_length=7,
         choices=PAYMENT_METHODS,
-        default=CREDIT,
+        default=CASH,
         verbose_name="Payment Method"
     )
 
