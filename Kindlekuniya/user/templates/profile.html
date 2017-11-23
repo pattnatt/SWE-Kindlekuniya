@@ -22,18 +22,23 @@
                 </tr>
                 <tr>
                     <td>Address</td>
-                    <td>:  {{addr.addr}}</td>
+                    <td>:  {{address.address}}</td>
                 </tr>
                 <tr>
                     <td>City</td>
-                    <td>:  {{addr.city}}</td>
+                    <td>:  {{address.city}}</td>
                 </tr>
                 <tr>
                     <td>Zipcode</td>
-                    <td>:  {{addr.zip}}</td>
+                    <td>:  {{address.zipcode}}</td>
                 </tr>
+            
                 </tbody>
             </table>
+            
+  <button  type="button" onclick="location.href='/user/edit_profile'" class="btn btn-primary">Edit Profile</button>
+  <button  type="button" onclick="location.href='/user/edit_address'" class="btn btn-success">Edit Address</button>
+  <button  type="button" onclick="location.href='/user/change_password'" class="btn btn-danger">Change Password</button>
       </div>
       <div class="col-xs-1 col-sm-3 col-md-4"></div>
   </div>

@@ -81,7 +81,7 @@ def PaymentView(request):
 
     if request.session.has_key('user_id') and items:
         user = User.objects.get(user_id=request.session['user_id'])
-        address = Address.objects.get(user_id=request.session['user_id'])
+        address = Address.objects.get(user_id=request.session['user_id'],address_id=user.default_address)
 
         new_entry = HistEntry(user=user, address=address,)
         new_entry.save()
