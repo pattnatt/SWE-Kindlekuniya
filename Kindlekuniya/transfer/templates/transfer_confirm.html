@@ -4,38 +4,39 @@
 {% load static %}
 
 {% block header %}
-    <title>Transfer confirmation form</title>
+<title>Transfer confirmation form</title>
 {% endblock %}
 
 {% block content %}
-
-    <div style="width:80%; margin:0 auto;">
-    <div style="float:left"; display:inline-block;>
-        {% if True %}
-            <h1>Transfer confirmation form</h1>
-        <p>Welcome {{ user.firstname }} {{ user.lastname }}, these are your orders waiting for payment</p>
-        <p>TODO : Check login</p>
-        <p>TODO : Insert "order waiting for transfer" table here</p>
-        <p>TODO : Display sensible options in form</p>
+<div class="container">
+  {% if request.session.user_id %}
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Transfer confirmation form</h1>
+      <p>Welcome {{ user.firstname }} {{ user.lastname }}, these are your orders waiting for payment</p>
+      <p>TODO : Insert "order waiting for transfer" table here</p>
+      <p>TODO : Display sensible options in form</p>
     </div>
-    <div style="float:right"; display:inline-block;>
-            {% if confirm_message %}
-                <p>{{ confirm_message }}<p>
-            {% endif %}
-            {% if form %}
-                <h3>Transfer your payment to :</h3>
-                <h5><b> Bank of Thailand, 000-000-00001, Main branch</b></h5>
-                <h5> Account under registered name "FAKE ACCOUNT"</h5>
-                <form method='POST' action=''>{% csrf_token %}
-                    {{ form|crispy }}
-                    <input type="submit" value="Submit" class = 'btn btn-default' />
-                </form>
-            {% endif %}
-        {% else %}
-            <h3>Please Login to confirm your payment.</h3>
-        {% endif %}
+    <div class="col-sm-6">
+      {% if confirm_message %}
+      <p>{{ confirm_message }}</p>
+      {% endif %}
+      {% if form %}
+      <h3>Transfer your payment to :</h3>
+      <h5><b> Bank of Thailand, 000-000-00001, Main branch</b></h5>
+      <h5> Account under registered name "FAKE ACCOUNT"</h5>
+      <form method='POST' action=''>{% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Submit" class = 'btn btn-default' />
+      </form>
+      {% endif %}
     </div>
-    </div>
-
-
+  </div>
+  {% else %}
+  <div class="container" style="margin:0 auto; width: 80%;">
+    <h3>Please Login to confirm your payment.</h3>
+    <a href="{% url 'user:login' %}" class="btn btn-primary btn-block">Login</a>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}
