@@ -74,9 +74,9 @@
                                 <div class="text-center">
                                   <a href="{% url 'Catalog:detail' product.product_id %}">
                                     {% if product.picture_url.url != None %}
-                                    <img src= "{{ product.picture_url.url }}" class="mx-auto d-block img-fluid" height="200">
+                                    <img src= "data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="mx-auto d-block img-fluid" height="200" data-src="{{ product.picture_url.url }}">
                                     {% else %}
-                                    <img src= "/static/media/product_image/book_nocover.png" class="mx-auto d-block" height="200">
+                                    <img src= "data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="mx-auto d-block " height="200" data-src="/static/media/product_image/book_nocover.png">
                                     {% endif %}
                                     </a>
                                 </div>

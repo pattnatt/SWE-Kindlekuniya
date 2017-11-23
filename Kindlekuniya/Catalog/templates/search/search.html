@@ -38,7 +38,11 @@
                                         <br />
                                         <div class="text-center">
                                             <a href="{% url 'Catalog:detail' product.object.id %}">
-                                                <img src= "{{ product.object.pictureUrl.url }}" class="mx-auto d-block" height="200">
+                                                {% if product.picture_url.url != None %}
+                                                <img src= "data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="mx-auto d-block img-fluid" height="200" data-src="{{ product.object.pictureUrl.url }}">
+                                                {% else %}
+                                                <img src= "data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="mx-auto d-block " height="200" data-src="/static/media/product_image/book_nocover.png">
+                                                {% endif %}
                                             </a>
                                         </div>
                                         <br />
