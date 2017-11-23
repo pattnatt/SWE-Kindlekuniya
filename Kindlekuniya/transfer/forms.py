@@ -19,7 +19,7 @@ class TransferForm(forms.Form):
         required=True,
         max_digits=10
     )
-    transfer_date = forms.DateTimeField()
+    transfer_datetime = forms.DateTimeField()
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")

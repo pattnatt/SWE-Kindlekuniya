@@ -20,6 +20,7 @@ class HistEntry(models.Model):
         auto_now_add=True,
         verbose_name='Order Time'
     )
+    WAITING = 'WAITING'
     PROCESS = 'PROCESS'
     TRANSIT = 'TRANSIT'
     RECEIVE = 'RECEIVE'
@@ -27,6 +28,7 @@ class HistEntry(models.Model):
         (PROCESS, 'Processing'),
         (TRANSIT, 'In Transit'),
         (RECEIVE, 'Received'),
+        (WAITING, 'Waiting for Payment'),
         )
     status = models.CharField(
         max_length=7,
@@ -49,7 +51,7 @@ class HistEntry(models.Model):
     CASH = 'CASH'
     PAYMENT_METHODS = (
         (CREDIT, 'Credit Card'),
-        # (CASH, 'Cash Transfer'),
+        (CASH, 'Cash Transfer'),
         )
     pay_method = models.CharField(
         max_length=7,
@@ -71,7 +73,7 @@ class HistData(models.Model):
         editable=False)
     order_id = models.ForeignKey(HistEntry, on_delete=models.CASCADE,)
     product_id = models.CharField(
-        max_length=30,
+        max_length=36,
         default=None,
         verbose_name='Product'
     )

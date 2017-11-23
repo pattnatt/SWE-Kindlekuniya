@@ -13,12 +13,12 @@ def index(request):
         owner = User.objects.get(user_id=request.session['user_id'])
         order_id = form.cleaned_data["order_id"]
         value = form.cleaned_data["value"]
-        transfer_date = form.cleaned_data["transfer_date"]
+        transfer_datetime = form.cleaned_data["transfer_datetime"]
         new_entry = TransferEntry(
             owner=owner,
             order_id=order_id,
             value=value,
-            transfer_date=transfer_date,
+            transfer_date=transfer_datetime,
         )
         new_entry.save()
 

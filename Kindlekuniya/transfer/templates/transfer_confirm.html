@@ -22,6 +22,9 @@
                 <p>{{ confirm_message }}<p>
             {% endif %}
             {% if form %}
+                <h3>Transfer your payment to :</h3>
+                <h5><b> Bank of Thailand, 000-000-00001, Main branch</b></h5>
+                <h5> Account under registered name "FAKE ACCOUNT"</h5>
                 <form method='POST' action=''>{% csrf_token %}
                     {{ form|crispy }}
                     <input type="submit" value="Submit" class = 'btn btn-default' />
