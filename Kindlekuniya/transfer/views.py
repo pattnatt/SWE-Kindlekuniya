@@ -6,21 +6,22 @@ from .models import TransferEntry
 from history.models import HistData
 from Catalog.models import Product
 
-global order_id
-global total_sum
-
 def index(request):
     title = 'Transfer Confirmation Form'
     form_id = HistoryForm(request.POST or None, request=request)
     form = TransferForm(request.POST or None)
     confirm_message = None
-    order_id = None
     detail = None
     total_sum = 0
     book_title = {}
 
+    order_id = request.session.get('order_id')
+    if not order_id:
+        order_id = None
+
     if form_id.is_valid():
         order_id = form_id.cleaned_data["order_id"]
+        request.session['order_id'] = order_id
         detail = HistData.objects.filter(order_id=order_id)
         count = 0
         for data in detail:
@@ -28,9 +29,8 @@ def index(request):
             book_title[count] = Product.objects.get(product_id=data.product_id)
             count = count + 1
 
-    if form.is_valid() and form_id.is_valid():
+    if form.is_valid() and order_id:
         owner = User.objects.get(user_id=request.session['user_id'])
-        order_id = form_id.cleaned_data["order_id"]
         value = form.cleaned_data["value"]
         transfer_datetime = form.cleaned_data["transfer_datetime"]
         new_entry = TransferEntry(

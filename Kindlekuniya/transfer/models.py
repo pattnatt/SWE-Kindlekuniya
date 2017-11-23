@@ -19,7 +19,6 @@ class TransferEntry(models.Model):
         verbose_name="Total Transfer"
     )
     transfer_date = models.DateTimeField(
-        auto_now_add=True,
         verbose_name="Transfer Date"
     )
     owner = models.ForeignKey(
