@@ -37,16 +37,42 @@
             <th>Product</th>
             <th style="width:15%" class="text-right">Quantity</th>
             <th style="width:10%" class="text-right">Amount</th>
-            <th style="width:5%"></th>
           </tr>
         </thead>
         {% for data in detail %}
         <tbody>
-          <td></td>
+          {% if forloop.counter0 == 0 %}
+          <td>{{ book_title.0 }}</td>
+          {% elif forloop.counter0 == 1 %}
+          <td>{{ book_title.1 }}</td>
+          {% elif forloop.counter0 == 2 %}
+          <td>{{ book_title.2 }}</td>
+          {% elif forloop.counter0 == 3 %}
+          <td>{{ book_title.3 }}</td>
+          {% elif forloop.counter0 == 4 %}
+          <td>{{ book_title.4 }}</td>
+          {% elif forloop.counter0 == 5 %}
+          <td>{{ book_title.5 }}</td>
+          {% elif forloop.counter0 == 6 %}
+          <td>{{ book_title.6 }}</td>
+          {% elif forloop.counter0 == 7 %}
+          <td>{{ book_title.7 }}</td>
+          {% elif forloop.counter0 == 8 %}
+          <td>{{ book_title.8 }}</td>
+          {% elif forloop.counter0 == 9 %}
+          <td>{{ book_title.9 }}</td>
+          {% else %}
+          <td> ... </td>
+          {% endif %}
           <td>{{ data.quantity }}</td>
           <td>{{ data.tax }}</td>
         </tbody>
         {% endfor %}
+        <tbody>
+          <td></td>
+          <td>Total of </td>
+          <td>{{ total_sum }} THB</td>
+        </tbody>
       </table>
     </div>
   </div>

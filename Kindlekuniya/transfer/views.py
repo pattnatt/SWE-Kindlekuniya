@@ -7,6 +7,7 @@ from history.models import HistData
 from Catalog.models import Product
 
 global order_id
+global total_sum
 
 def index(request):
     title = 'Transfer Confirmation Form'
@@ -15,10 +16,17 @@ def index(request):
     confirm_message = None
     order_id = None
     detail = None
+    total_sum = 0
+    book_title = {}
 
     if form_id.is_valid():
         order_id = form_id.cleaned_data["order_id"]
         detail = HistData.objects.filter(order_id=order_id)
+        count = 0
+        for data in detail:
+            total_sum = total_sum + data.tax
+            book_title[count] = Product.objects.get(product_id=data.product_id)
+            count = count + 1
 
     if form.is_valid() and form_id.is_valid():
         owner = User.objects.get(user_id=request.session['user_id'])
@@ -45,5 +53,7 @@ def index(request):
         'order_id': order_id,
         'confirm_message': confirm_message,
         'detail': detail,
+        'total_sum': total_sum,
+        'book_title': book_title,
     }
     return render(request, 'transfer_confirm.html', context)
