@@ -8,17 +8,15 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-            <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
     <body>
 
         <style>
-         
-         .hidden-xs{
+          .hidden-xs{
                 font-size: 90%;
             }
-
             .col{
                 padding: 20px;
             }
@@ -44,11 +42,11 @@
                 <table id="cart" class="table table-responsive">
                         <thead>
                             <tr class="names">
-                                <th style="width:50%">Product</th>
-                                <th style="width:10%" class="text-right">Price</th>
+                                <th>Product</th>
+                                <th style="width:10%" class="text-right hidden-xs">Price</th>
                                 <th style="width:15%" class="text-right">Quantity</th>
                                 <th style="width:10%" class="text-right">Amount</th>
-                                <th style="width:5%"></th>
+                                <th style="width:10%"></th>
                             </tr>
                         </thead>
 
@@ -59,7 +57,11 @@
                                 <td data-th="Product">
 
                                     <div class="row">
-                                        <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                            {% if book.picture_url.url != None %}
+                                            <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                            {% else %}
+                                            <div class="col-sm-3 hidden-xs"><img src= "/static/media/product_image/book_nocover.png" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                            {% endif %}
                                         <div class="col-sm-9">
                                             <h4 class="nomargin">{{book.name}}</h4>
                                         </div>
@@ -79,10 +81,20 @@
 
 
                                 </td>
+
+                                <td data-th="Subtotal" class="text-right" id="amount_{{book.id}}">
+                                        {% widthratio book.price 1 quantity %}
+                                        <script type="text/javascript">
+                                         var amount_{{book.id}} = {{book.price}} * quantity_{{book.id}};
+                                         total = amount_{{book.id}} + total;
+                                        </script>
+                                    </td>
+
                                 <script type="text/javascript">
                                     total += {% widthratio book.price 1 quantity %};
                                    </script>
 
+                                <td></td>
 
                                 {% endfor %}
 
@@ -105,13 +117,12 @@
                                     <strong>
                                         <script type="text/javascript">
                                             document.write(total+ " THB");
-
                                            </script>
                                     </strong>
                                 </td>
                                 <td></td>
 
-                            </tr> 
+                            </tr>
 
                             <tr>
                                     <td></td>
@@ -121,7 +132,6 @@
                                         <strong>
                                             <script type="text/javascript">
                                                 document.write(shipping+ " THB");
-
                                                </script>
                                         </strong>
                                     </td>
@@ -137,7 +147,6 @@
                                         <strong>
                                             <script type="text/javascript">
                                                 document.write(shipping+total+ " THB");
-
                                                </script>
                                         </strong>
                                     </td>
@@ -149,7 +158,7 @@
                                 <td><a href="{% url 'Catalog:index' %}" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                                 <td colspan="2" class="hidden-xs"></td>
                                 <td></td>
-                                <td><a href="{% url 'cart:payment' %}" class="btn btn-success btn-block">Process To Payment <i class="fa fa-angle-right"></i></a></td>
+                                <td><a href="{% url 'cart:address' %}" class="btn btn-success btn-block">Next <i class="fa fa-angle-right"></i></a></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -161,6 +170,5 @@
 
     </body>
     <script>
-
     </script>
 </html>

@@ -8,17 +8,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
 
     <body>
-        
 
         <style>
          .header{
                 padding: 20px;
             }
-
             .hidden-xs{
                 font-size: 90%;
             }
@@ -26,11 +24,16 @@
             .col{
                 padding: 20px;
             }
+            
+            .container{
+                
+            }
         </style>
+
         <script type="text/javascript">
          var total = 0;
         </script>
-        
+       
 
         <div class="container">
 
@@ -48,21 +51,26 @@
             <table id="cart" class="table table-responsive">
                 <thead>
                     <tr class="names">
-                        <th>Product</th>
+                        <th >Product</th>
                         <th style="width:10%" class="text-right">Price</th>
                         <th style="width:15%" class="text-right">Quantity</th>
                         <th style="width:10%" class="text-right">Amount</th>
-                        <th style="width:5%"></th>
+                        <th style="width:10%"></th>
                     </tr>
                 </thead>
 
                 {% for book, quantity in cart_item_list.items  %}
-
+                
                 <tbody class="cart-header" id="{{book.id}}">
                     <tr class="item">
                         <td data-th="Product">
                             <div class="row">
-                                <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                    {% if book.picture_url.url != None %}
+                                    <div class="col-sm-3 hidden-xs"><img src="{{book.picture_url.url}}" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                    {% else %}
+                                    <div class="col-sm-3 hidden-xs"><img src= "/static/media/product_image/book_nocover.png" alt="Converse" class="img-product img-responsive img-rounded img-fluid"/></div>
+                                    {% endif %}
+                                
                                 <div class="col-sm-9">
                                     <h4 class="nomargin">{{book.name}}</h4>
                                 </div>
@@ -92,7 +100,6 @@
                                 </form>
                                 <script type="text/javascript">
                                  var quantity_{{book.id}} = {{quantity}};
-
                                 </script>
 
                             </div>
@@ -110,7 +117,7 @@
                         <td class="actions" data-th="">
                             <form method="post">
                                 {% csrf_token %}
-                                <button class="btn btn-default btn-sm" type="submit" name="delete_item" value="{{book.id}}"><i class="fa fa-trash-o"></i></button>
+                                <button class="btn btn-outline-danger btn-sm" type="submit" name="delete_item" value="{{book.id}}"><i class="fa fa-trash-o"></i></button>
                             </form>
                         </td>
 
@@ -139,9 +146,9 @@
                         <td></td>
                         {% if cart_item_list %}
                             {% if request.session.user_id %}
-                                <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout</a></td>
+                                <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
                             {% else %}
-                                <td colspan="2"><a href="{% url 'user:login' %}" class="btn btn-primary btn-block">Login</a></td>
+                                <td colspan="2"><a href="#" class="btn btn-primary btn-block">Login</a></td>
                             {% endif %}
                         {% else %}
                             <td></td>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+            <title>Cart</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+
+    <body>
+
+        <style>
+          .hidden-xs{
+                font-size: 90%;
+            }
+            .col{
+                padding: 20px;
+            }
+        </style>
+        <script type="text/javascript">
+         var total = 0;
+         var shipping = 0;
+        </script>
+       
+        <div class="container">
+
+                <div class="row">
+                        <div class="col" ></div>
+                        <div class="col" ></div>
+                        <div class="col" ></div>
+                        <div class="col" >
+                                <div class="card bg-success text-white">
+                                        <div class="card-body"><i class="fa fa-angle-double-right"></i> Address</div>
+                                      </div>
+                        </div>
+                      </div>
+
+                
+                </div>
+
+                <div class="row">
+                        <div class="col" >
+                        </div>
+                        <div class="col" >
+                                <h5>Address For Shipping</h2>
+                        </div>
+                        <div class="col" ></div>
+                        <div class="col" ></div>
+                </div>
+
+                
+                <div class="row">
+                        <div class="col" ></div>
+                        <div class="col-6" >    
+                <table class="table">
+                    <tr>
+                        <thead>
+                            <th class="text-center" width='30%'>
+                                Address
+                            </th>
+                            <th class="text-center" width='30%'>
+                                City
+                            </th>
+                            <th class="text-center" width='10%'>
+                                Zipcode
+                            </th>
+                           
+                    </tr>
+                    </thead>
+                    {% for address in address_list %}
+                    <tr>
+                        <td align='center'>
+                            {{ address.0 }}
+                        </td>
+                        <td align='center'>
+                            {{ address.1 }}
+                        </td>
+                        <td align='center'>
+                            {{ address.2 }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                <div class="col" ></div>
+                
+                </div>
+
+                <div class="row">
+                        <div class="col" >
+                        </div>
+                        <div class="col" >
+                            
+                        </div>
+                        <div class="col" >
+                                <td colspan="2"><a href="{% url 'user:edit_address' %}" class="btn btn-danger btn-block">Edit Address</a></td>
+                        </div>
+                        <div class="col" >
+                                
+                        </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" >
+                    </div>
+                    <div class="col" >
+                        </div>
+                    <div class="col" >
+                         <a href="{% url 'Catalog:index' %}" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a>                 
+                    </div>
+                    <div class="col" ></div>
+                    <div class="col" >
+                        </div>
+                    <div class="col" ><a href="#" class="btn btn-success btn-block">Payment <i class="fa fa-angle-right"></i></a></div>
+                    <div class="col" ></div>
+                    <div class="col" ></div>
+                </div>
+                        
+                   
+
+        </div>
+
+
+
+    </body>
+    <script>
+    </script>
+</html>
