@@ -21,6 +21,9 @@
       <h5><b> Bank of Thailand, 000-000-00001, Main branch</b></h5>
       <h5> Account under registered name "FAKE ACCOUNT"</h5>
       <form method='POST' action=''>{% csrf_token %}
+        {{ form_id|crispy }}
+      </form>
+      <form method='POST' action=''>{% csrf_token %}
         {{ form|crispy }}
         <input type="submit" value="Submit" class = 'btn btn-default' />
       </form>
@@ -32,18 +35,18 @@
         <thead>
           <tr class="names">
             <th>Product</th>
-            <th style="width:10%" class="text-right">Price</th>
             <th style="width:15%" class="text-right">Quantity</th>
             <th style="width:10%" class="text-right">Amount</th>
             <th style="width:5%"></th>
           </tr>
         </thead>
+        {% for data in detail %}
         <tbody>
-          <td>A</td>
           <td></td>
-          <td>{{tax}}</td>
-          <td></td>
+          <td>{{ data.quantity }}</td>
+          <td>{{ data.tax }}</td>
         </tbody>
+        {% endfor %}
       </table>
     </div>
   </div>
