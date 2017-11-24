@@ -40,6 +40,16 @@ def get_product_in_cart(request):
                         cart_product[product] = request.session[key]
     return cart_product
 
+def delete_product_in_cart(request):
+    cart_product = []
+    if request.session.keys():
+        for key in request.session.keys():
+            if len(str(key)) > len(cart_prefix):
+                if str(key)[0:len(cart_prefix)] == cart_prefix:
+                    cart_product.append(key)
+        for key in cart_product :
+            del request.session[key]
+
 def get_product_count_in_cart(request):
     product_count = 0
     if request.session.keys():

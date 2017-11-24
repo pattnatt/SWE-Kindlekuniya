@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from Catalog.views import get_product_in_cart, cart_prefix, get_shipping_price
+from Catalog.views import get_product_in_cart, cart_prefix, get_shipping_price, delete_product_in_cart
 from Catalog.models import Product
 from history.models import HistEntry, HistData
 from user.models import User, Address
@@ -111,6 +111,7 @@ def PaymentView(request):
             product.quantity -= int(quantity)
             product.save()
         message = 'Checkout Success'
+        delete_product_in_cart(request)
 
     context = {
         'message': message,
