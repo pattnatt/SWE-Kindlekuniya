@@ -8,7 +8,8 @@ urlpatterns = [
     # /-> catalog homepage
     url(r'^$', views.index, name='index'),
     # /search -> catalog search
-    url(r'^search/', include('haystack.urls'), name='search1'),
+    url(r'^search/$', views.product_search_blank, name='search_blank'),
+    url(r'^search/(?P<key_word>[\w\ ]+)/$', views.product_search, name='search'),
     # /detail/(number) -> product's details
     url(r'^detail/(?P<product_id>[0-9a-f-]+)/$', views.detail, name='detail'),
     # /catagory/(number) -> catagory's product

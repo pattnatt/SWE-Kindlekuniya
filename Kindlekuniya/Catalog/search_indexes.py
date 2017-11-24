@@ -1,6 +1,7 @@
 import datetime
 from haystack import indexes
 from .models import Product
+from haystack.query import SearchQuerySet
 
 
 class ProductIndex(indexes.SearchIndex, indexes.Indexable):
@@ -13,3 +14,6 @@ class ProductIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
+
+    def no_query_found(self):
+        return self.searchqueryset.exclude(content='foo')

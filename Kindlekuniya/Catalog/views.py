@@ -4,10 +4,28 @@ from django.urls import reverse
 from .models import Product, Catagory, IndexGroup
 from django.conf import settings
 from .forms import ProductToCartForm
+from haystack.generic_views import SearchView
+from haystack.query import SearchQuerySet
 
 cart_prefix = 'CART_PRODUCT_'
 confirm_message_stock = None
 
+def product_search(request, key_word):
+    key_words = key_word.split(' ')
+    sqs = SearchQuerySet().all().exclude(content='thisshouldnotmatchanythingintheindex')
+    for word in key_words :
+        sqs = sqs.filter(content = word)
+
+    context = {
+        'key_word' : key_word,
+        'sqs': sqs,
+    }
+    return render(request, 'search/search.html', context)
+
+def product_search_blank(request):
+    context = {
+    }
+    return render(request, 'search/search.html', context)
 
 def get_product_in_cart(request):
     cart_product = {}
@@ -140,6 +158,7 @@ def detail(request, product_id):
 
             confirm_message_stock = str(quantity) + " " + str(product.name) + " has been added to your cart."
             return HttpResponseRedirect(reverse("Catalog:detail", args=(product_id,)))
+
     elif product.quantity > 0 :
         if current_quantity == quantity_warning and product.quantity > quantity_warning :
             warning_message_1 = ("You cannot add more item to your cart because you already have "
