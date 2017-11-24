@@ -28,12 +28,10 @@ EMAIL_USE_TLS = True
 SECRET_KEY = 'n(=p(9uru3qhm(290sfl@i41co40zt@k($7r1$p9*ku=d)*1*r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    '0.0.0.0',
-    'localhost',
+    'Kindlekuniya.pythonanywhere.com',
 ]
 # Application definition
 
@@ -119,10 +117,15 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Kindlekuniya',
+        'USER': 'patt',
+        'PASSWORD': 'patt0078',
+        'HOST': 'Kindlekuniya-591.postgres.pythonanywhere-services.com',
+        'PORT': 10591,
     }
 }
 
@@ -165,10 +168,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-if DEBUG :
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "static"),
-    ]
-    MEDIA_URL = '/static/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
-    STATIC_ROOT = os.path.join(BASE_DIR, "static","static-only")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+MEDIA_URL = '/static/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
+STATIC_ROOT = os.path.join(BASE_DIR, "static","static-only")
