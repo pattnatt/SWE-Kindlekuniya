@@ -48,7 +48,7 @@ def signup(request):
             address.zipcode = request.POST['zipcode']
             address.user = user
             address.save()
-            
+
             user.default_address = address.address_id
             user.save()
             email_activation(user)
@@ -86,7 +86,7 @@ def edit_profile(request):
 
 def get_address(user_id):
     address_list = []
-    user = User.objects.get(user_id=user_id)        
+    user = User.objects.get(user_id=user_id)
     for value in Address.objects.filter(user=user):
         default = ''
         if value.address_id == user.default_address:
@@ -95,34 +95,34 @@ def get_address(user_id):
     return address_list
 
 def edit_address(request):
-    
+
     if not request.session.has_key('user_id'):
         return HttpResponseRedirect("/user/login")
-        
+
     user_id = request.session['user_id']
-    user = User.objects.get(user_id=user_id)        
-    
+    user = User.objects.get(user_id=user_id)
+
     address_list = get_address(user_id)
     edit = False
     from_cart = False
-    
+
     if 'from' in request.GET:
         if request.GET['from'] == 'cart':
             from_cart = True
 
     if request.method == 'POST':
         form = EditAddressForm(request.POST)
-        
+
         if form.is_valid():
             if 'save' in request.POST:
-                address_id = request.POST['save']                                
-                address = Address.objects.get(user_id=user_id,address_id=address_id)            
+                address_id = request.POST['save']
+                address = Address.objects.get(user_id=user_id,address_id=address_id)
                 address.address = request.POST['address']
                 address.city = request.POST['city']
                 address.zipcode = request.POST['zipcode']
                 address.save()
             else:
-                user = User.objects.get(user_id=user_id)            
+                user = User.objects.get(user_id=user_id)
                 form_address = AddressModelForm()
                 address = form_address.save(commit=False)
                 address.address = request.POST['address']
@@ -132,8 +132,8 @@ def edit_address(request):
                 address.save()
         else:
             if 'remove' in request.POST:
-                address_id = request.POST['remove']                
-                res = Address.objects.filter(address_id=address_id).delete()            
+                address_id = request.POST['remove']
+                res = Address.objects.filter(address_id=address_id).delete()
             elif 'setdefault' in request.POST:
                 user = User.objects.get(user_id=user_id)
                 user.default_address = request.POST['setdefault']
@@ -144,11 +144,11 @@ def edit_address(request):
                 form = EditAddressForm(initial={'address':init.address,'city':init.city,'zipcode':init.zipcode})
                 edit_address = True
                 return render(request, 'edit_address.html',{'address_list':address_list,'form':form,'edit_address':edit_address,'address_id':address_id,'from_cart':from_cart})
-    address_list = get_address(user_id)                
+    address_list = get_address(user_id)
     form = EditAddressForm()
     return render(request, 'edit_address.html',{'address_list':address_list,'form':form,'from_cart':from_cart})
-   
-    
+
+
 
 def change_password(request):
     if request.method == 'POST':
@@ -250,11 +250,9 @@ def login(request):
 
         if form.is_valid() and User.objects.get(email=email):
             user = User.objects.get(email=email)
-            
+
             if user.is_activated == 'AC':
                 password = request.POST['password']
-                print(password)
-                print(user.password)
                 if pbkdf2_sha256.verify(password, user.password):
                     request.session['user_id'] = user.user_id
                     request.session.set_expiry(1800)
@@ -307,7 +305,7 @@ def profile(request):
         user = User.objects.get(user_id=user_id)
         address = Address.objects.get(user_id=user_id,address_id=user.default_address)
         time = request.session.get_expiry_age()
-        
+
         context = {'user': user, 'address': address}
         return render(request, "profile.html", context)
     else:

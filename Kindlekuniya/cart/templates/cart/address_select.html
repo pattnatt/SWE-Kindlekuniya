@@ -25,7 +25,7 @@
          var total = 0;
          var shipping = 0;
         </script>
-       
+
         <div class="container">
 
                 <div class="row">
@@ -39,7 +39,7 @@
                         </div>
                       </div>
 
-                
+
                 </div>
 
                 <div class="row">
@@ -52,10 +52,10 @@
                         <div class="col" ></div>
                 </div>
 
-                
+
                 <div class="row">
                         <div class="col" ></div>
-                        <div class="col-6" >    
+                        <div class="col-6" >
                 <table class="table">
                     <tr>
                         <thead>
@@ -68,7 +68,7 @@
                             <th class="text-center" width='10%'>
                                 Zipcode
                             </th>
-                           
+
                     </tr>
                     </thead>
                     {% for address in address_list %}
@@ -88,20 +88,20 @@
                 </table>
                 </div>
                 <div class="col" ></div>
-                
+
                 </div>
 
                 <div class="row">
                         <div class="col" >
                         </div>
                         <div class="col" >
-                            
+
                         </div>
                         <div class="col" >
                                 <td colspan="2"><a href="{% url 'user:edit_address' %}?from=cart" class="btn btn-danger btn-block">Edit Address</a></td>
                         </div>
                         <div class="col" >
-                                
+
                         </div>
                 </div>
 
@@ -111,17 +111,17 @@
                     <div class="col" >
                         </div>
                     <div class="col" >
-                         <a href="{% url 'Catalog:index' %}" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a>                 
+                         <a href="{% url 'Catalog:index' %}" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a>
                     </div>
                     <div class="col" ></div>
                     <div class="col" >
                         </div>
-                    <div class="col" ><a href="#" class="btn btn-success btn-block">Payment <i class="fa fa-angle-right"></i></a></div>
+                    <div class="col" ><a href="{% url 'cart:payment' %}" class="btn btn-success btn-block">Payment <i class="fa fa-angle-right"></i></a></div>
                     <div class="col" ></div>
                     <div class="col" ></div>
                 </div>
-                        
-                   
+
+
 
         </div>
 

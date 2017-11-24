@@ -32,4 +32,4 @@ class TransferForm(forms.Form):
         required=True,
         max_digits=10
     )
-    transfer_datetime = forms.DateTimeField()
+    transfer_datetime = forms.DateTimeField(help_text = "Format : YYYY-MM-DD HH:MM")

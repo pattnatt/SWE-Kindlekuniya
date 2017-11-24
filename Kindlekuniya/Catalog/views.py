@@ -35,6 +35,69 @@ def get_product_count_in_cart(request):
                         product_count += int(request.session[key])
     return product_count
 
+def get_product_weight(request):
+    product_weight = 0
+    if request.session.keys():
+        for key in request.session.keys():
+            if len(str(key)) > len(cart_prefix):
+                if str(key)[0:len(cart_prefix)] == cart_prefix:
+                    product = Product.objects.get(
+                        product_id=str(key)[len(cart_prefix):]
+                    )
+                    if product:
+                        product_weight += (float(product.weight) *  float(request.session[key]))
+    return product_weight
+
+def get_shipping_price(request):
+    product_weight = get_product_weight(request)
+
+    if product_weight < 20 :
+        return 45.0 / 1.0
+    elif product_weight < 100 :
+        return 50.0 / 1.0
+    elif product_weight < 250 :
+        return 55.0 / 1.0
+    elif product_weight < 500 :
+        return 65.0 / 1.0
+    elif product_weight < 1000 :
+        return 80.0 / 1.0
+    elif product_weight < 1500 :
+        return 95.0 / 1.0
+    elif product_weight < 2000 :
+        return 110.0 / 1.0
+    elif product_weight < 2500 :
+        return 140.0 / 1.0
+    elif product_weight < 3000 :
+        return 155.0 / 1.0
+    elif product_weight < 3500 :
+        return 180.0 / 1.0
+    elif product_weight < 4000 :
+        return 200.0 / 1.0
+    elif product_weight < 4500 :
+        return 220.0 / 1.0
+    elif product_weight < 5000 :
+        return 240.0 / 1.0
+    elif product_weight < 5500 :
+        return 265.0 / 1.0
+    elif product_weight < 6000 :
+        return 280.0 / 1.0
+    elif product_weight < 6500 :
+        return 305.0 / 1.0
+    elif product_weight < 7000 :
+        return 330.0 / 1.0
+    elif product_weight < 7500 :
+        return 355.0 / 1.0
+    elif product_weight < 8000 :
+        return 380.0 / 1.0
+    elif product_weight < 8500 :
+        return 410.0 / 1.0
+    elif product_weight < 9000 :
+        return 440.0 / 1.0
+    elif product_weight < 9500 :
+        return 470.0 / 1.0
+    else :
+        return 500.0 / 1.0
+
 def index(request):
     products = Product.objects.all().order_by('-created_at')[0:12]
     index_groups = IndexGroup.objects.filter(is_showing = '1').order_by('-priority')[:]

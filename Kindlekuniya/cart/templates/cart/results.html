@@ -23,9 +23,10 @@
         </style>
         <script type="text/javascript">
          var total = 0;
-         var shipping = 0;
+         var shipping = {{ shipping_price }};
+         console.log(shipping);
         </script>
-       
+
         <div class="container">
 
                 <div class="row">
@@ -137,7 +138,7 @@
                                     </td>
                                     <td></td>
 
-                            </tr> 
+                            </tr>
 
                             <tr>
                                     <td></td>

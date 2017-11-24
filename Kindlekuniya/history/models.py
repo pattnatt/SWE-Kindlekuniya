@@ -59,6 +59,7 @@ class HistEntry(models.Model):
         default=CASH,
         verbose_name="Payment Method"
     )
+    shipping_price = models.IntegerField(default = 0)
 
     def __str__(self):
         return str(self.order_id)[:8] + ' - ' + str(self.order_time)[:16]
