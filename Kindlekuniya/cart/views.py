@@ -36,12 +36,28 @@ def ResultsView(request):
     template_name = 'cart/results.html'
     items = get_product_in_cart(request)
     shipping_price = 0 + get_shipping_price(request)
-    print(shipping_price)
-    print(str(shipping_price))
+
     context = {
         'cart_item_list': items,
         'shipping_price' : shipping_price,
     }
+
+    if request.method == 'POST' and request.session['user_id']  and items:
+        if request.POST.get('update_session'):
+            book_dict = request.POST.dict()
+            for book_id, book_quantity in book_dict.items():
+                if len(str(book_id)) > len('update_cart_'):
+                    if str(book_id)[0:len('update_cart_')] == 'update_cart_':
+                        product_id=str(book_id)[len('update_cart_'):]
+                        request.session[cart_prefix + str(product_id)] = int(book_quantity)
+            items = get_product_in_cart(request)
+            shipping_price = 0 + get_shipping_price(request)
+            context = {
+                'cart_item_list': items,
+                'shipping_price' : shipping_price,
+            }
+            #return HttpResponse("ok")
+            return render(request, template_name, context)
 
     return render(request, template_name, context)
 

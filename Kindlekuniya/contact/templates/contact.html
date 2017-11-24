@@ -1,5 +1,6 @@
 {% extends 'template.html' %}
 {% load crispy_forms_tags %}
+{% load bootstrap %}
 {% block style %}
     h1 {
         text-align: center;
@@ -30,7 +31,7 @@
             {% endif %}
             {% if form %}
                 <form method='POST' action=''>{% csrf_token %}
-                    {{ form|crispy }}
+                    {{ form|bootstrap }}
                     <input type="submit" value="submit form" class = 'btn btn-default' />
                 </form>
             {% endif %}
