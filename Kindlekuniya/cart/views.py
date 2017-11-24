@@ -15,24 +15,12 @@ def IndexView(request):
     }
 
     if request.method == 'POST':
-        if request.POST.get('id_of_input'):
-            item_id = request.POST.get('id_of_input')
-            item_quantity = request.POST.get('quantity_of_item')
-            for book, quantity in items.items():
-                if book.id == int(item_id):
-                    request.session[cart_prefix + str(book.id)] = item_quantity
-
-            items = get_product_in_cart(request)
-            context = {
-                'cart_item_list': items,
-            }
-            return render(request, template_name, context)
-        elif request.POST.get('delete_item'):
+        if request.POST.get('delete_item'):
             item_id = request.POST.get('delete_item')
             for book, quantity in items.items():
-                if book.id == int(item_id):
-                    del request.session[cart_prefix + str(book.id)]
-
+                if str(book.product_id) == str(item_id):
+                    del request.session[cart_prefix + str(book.product_id)]
+    
             items = get_product_in_cart(request)
             context = {
                 'cart_item_list': items,
