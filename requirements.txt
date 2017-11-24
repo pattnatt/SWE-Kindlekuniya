@@ -9,3 +9,4 @@ Pillow
 urllib3
 elasticsearch==2.4.1
 passlib
+Whoosh

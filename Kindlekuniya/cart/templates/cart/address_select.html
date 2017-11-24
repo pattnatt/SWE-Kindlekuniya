@@ -1,26 +1,49 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-            <title>Cart</title>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
+{% extends 'template.html' %}
+{% load staticfiles %}
 
-    <body>
+{% block script %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
 
-        <style>
-          .hidden-xs{
+{% block style %}
+            .header{
+                padding: 20px;
+            }
+            .hidden-xs{
                 font-size: 90%;
             }
+            
             .col{
                 padding: 20px;
             }
-        </style>
+            
+            .container{
+                align: center;
+            }
+			
+			#cart-head {
+				text-align: center;
+				margin: 30px auto;
+			}
+			
+            .address-body {
+                background: #FFFFFF;
+            }
+            
+            .address-head {
+                background: #fcfcfc;
+            }
+            
+            .cart-tfoot {
+                background: #fcfcfc;
+            }
+            
+            .address-header {
+                background: #d3d3d3;
+            }
+{% endblock %}
+
+{% block content %}
         <script type="text/javascript">
          var total = 0;
          var shipping = 0;
@@ -28,27 +51,15 @@
 
         <div class="container">
 
-                <div class="row">
-                        <div class="col" ></div>
-                        <div class="col" ></div>
-                        <div class="col" ></div>
-                        <div class="col" >
-                                <div class="card bg-success text-white">
-                                        <div class="card-body"><i class="fa fa-angle-double-right"></i> Address</div>
-                                      </div>
-                        </div>
-                      </div>
-
-
-                </div>
+                <h1 id="cart-head">Select Address</h1>
 
                 <div class="row">
                         <div class="col" >
                         </div>
-                        <div class="col" >
+                        <div class="col address-header" >
                                 <h5>Address For Shipping</h2>
                         </div>
-                        <div class="col" ></div>
+                        <div class="col address-header" ></div>
                         <div class="col" ></div>
                 </div>
 
@@ -58,7 +69,7 @@
                         <div class="col-6" >
                 <table class="table">
                     <tr>
-                        <thead>
+                        <thead class="address-head">
                             <th class="text-center" width='30%'>
                                 Address
                             </th>
@@ -72,7 +83,7 @@
                     </tr>
                     </thead>
                     {% for address in address_list %}
-                    <tr>
+                    <tr class="address-body">
                         <td align='center'>
                             {{ address.0 }}
                         </td>
@@ -124,10 +135,4 @@
 
 
         </div>
-
-
-
-    </body>
-    <script>
-    </script>
-</html>
+{% endblock %}

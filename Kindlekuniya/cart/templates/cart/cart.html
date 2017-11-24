@@ -1,20 +1,12 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>Cart</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
+{% extends 'template.html' %}
+{% load staticfiles %}
 
-    <body>
+{% block script %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
 
-        <style>
-			.header{
+{% block style %}
+            .header{
                 padding: 20px;
             }
             .hidden-xs{
@@ -34,10 +26,21 @@
 				margin: 30px auto;
 			}
 			
-			#cart {
-				
-			}
-        </style>
+            .cart-header {
+                background: #FFFFFF;
+            }
+            
+            .cart-thead {
+                background: #d3d3d3;
+            }
+            
+            .cart-tfoot {
+                background: #fcfcfc;
+            }
+{% endblock %}
+
+{% block content %}
+
 
         <script type="text/javascript">
          var total = 0;
@@ -50,7 +53,7 @@
         <div class="container">
 
             <table id="cart" class="table table-responsive">
-                <thead>
+                <thead class="cart-thead">
                     <tr class="names">
                         <th style="width:50%" class="text-left">Product</th>
                         <th style="width:15%" class="text-right">Price</th>
@@ -186,7 +189,7 @@
 
 
                 <tfoot>
-                    <tr>
+                    <tr class="cart-tfoot">
                         <td></td>
                         <td class="hidden-xs" colspan="1"></td>
                         <td class="text-right">Total</td>
@@ -230,6 +233,6 @@
                 </tfoot>
             </table>
         </div>
+{% endblock %}
 
-    </body>
-</html>
+

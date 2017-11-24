@@ -10,19 +10,19 @@ services:
       - "8000:8000"
       - "9091:9091"
       
-  es:
-    image: elasticsearch:2.4.6
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      mem_limit: 1g
-    volumes:
-      - ./Kindlekuniya/esdata:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9300:9300"
+#  es:
+#    image: elasticsearch:2.4.6
+#    environment:
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#      mem_limit: 1g
+#    volumes:
+#      - ./Kindlekuniya/esdata:/usr/share/elasticsearch/data
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
