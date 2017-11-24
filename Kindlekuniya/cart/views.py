@@ -38,27 +38,22 @@ def ResultsView(request):
     context = {
         'cart_item_list': items,
     }
-
-    if request.method == 'POST' and request.session['user_id'] and items:
-        user = User.objects.get(user_id=request.session['user_id'])
-        address = Address.objects.get(user_id=(request.session['user_id']))
-
-        new_entry = HistEntry(user=user, address=address,)
-        new_entry.save()
-
-        for product, quantity in items.items():
-            new_data = HistData(
-                order_id=new_entry,
-                product_id=str(product.product_id),
-                quantity=quantity,
-                sum_price=product.price*quantity,
-                tax=product.price*quantity,
-            )
-            new_data.save()
-            product.quantity -= quantity
-            product.save()
-        return render(request, template_name, context)
-
+    
+    if request.method == 'POST' and request.session['user_id']  and items:
+        if request.POST.get('update_session'):
+            book_dict = request.POST.dict()
+            for book_id, book_quantity in book_dict.items():                
+                if len(str(book_id)) > len('update_cart_'):
+                    if str(book_id)[0:len('update_cart_')] == 'update_cart_':
+                        product_id=str(book_id)[len('update_cart_'):]
+                        request.session[cart_prefix + str(product_id)] = int(book_quantity)                    
+            items = get_product_in_cart(request)
+            context = {
+                'cart_item_list': items,
+            }
+            #return HttpResponse("ok")
+            return render(request, template_name, context)
+    
     return render(request, template_name, context)
 
 def get_address(user_id):

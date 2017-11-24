@@ -100,9 +100,9 @@
     
                                     
                                     {% if book.quantity < 20 %}
-                                        <input class="form-control" id="quantity_id_{{book.product_id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:50%" min="1" max="{{book.quantity}}">
+                                        <input class="form-control" id="quantity_id_{{book.product_id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:50%" min="1" max="{{book.quantity}}" >
                                         {% else %}
-                                        <input class="form-control" id="quantity_id_{{book.product_id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:50%" min="1" max="20">
+                                        <input class="form-control" id="quantity_id_{{book.product_id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:50%" min="1" max="20" >
                                         {% endif %}
                                         
                                     
@@ -115,28 +115,46 @@
                                 <script type="text/javascript">
                                     quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").getAttribute("value");
                                     document.getElementById("button-minus-{{book.product_id}}").onclick = function(){
+                                        //quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").getAttribute("value");
                                         if(quantity_dict["quantity_id_{{book.product_id}}"] > 1){
                                             total = total - amount_dict["quantity_id_{{book.product_id}}"];
                                             quantity_dict["quantity_id_{{book.product_id}}"]--;
-                                            document.getElementById("quantity_id_{{book.product_id}}").setAttribute("value",  quantity_dict["quantity_id_{{book.product_id}}"].toString() );
+                                            document.getElementById("quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
                                             amount_dict["quantity_id_{{book.product_id}}"] = {{book.price|floatformat:2}} * quantity_dict["quantity_id_{{book.product_id}}"];
                                             document.getElementById("amount_{{book.product_id}}").innerHTML = amount_dict["quantity_id_{{book.product_id}}"];
                                             total = amount_dict["quantity_id_{{book.product_id}}"] + total;
                                             document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                            document.getElementById("form_send_quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
                                         }
                                     };
                                     
                                     document.getElementById("button-plus-{{book.product_id}}").onclick = function(){
+                                        //quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").getAttribute("value");
                                         if((quantity_dict["quantity_id_{{book.product_id}}"] < 20) && (quantity_dict["quantity_id_{{book.product_id}}"] < {{book.quantity}}) ){
                                             total = total - amount_dict["quantity_id_{{book.product_id}}"];
                                             quantity_dict["quantity_id_{{book.product_id}}"]++;
-                                            document.getElementById("quantity_id_{{book.product_id}}").setAttribute("value",  quantity_dict["quantity_id_{{book.product_id}}"].toString() );
+                                            document.getElementById("quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
                                             amount_dict["quantity_id_{{book.product_id}}"] = {{book.price|floatformat:2}} * quantity_dict["quantity_id_{{book.product_id}}"];
                                             document.getElementById("amount_{{book.product_id}}").innerHTML = amount_dict["quantity_id_{{book.product_id}}"];
                                             total = amount_dict["quantity_id_{{book.product_id}}"] + total;
                                             document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                            document.getElementById("form_send_quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
                                         }
-                                    }
+                                    };
+                                    
+                                    document.getElementById("quantity_id_{{book.product_id}}").oninput = function(){
+                                        var quantity_input = document.getElementById("quantity_id_{{book.product_id}}").value;
+                                        if (quantity_input >= 1 && quantity_input <= 20 && quantity_input <= {{book.quantity}} ){
+                                            quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").value;
+                                            total = total - amount_dict["quantity_id_{{book.product_id}}"];
+                                            amount_dict["quantity_id_{{book.product_id}}"] = {{book.price|floatformat:2}} * quantity_dict["quantity_id_{{book.product_id}}"];
+                                            document.getElementById("amount_{{book.product_id}}").innerHTML = amount_dict["quantity_id_{{book.product_id}}"];
+                                            total = amount_dict["quantity_id_{{book.product_id}}"] + total;
+                                            document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                            document.getElementById("form_send_quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
+                                        }
+                                    };
+                                    
                                 </script>
                             
                             </div>
@@ -175,7 +193,7 @@
                         <td class="text-right">
                             <strong id="total_all_in_cart">
                                 <script type="text/javascript">
-                                 document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                     document.getElementById('total_all_in_cart').innerHTML = total + " THB";
                                 </script>
                             </strong>
 						</td>
@@ -192,19 +210,14 @@
                                 <form method="POST" action="{% url 'cart:results' %}">
                                     {% csrf_token %}
                                     
-                                    <button class="btn btn-success btn-block" type="submit" name="update_item" value="update">Checkout</button>
-                             <!--       {% for book, quantity in cart_item_list.items  %}
+                                    <button class="btn btn-success btn-block" type="submit" name="update_session" value="update" onclick="prepare_data()">Checkout</button>
+                                    {% for book, quantity in cart_item_list.items  %}
                                     
                                         
-                                        <input id="form_send_quantity_id_{{book.product_id}}" name="{{book.product_id}}" type="hidden" value="{{quantity}}">
-                                        <script type="text/javascript">
-                                            document.getElementById("form_send_quantity_id_{{book.product_id}}").setAttribute("value", quantity_dict["quantity_id_{{book.product_id}}"]);
-                                        </sqript>
+                                        <input id="form_send_quantity_id_{{book.product_id}}" name="update_cart_{{book.product_id}}" type="hidden" value="{{quantity}}">
                                         
-                                       <!-- <input id="id_of_input_{{book.product_id}}" name="id_of_input" type="hidden" value="{{book.product_id}}">
-                                    {% endfor %}-->
-                                
-                                    
+                                    {% endfor %}
+             
                                 </form>
                                 </td>
                             {% else %}
