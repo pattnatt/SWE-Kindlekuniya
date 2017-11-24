@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'cart.apps.CartConfig',
     'passlib',
+    'transfer',
 ]
 
 SITE_ID = 1

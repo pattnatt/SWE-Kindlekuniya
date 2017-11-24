@@ -73,6 +73,29 @@ def ResultsView(request):
 
     return render(request, template_name, context)
 
+def get_address(user_id):
+    address_list = []
+    user = User.objects.get(user_id=user_id)        
+    for value in Address.objects.filter(user=user):
+        default = ''
+        if value.address_id == user.default_address:
+            default = 'disabled'
+        address_list.append([value.address,value.city,value.zipcode,value.address_id,default])
+    return address_list
+
+
+def AddressView(request):
+    template_name = 'cart/address_select.html'
+
+    if not request.session.has_key('user_id'):
+        return HttpResponseRedirect("/user/login")
+        
+    user_id = request.session['user_id']
+    user = User.objects.get(user_id=user_id)        
+    
+    address_list = get_address(user_id)
+    return render(request, template_name,{'address_list':address_list})
+
 
 def PaymentView(request):
     template_name = 'cart/payment.html'

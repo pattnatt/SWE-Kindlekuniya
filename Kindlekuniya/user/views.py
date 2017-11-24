@@ -104,6 +104,12 @@ def edit_address(request):
     
     address_list = get_address(user_id)
     edit = False
+    from_cart = False
+    
+    if 'from' in request.GET:
+        if request.GET['from'] == 'cart':
+            from_cart = True
+
     if request.method == 'POST':
         form = EditAddressForm(request.POST)
         
@@ -137,10 +143,10 @@ def edit_address(request):
                 init = Address.objects.get(user=user,address_id=address_id)
                 form = EditAddressForm(initial={'address':init.address,'city':init.city,'zipcode':init.zipcode})
                 edit_address = True
-                return render(request, 'edit_address.html',{'address_list':address_list,'form':form,'edit_address':edit_address,'address_id':address_id})
+                return render(request, 'edit_address.html',{'address_list':address_list,'form':form,'edit_address':edit_address,'address_id':address_id,'from_cart':from_cart})
     address_list = get_address(user_id)                
     form = EditAddressForm()
-    return render(request, 'edit_address.html',{'address_list':address_list,'form':form})
+    return render(request, 'edit_address.html',{'address_list':address_list,'form':form,'from_cart':from_cart})
    
     
 

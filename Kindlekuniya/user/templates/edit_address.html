@@ -44,7 +44,11 @@
                         <input type="hidden" id="save" name="save" value="{{ address_id }}"> 
                         {% endif %}
                         <button type="submit" class="btn btn-success">Save</button>
+                        {% if from_cart %}
+                        <button type="button" onclick="location.href='/cart/address/'" class="btn btn-danger">Back</button>
+                        {% else %}
                         <button type="button" onclick="location.href='/user/profile'" class="btn btn-danger">Back</button>
+                        {% endif %}
                     </td>
                 </tr>
                 </form>
