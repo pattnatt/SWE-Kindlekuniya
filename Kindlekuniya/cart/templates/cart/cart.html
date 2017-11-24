@@ -14,7 +14,7 @@
     <body>
 
         <style>
-         .header{
+			.header{
                 padding: 20px;
             }
             .hidden-xs{
@@ -26,34 +26,35 @@
             }
             
             .container{
-                
+                align: center;
             }
+			
+			#cart-head {
+				text-align: center;
+				margin: 30px auto;
+			}
+			
+			#cart {
+				
+			}
         </style>
 
         <script type="text/javascript">
          var total = 0;
+         var quantity_dict = {};
+         var amount_dict = {};
         </script>
        
-
+		<h1 id="cart-head">Cart</h1>
+		
         <div class="container">
-
-                <div class="row">
-                        <div class="col" ></div>
-                        <div class="col" ></div>
-                        <div class="col" ></div>
-                        <div class="col" >
-                                <div class="card bg-success text-white">
-                                        <div class="card-body"><i class="fa fa-angle-double-right"></i> Item List</div>
-                                      </div>
-                        </div>
-                      </div>
 
             <table id="cart" class="table table-responsive">
                 <thead>
                     <tr class="names">
-                        <th >Product</th>
-                        <th style="width:10%" class="text-right">Price</th>
-                        <th style="width:15%" class="text-right">Quantity</th>
+                        <th style="width:50%" class="text-left">Product</th>
+                        <th style="width:15%" class="text-right">Price</th>
+                        <th style="width:20%" class="text-right">Quantity</th>
                         <th style="width:10%" class="text-right">Amount</th>
                         <th style="width:10%"></th>
                     </tr>
@@ -61,7 +62,8 @@
 
                 {% for book, quantity in cart_item_list.items  %}
                 
-                <tbody class="cart-header" id="{{book.id}}">
+                
+                <tbody class="cart-header" id="{{book.product_id}}">
                     <tr class="item">
                         <td data-th="Product">
                             <div class="row">
@@ -84,45 +86,101 @@
 
 
 
-                        <td data-th="Quantity" class="text-right">
-
-
-                            <div class="btn-group" role="group" aria-label="...">
-                                <form method="post">
-                                    {% csrf_token %}
+                        <td data-th="Quantity" >
+                            
+                            <div class="row">
+                            <div class="col-3" style="padding:0px;"></div>
+                            <div class="col-9" style="padding:0px;">
+                            <div class="btn-group" role="group" aria-label="..." >
+                                    
+                                <div class="input-group" style="width:100%">    
+                                <span class="input-group-btn">
+                                    <button id="button-minus-{{book.product_id}}" type="button" class="btn btn-outline-secondary btn-sm" onclick="minusQuantity()">-</button>
+                                </span>               
+    
+                                    
                                     {% if book.quantity < 20 %}
-                                    <input id="quantity_id_{{book.id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:90px" min="1" max="{{book.quantity}}">
-                                    {% else %}
-                                    <input id="quantity_id_{{book.id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:90px" min="1" max="20">
-                                    {% endif %}
-                                    <input id="id_of_input_{{book.id}}" name="id_of_input" type="hidden" value="{{book.id}}">
-                                    <input type="submit" value="update" style="width:90px;">
-                                </form>
+                                        <input class="form-control" id="quantity_id_{{book.product_id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:50%" min="1" max="{{book.quantity}}" >
+                                        {% else %}
+                                        <input class="form-control" id="quantity_id_{{book.product_id}}" name="quantity_of_item" type="number" value="{{quantity}}" style="width:50%" min="1" max="20" >
+                                        {% endif %}
+                                        
+                                    
+                                <span class="input-group-btn">
+                                    <button id="button-plus-{{book.product_id}}" type="button" class="btn btn-outline-secondary btn-sm" onclick="plusQuantity()">+</button>
+                                </span>
+                                
+                                </div>
+
                                 <script type="text/javascript">
-                                 var quantity_{{book.id}} = {{quantity}};
+                                    quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").getAttribute("value");
+                                    document.getElementById("button-minus-{{book.product_id}}").onclick = function(){
+                                        //quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").getAttribute("value");
+                                        if(quantity_dict["quantity_id_{{book.product_id}}"] > 1){
+                                            total = total - amount_dict["quantity_id_{{book.product_id}}"];
+                                            quantity_dict["quantity_id_{{book.product_id}}"]--;
+                                            document.getElementById("quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
+                                            amount_dict["quantity_id_{{book.product_id}}"] = {{book.price|floatformat:2}} * quantity_dict["quantity_id_{{book.product_id}}"];
+                                            document.getElementById("amount_{{book.product_id}}").innerHTML = amount_dict["quantity_id_{{book.product_id}}"];
+                                            total = amount_dict["quantity_id_{{book.product_id}}"] + total;
+                                            document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                            document.getElementById("form_send_quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
+                                        }
+                                    };
+                                    
+                                    document.getElementById("button-plus-{{book.product_id}}").onclick = function(){
+                                        //quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").getAttribute("value");
+                                        if((quantity_dict["quantity_id_{{book.product_id}}"] < 20) && (quantity_dict["quantity_id_{{book.product_id}}"] < {{book.quantity}}) ){
+                                            total = total - amount_dict["quantity_id_{{book.product_id}}"];
+                                            quantity_dict["quantity_id_{{book.product_id}}"]++;
+                                            document.getElementById("quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
+                                            amount_dict["quantity_id_{{book.product_id}}"] = {{book.price|floatformat:2}} * quantity_dict["quantity_id_{{book.product_id}}"];
+                                            document.getElementById("amount_{{book.product_id}}").innerHTML = amount_dict["quantity_id_{{book.product_id}}"];
+                                            total = amount_dict["quantity_id_{{book.product_id}}"] + total;
+                                            document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                            document.getElementById("form_send_quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
+                                        }
+                                    };
+                                    
+                                    document.getElementById("quantity_id_{{book.product_id}}").oninput = function(){
+                                        var quantity_input = document.getElementById("quantity_id_{{book.product_id}}").value;
+                                        if (quantity_input >= 1 && quantity_input <= 20 && quantity_input <= {{book.quantity}} ){
+                                            quantity_dict["quantity_id_{{book.product_id}}"] = document.getElementById("quantity_id_{{book.product_id}}").value;
+                                            total = total - amount_dict["quantity_id_{{book.product_id}}"];
+                                            amount_dict["quantity_id_{{book.product_id}}"] = {{book.price|floatformat:2}} * quantity_dict["quantity_id_{{book.product_id}}"];
+                                            document.getElementById("amount_{{book.product_id}}").innerHTML = amount_dict["quantity_id_{{book.product_id}}"];
+                                            total = amount_dict["quantity_id_{{book.product_id}}"] + total;
+                                            document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                            document.getElementById("form_send_quantity_id_{{book.product_id}}").value = quantity_dict["quantity_id_{{book.product_id}}"];
+                                        }
+                                    };
+                                    
                                 </script>
-
+                            
                             </div>
-
+                        </div>
+                        </div>
                         </td>
 
-                        <td data-th="Subtotal" class="text-right" id="amount_{{book.id}}">
-                            {% widthratio book.price 1 quantity %}
+                        <td data-th="Subtotal" class="text-right" id="amount_{{book.product_id}}">
+							<span id="amount_{{book.product_id}}"></span>
                             <script type="text/javascript">
-                             var amount_{{book.id}} = {{book.price}} * quantity_{{book.id}};
-                             total = amount_{{book.id}} + total;
+                             amount_dict["quantity_id_{{book.product_id}}"] = {{book.price|floatformat:2}} * quantity_dict["quantity_id_{{book.product_id}}"];
+							 document.getElementById("amount_{{book.product_id}}").innerHTML = amount_dict["quantity_id_{{book.product_id}}"];
+                             total = amount_dict["quantity_id_{{book.product_id}}"] + total;
                             </script>
                         </td>
 
                         <td class="actions" data-th="">
                             <form method="post">
                                 {% csrf_token %}
-                                <button class="btn btn-outline-danger btn-sm" type="submit" name="delete_item" value="{{book.id}}"><i class="fa fa-trash-o"></i></button>
+                                <button class="btn btn-outline-danger btn-sm" type="submit" name="delete_item" value="{{book.product_id}}"><i class="fa fa-trash-o"></i></button>
                             </form>
                         </td>
 
                     </tr>
                 </tbody>
+
                 {% endfor %}
 
 
@@ -130,14 +188,15 @@
                 <tfoot>
                     <tr>
                         <td></td>
-                        <td class="hidden-xs" colspan="2"></td>
+                        <td class="hidden-xs" colspan="1"></td>
                         <td class="text-right">Total</td>
                         <td class="text-right">
                             <strong id="total_all_in_cart">
                                 <script type="text/javascript">
-                                 document.getElementById('total_all_in_cart').innerHTML = total + " THB";
+                                     document.getElementById('total_all_in_cart').innerHTML = total + " THB";
                                 </script>
-                            </strong></td>
+                            </strong>
+						</td>
                         <td></td>
                     </tr>
                     <tr class="no-border">
@@ -146,12 +205,26 @@
                         <td></td>
                         {% if cart_item_list %}
                             {% if request.session.user_id %}
-                                <td colspan="2"><a href="{% url 'cart:results' %}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                                <td colspan="2">
+                                
+                                <form method="POST" action="{% url 'cart:results' %}">
+                                    {% csrf_token %}
+                                    
+                                    <button class="btn btn-success btn-block" type="submit" name="update_session" value="update" onclick="prepare_data()">Checkout</button>
+                                    {% for book, quantity in cart_item_list.items  %}
+                                    
+                                        
+                                        <input id="form_send_quantity_id_{{book.product_id}}" name="update_cart_{{book.product_id}}" type="hidden" value="{{quantity}}">
+                                        
+                                    {% endfor %}
+             
+                                </form>
+                                </td>
                             {% else %}
-                                <td colspan="2"><a href="#" class="btn btn-primary btn-block">Login</a></td>
+                                <td colspan="2"><a href="{% url 'user:login' %}" class="btn btn-primary btn-block">Login</a></td>
                             {% endif %}
                         {% else %}
-                            <td></td>
+							<td colspan="2"><a href="{% url 'user:login' %}" class="btn btn-primary btn-block">Login</a></td>
                         {% endif %}
                     </tr>
                 </tfoot>

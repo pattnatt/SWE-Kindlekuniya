@@ -20,31 +20,37 @@
             .col{
                 padding: 20px;
             }
+            
+            .container{
+                align: center;
+            }
+            
+            #cart-head {
+				text-align: center;
+				margin: 30px auto;
+			}
+			
+			#cart {
+				
+			}
         </style>
         <script type="text/javascript">
          var total = 0;
          var shipping = 0;
         </script>
        
+        <h1 id="cart-head">Result</h1>
+        
         <div class="container">
 
-                <div class="row">
-                        <div class="col" ></div>
-                        <div class="col" ></div>
-                        <div class="col" ></div>
-                        <div class="col" >
-                                <div class="card bg-success text-white">
-                                        <div class="card-body"><i class="fa fa-angle-double-right"></i> Result</div>
-                                      </div>
-                        </div>
-                      </div>
+                
 
                 <table id="cart" class="table table-responsive">
                         <thead>
                             <tr class="names">
-                                <th>Product</th>
-                                <th style="width:10%" class="text-right hidden-xs">Price</th>
-                                <th style="width:15%" class="text-right">Quantity</th>
+                                <th style="width:50%" class="text-left">Product</th>
+                                <th style="width:15%" class="text-right">Price</th>
+                                <th style="width:20%" class="text-right">Quantity</th>
                                 <th style="width:10%" class="text-right">Amount</th>
                                 <th style="width:10%"></th>
                             </tr>
@@ -82,24 +88,19 @@
 
                                 </td>
 
-                                <td data-th="Subtotal" class="text-right" id="amount_{{book.id}}">
-                                        {% widthratio book.price 1 quantity %}
+                                <td data-th="Subtotal" class="text-right" id="amount_{{book.product_id}}">
+                                        <span id="amount_{{book.product_id}}"></span>
                                         <script type="text/javascript">
-                                         var amount_{{book.id}} = {{book.price}} * quantity_{{book.id}};
-                                         total = amount_{{book.id}} + total;
+                                         var amount = {{book.price|floatformat:2}} * {{quantity}};
+                                         amount.toFixed(2);
+                                         document.getElementById("amount_{{book.product_id}}").innerHTML = amount.toFixed(2);
+                                         total = amount + total;
                                         </script>
                                     </td>
-
-                                <script type="text/javascript">
-                                    total += {% widthratio book.price 1 quantity %};
-                                   </script>
-
+                                    
                                 <td></td>
 
                                 {% endfor %}
-
-
-
 
                             </tr>
                         </tbody>
@@ -111,12 +112,12 @@
                         <tfoot>
                             <tr>
                                 <td></td>
-                                <td class="hidden-xs" colspan="2"></td>
+                                <td class="hidden-xs" colspan="1"></td>
                                 <td class="text-right">Total</td>
                                 <td class="text-right">
-                                    <strong>
+                                    <strong id="total_all_in_cart">
                                         <script type="text/javascript">
-                                            document.write(total+ " THB");
+                                            document.getElementById('total_all_in_cart').innerHTML = total.toFixed(2) + " THB";
                                            </script>
                                     </strong>
                                 </td>
@@ -126,12 +127,12 @@
 
                             <tr>
                                     <td></td>
-                                    <td class="hidden-xs" colspan="2"></td>
+                                    <td class="hidden-xs" colspan="1"></td>
                                     <td class="text-right">Shipping</td>
                                     <td class="text-right">
-                                        <strong>
+                                        <strong id="shipping_in_cart">
                                             <script type="text/javascript">
-                                                document.write(shipping+ " THB");
+                                                document.getElementById('shipping_in_cart').innerHTML = shipping + " THB";
                                                </script>
                                         </strong>
                                     </td>
@@ -141,12 +142,13 @@
 
                             <tr>
                                     <td></td>
-                                    <td class="hidden-xs" colspan="2"></td>
+                                    <td class="hidden-xs" colspan="1"></td>
                                     <td class="text-right">Total + Shipping</td>
                                     <td class="text-right">
-                                        <strong>
+                                        <strong id="all_shipping_in_cart">
                                             <script type="text/javascript">
-                                                document.write(shipping+total+ " THB");
+                                                var total_ship = total + shipping;
+                                                document.getElementById('all_shipping_in_cart').innerHTML = total_ship.toFixed(2) + " THB";
                                                </script>
                                         </strong>
                                     </td>
