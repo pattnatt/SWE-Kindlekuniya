@@ -20,7 +20,7 @@ def IndexView(request):
             for book, quantity in items.items():
                 if str(book.product_id) == str(item_id):
                     del request.session[cart_prefix + str(book.product_id)]
-    
+
             items = get_product_in_cart(request)
             context = {
                 'cart_item_list': items,
@@ -41,7 +41,7 @@ def ResultsView(request):
 
     if request.method == 'POST' and request.session['user_id'] and items:
         user = User.objects.get(user_id=request.session['user_id'])
-        address = Address.objects.get(user_id=int(request.session['user_id']))
+        address = Address.objects.get(user_id=(request.session['user_id']))
 
         new_entry = HistEntry(user=user, address=address,)
         new_entry.save()
@@ -63,7 +63,7 @@ def ResultsView(request):
 
 def get_address(user_id):
     address_list = []
-    user = User.objects.get(user_id=user_id)        
+    user = User.objects.get(user_id=user_id)
     for value in Address.objects.filter(user=user):
         default = ''
         if value.address_id == user.default_address:
@@ -77,10 +77,10 @@ def AddressView(request):
 
     if not request.session.has_key('user_id'):
         return HttpResponseRedirect("/user/login")
-        
+
     user_id = request.session['user_id']
-    user = User.objects.get(user_id=user_id)        
-    
+    user = User.objects.get(user_id=user_id)
+
     address_list = get_address(user_id)
     return render(request, template_name,{'address_list':address_list})
 
