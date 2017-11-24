@@ -4,17 +4,19 @@
 {% load staticfiles %}
 
 {% block content %}
+    <br>
     <form method="get" action=".">
         <div class = "row">
-            <div class="col-md-12" align="center">
-                <h2>Search</h2>
+            <div class="col-2 col-sm-3 col-md-4"></div>
+            <div class="col-8 col-sm-6 col-md-4">
+                <h2>Search Products</h2>
                 <br />
                 <table>
-                    {{ form.as_table }}
+                    {{ form|bootstrap }}
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" value="Search">
+                            <input type="submit" value="Search" class="btn btn-success">
                         </td>
                     </tr>
                 </table>
@@ -36,7 +38,11 @@
                                         <br />
                                         <div class="text-center">
                                             <a href="{% url 'Catalog:detail' product.object.id %}">
-                                                <img src= "{{ product.object.pictureUrl.url }}" class="mx-auto d-block" height="200">
+                                                {% if product.picture_url.url != None %}
+                                                <img src= "data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="mx-auto d-block img-fluid" height="200" data-src="{{ product.object.pictureUrl.url }}">
+                                                {% else %}
+                                                <img src= "data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="mx-auto d-block " height="200" data-src="/static/media/product_image/book_nocover.png">
+                                                {% endif %}
                                             </a>
                                         </div>
                                         <br />

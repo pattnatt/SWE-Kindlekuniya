@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from Catalog.views import get_product_in_cart, cart_prefix
+from Catalog.views import get_product_in_cart, cart_prefix, get_shipping_price
 from Catalog.models import Product
 from history.models import HistEntry, HistData
 from user.models import User, Address
@@ -35,25 +35,14 @@ def IndexView(request):
 def ResultsView(request):
     template_name = 'cart/results.html'
     items = get_product_in_cart(request)
+    shipping_price = 0 + get_shipping_price(request)
+    print(shipping_price)
+    print(str(shipping_price))
     context = {
         'cart_item_list': items,
+        'shipping_price' : shipping_price,
     }
-    
-    if request.method == 'POST' and request.session['user_id']  and items:
-        if request.POST.get('update_session'):
-            book_dict = request.POST.dict()
-            for book_id, book_quantity in book_dict.items():                
-                if len(str(book_id)) > len('update_cart_'):
-                    if str(book_id)[0:len('update_cart_')] == 'update_cart_':
-                        product_id=str(book_id)[len('update_cart_'):]
-                        request.session[cart_prefix + str(product_id)] = int(book_quantity)                    
-            items = get_product_in_cart(request)
-            context = {
-                'cart_item_list': items,
-            }
-            #return HttpResponse("ok")
-            return render(request, template_name, context)
-    
+
     return render(request, template_name, context)
 
 def get_address(user_id):
@@ -84,12 +73,14 @@ def PaymentView(request):
     template_name = 'cart/payment.html'
     items = get_product_in_cart(request)
     message = 'Checkout Failed'
+    shipping_price = 0 + get_shipping_price(request)
+
 
     if request.session.has_key('user_id') and items:
         user = User.objects.get(user_id=request.session['user_id'])
         address = Address.objects.get(user_id=request.session['user_id'],address_id=user.default_address)
 
-        new_entry = HistEntry(user=user, address=address,)
+        new_entry = HistEntry(user=user, address=address, shipping_price=shipping_price)
         new_entry.save()
 
         for product, quantity in items.items():

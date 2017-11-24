@@ -20,30 +20,31 @@
             .col{
                 padding: 20px;
             }
-            
+
             .container{
                 align: center;
             }
-            
+
             #cart-head {
 				text-align: center;
 				margin: 30px auto;
 			}
-			
+
 			#cart {
-				
+
 			}
         </style>
         <script type="text/javascript">
          var total = 0;
-         var shipping = 0;
+         var shipping = {{ shipping_price }};
+         console.log(shipping);
         </script>
-       
+
         <h1 id="cart-head">Result</h1>
-        
+
         <div class="container">
 
-                
+
 
                 <table id="cart" class="table table-responsive">
                         <thead>
@@ -97,7 +98,7 @@
                                          total = amount + total;
                                         </script>
                                     </td>
-                                    
+
                                 <td></td>
 
                                 {% endfor %}
@@ -138,7 +139,7 @@
                                     </td>
                                     <td></td>
 
-                            </tr> 
+                            </tr>
 
                             <tr>
                                     <td></td>

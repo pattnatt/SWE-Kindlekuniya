@@ -29,4 +29,4 @@ class TransferEntry(models.Model):
     )
 
     def __str__(self):
-        return str(self.order_id)[:8]
+        return str(self.order_id)

@@ -31,6 +31,7 @@ SECRET_KEY = 'n(=p(9uru3qhm(290sfl@i41co40zt@k($7r1$p9*ku=d)*1*r'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     '0.0.0.0',
     'localhost',
 ]
@@ -87,7 +88,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
-                "Catalog.context_processors.AllCatagory",
+                "Catalog.context_processors.IndexPage",
             ],
         },
     },
