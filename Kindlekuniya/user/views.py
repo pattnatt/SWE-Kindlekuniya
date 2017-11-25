@@ -58,7 +58,7 @@ def signup(request):
             return render(request,'user_response.html', {'success': success})
 
     elif request.session.has_key('user_id'):
-        return redirect("/user/logout")
+        return redirect('/user/logout')
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
@@ -74,7 +74,7 @@ def edit_profile(request):
             user.lastname = request.POST['lastname']
             user.phone_number = request.POST['phone_number']
             user.save()
-            return HttpResponseRedirect("/user/profile")
+            return HttpResponseRedirect('/user/profile')
 
     elif request.session.has_key('user_id'):
         user_id = request.session['user_id']
@@ -82,7 +82,7 @@ def edit_profile(request):
         form = EditProfileForm(initial={'firstname': user.firstname, 'lastname': user.lastname,
                                         'email': user.email, 'phone_number': user.phone_number})
     else:
-        return HttpResponseRedirect("/user/login")
+        return HttpResponseRedirect('/user/login')
 
     return render(request, 'edit_profile.html', {'form': form})
 
@@ -99,7 +99,7 @@ def get_address(user_id):
 def edit_address(request):
 
     if not request.session.has_key('user_id'):
-        return HttpResponseRedirect("/user/login")
+        return HttpResponseRedirect('/user/login')
 
     user_id = request.session['user_id']
     user = User.objects.get(user_id=user_id)
@@ -162,7 +162,7 @@ def change_password(request):
             if pbkdf2_sha256.verify(password, user.password):
                 user.password = pbkdf2_sha256.hash(new_password)
                 user.save()
-                return HttpResponseRedirect("/user/profile")
+                return HttpResponseRedirect('/user/profile')
             else:
                 err = "User or Password is invalid"
                 return render(
@@ -171,14 +171,14 @@ def change_password(request):
                     {'form': form, 'err': err}
                 )
         elif request.POST['old_password'] == '':
-            return HttpResponseRedirect("/user/profile")
+            return HttpResponseRedirect('/user/profile')
 
     elif request.session.has_key('user_id'):
         user_id = request.session['user_id']
         user = User.objects.get(user_id=user_id)
         form = ChangePasswordForm(initial={'email': user.email})
     else:
-        return HttpResponseRedirect("/user/login")
+        return HttpResponseRedirect('/user/login')
 
     return render(request, 'change_password.html', {'form': form})
 
@@ -259,7 +259,7 @@ def login(request):
                 if pbkdf2_sha256.verify(password, user.password):
                     request.session['user_id'] = user.user_id
                     request.session.set_expiry(1800)
-                    return HttpResponseRedirect("/user/profile")
+                    return HttpResponseRedirect('/user/profile')
                 else:
                     err = "Email or Password is invalid"
                     return render(
@@ -283,7 +283,7 @@ def login(request):
                 )
 
     elif request.session.has_key('user_id'):
-        return HttpResponseRedirect("/user/logout")
+        return HttpResponseRedirect('/user/logout')
     else:
         form = SigninForm()
     return render(request, 'login.html', {'form': form})
@@ -291,13 +291,13 @@ def login(request):
 
 def logout(request):
     if not request.session.has_key('user_id'):
-        return HttpResponseRedirect("/user/login")
+        return HttpResponseRedirect('/user/login')
     elif request.method == 'POST':
         try:
             del request.session['user_id']
         except:
             pass
-        return HttpResponseRedirect("/user/login")
+        return HttpResponseRedirect('/user/login')
     else:
         return render(request, 'logout.html')
 
@@ -317,7 +317,7 @@ def profile(request):
         except:
             pass
         form = SigninForm()
-        return HttpResponseRedirect("/user/login")
+        return HttpResponseRedirect('/user/login')
 
 
 def activate(request, uidb64, token):
@@ -338,7 +338,7 @@ def activate(request, uidb64, token):
             success = "Your account is activated."
             return render(request, 'user_response.html', {'success': success})
         else:
-            return HttpResponseRedirect("/user/resend_email")
+            return HttpResponseRedirect('/user/resend_email')
 
 
 def resend_email(request):

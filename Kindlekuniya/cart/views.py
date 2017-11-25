@@ -76,7 +76,7 @@ def AddressView(request):
     template_name = 'cart/address_select.html'
 
     if not request.session.has_key('user_id'):
-        return HttpResponseRedirect("/user/login")
+        return HttpResponseRedirect('/user/login')
 
     user_id = request.session['user_id']
     user = User.objects.get(user_id=user_id)

@@ -70,31 +70,40 @@
                 <table class="table">
                     <tr>
                         <thead class="address-head">
-                            <th class="text-center" width='30%'>
+                            <th class="text-center" colspan="6">
                                 Address
                             </th>
-                            <th class="text-center" width='30%'>
+                            <th class="text-center" colspan="6">
                                 City
                             </th>
-                            <th class="text-center" width='10%'>
+                            <th class="text-center" colspan="6">
                                 Zipcode
                             </th>
-
+                            
+                        </thead>
                     </tr>
-                    </thead>
+                    
+                    
                     {% for address in address_list %}
-                    <tr class="address-body">
-                        <td align='center'>
+                    {% if address.4 == 'disabled' %}
+                    <tr class="address-body btn-light active" role="button" id="setdefault-button-{{address.3}}">                     
+                    {% else %}
+                    <tr class="address-body btn-light disabled" role="button" id="setdefault-button-{{address.3}}"> 
+                    {% endif %}
+                        <td align='center' colspan="6">
                             {{ address.0 }}
                         </td>
-                        <td align='center'>
+                        <td align='center' colspan="6" >
                             {{ address.1 }}
                         </td>
-                        <td align='center'>
+                        <td align='center' colspan="6">
                             {{ address.2 }}
-                        </td>
+                        </td> 
                     </tr>
                     {% endfor %}
+                    
+                    
+                    
                     </tbody>
                 </table>
                 </div>
