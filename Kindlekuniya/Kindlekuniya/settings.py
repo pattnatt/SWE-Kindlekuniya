@@ -19,7 +19,7 @@ EMAIL_HOST =  'smtp.gmail.com'
 EMAIL_HOST_USER = 'contact.kindlekuniya@gmail.com'
 EMAIL_HOST_PASSWORD = 'genquembmomiyjfc'
 EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -32,7 +32,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'Kindlekuniya.pythonanywhere.com',
-    'localhost',
 ]
 # Application definition
 
@@ -112,23 +111,23 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-     }
-}
-
 #DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'Kindlekuniya',
-#        'USER': 'patt',
-#        'PASSWORD': 'patt0078',
-#        'HOST': 'Kindlekuniya-591.postgres.pythonanywhere-services.com',
-#        'PORT': 10591,
-#    }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
 #}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Kindlekuniya',
+        'USER': 'patt',
+        'PASSWORD': 'patt0078',
+        'HOST': 'Kindlekuniya-591.postgres.pythonanywhere-services.com',
+        'PORT': 10591,
+    }
+}
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
