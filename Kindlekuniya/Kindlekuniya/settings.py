@@ -17,9 +17,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 EMAIL_HOST =  'smtp.gmail.com'
 EMAIL_HOST_USER = 'contact.kindlekuniya@gmail.com'
-EMAIL_HOST_PASSWORD = 'genquembmomiyjfc'
+EMAIL_HOST_PASSWORD = 'fiznpieaaxjhcskf'
 EMAIL_PORT = '587'
-EMAIL_USE_TLS = False
+EMAIL_USE_TLS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
