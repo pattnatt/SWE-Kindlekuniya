@@ -121,7 +121,7 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Kindlekuniya',
+        'NAME': 'kindlekuniya',
         'USER': 'patt',
         'PASSWORD': 'patt0078',
         'HOST': 'Kindlekuniya-591.postgres.pythonanywhere-services.com',
