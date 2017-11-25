@@ -206,8 +206,9 @@
                         <td><a href="{% url 'Catalog:index' %}" class="btn btn-default "><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
                         <td colspan="2" class="hidden-xs"></td>
                         <td></td>
-                        {% if cart_item_list %}
-                            {% if request.session.user_id %}
+                        
+                        {% if request.session.user_id %}
+                            {% if cart_item_list %}
                                 <td colspan="2">
                                 
                                 <form method="POST" action="{% url 'cart:results' %}">
@@ -223,8 +224,7 @@
              
                                 </form>
                                 </td>
-                            {% else %}
-                                <td colspan="2"><a href="{% url 'user:login' %}" class="btn btn-primary btn-block">Login</a></td>
+                           
                             {% endif %}
                         {% else %}
 							<td colspan="2"><a href="{% url 'user:login' %}" class="btn btn-primary btn-block">Login</a></td>
