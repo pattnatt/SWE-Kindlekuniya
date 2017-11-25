@@ -37,11 +37,7 @@ class Product(models.Model):
         ('TT', 'Two Tone'),
     )
 
-    product_id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
+    product_id = models.AutoField(primary_key=True)
     isbn = models.DecimalField(max_digits=13, decimal_places=0, unique=True)
     name = models.CharField(max_length=250)
     author = models.CharField(max_length=250)

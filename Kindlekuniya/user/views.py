@@ -16,6 +16,7 @@ from passlib.hash import pbkdf2_sha256
 
 def email_activation(user):
     domain = 'http://localhost:8000'
+    #domian = 'http://kindlekuniya.pythonanywhere.com'
     token = account_activation_token.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     message = render_to_string('active_email.html', {
@@ -39,8 +40,9 @@ def signup(request):
             password = pbkdf2_sha256.hash(password)
 
             form_signup = SignupModelForm(request.POST)
-            user = form_signup.save(commit=False)
+            user = form_signup.save(commit=True)
             user.password = password
+            user.save()
             form_address = AddressModelForm()
             address = form_address.save(commit=False)
             address.address = request.POST['address']
@@ -224,6 +226,7 @@ def forgot_password(request):
             user.save()
             user.is_activated = 'AC'
             domain = 'http://localhost:8000'
+            #domian = 'http://kindlekuniya.pythonanywhere.com'
             message = render_to_string('reset_password_email.html', {
                 'user': user,
                 'domain': domain,

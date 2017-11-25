@@ -24,7 +24,7 @@ class HistDataTable(tables.Table):
         'Catalog:detail',
         args=[A('product_id')],
         text=lambda record: str(
-            Product.objects.get(product_id=uuid.UUID(record.product_id)).name
+            Product.objects.get(product_id=record.product_id).name
             # record.product_id
         )
     )

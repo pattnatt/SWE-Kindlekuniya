@@ -28,10 +28,11 @@ EMAIL_USE_TLS = True
 SECRET_KEY = 'n(=p(9uru3qhm(290sfl@i41co40zt@k($7r1$p9*ku=d)*1*r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'Kindlekuniya.pythonanywhere.com',
+    'localhost',
 ]
 # Application definition
 
@@ -111,25 +112,25 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Kindlekuniya',
-        'USER': 'patt',
-        'PASSWORD': 'patt0078',
-        'HOST': 'Kindlekuniya-591.postgres.pythonanywhere-services.com',
-        'PORT': 10591,
-    }
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     }
 }
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'Kindlekuniya',
+#        'USER': 'patt',
+#        'PASSWORD': 'patt0078',
+#        'HOST': 'Kindlekuniya-591.postgres.pythonanywhere-services.com',
+#        'PORT': 10591,
+#    }
+#}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

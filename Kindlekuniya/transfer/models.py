@@ -5,12 +5,7 @@ import uuid
 
 
 class TransferEntry(models.Model):
-    entry_id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        unique=True,
-        editable=False
-    )
+    entry_id = models.AutoField(primary_key=True)
     order_id = models.ForeignKey(HistEntry, on_delete=models.CASCADE,)
     value = models.DecimalField(
         default=0,

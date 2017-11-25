@@ -5,11 +5,7 @@ import uuid
 
 
 class HistEntry(models.Model):
-    order_id = models.UUIDField(
-        verbose_name='Order ID',
-        primary_key=True,
-        default=uuid.uuid4(),
-        editable=False)
+    order_id = models.AutoField(verbose_name='Order ID', primary_key=True)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -66,12 +62,7 @@ class HistEntry(models.Model):
 
 
 class HistData(models.Model):
-    entry_id = models.UUIDField(
-        verbose_name='Entry ID',
-        primary_key=True,
-        default=uuid.uuid4,
-        unique=True,
-        editable=False)
+    entry_id = models.AutoField(verbose_name='Entry ID', primary_key=True)
     order_id = models.ForeignKey(HistEntry, on_delete=models.CASCADE,)
     product_id = models.CharField(
         max_length=36,
